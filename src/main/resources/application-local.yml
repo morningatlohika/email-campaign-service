@@ -1,0 +1,8 @@
+welcome-message: Hello Morning
+
+exchange:
+    default-url: https://outlook.office365.com/EWS/Exchange.asmx
+    trace:
+      enabled: true
+    autodiscovery:
+      enabled: false

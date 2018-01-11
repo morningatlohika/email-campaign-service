@@ -1,0 +1,29 @@
+# ******************************************************************************************
+# SECURITY WARNING:
+# Keep all secrets in a separate config file outside of the git repo.
+# Default location for any properties, including secrets is $HOME/.morning/ecs/ directory
+# TODO: all secrets should not be stored plain-text
+# ******************************************************************************************
+
+spring:
+  profiles:
+    # on production, override the spring profile
+    # by adding "--spring.profiles.active=prod" option to the command line
+    active: local
+
+security:
+  user:
+    password: <change-spring-security-password>
+
+welcome-message: Hello Morning
+
+exchange:
+    username: example-morning@lohika.com
+    password: <specify-exchange-user-password>
+    default-url: https://outlook.office365.com/EWS/Exchange.asmx
+    trace:
+      enabled: false
+    autodiscovery:
+      # It's recommended to use autodiscovery on production.
+      # Since it slows down the application startup, it may be disabled during development.
+      enabled: true

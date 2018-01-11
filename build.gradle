@@ -22,19 +22,21 @@ repositories {
     mavenCentral()
 }
 
-
 dependencies {
     compile('org.springframework.boot:spring-boot-starter-aop')
     compile('org.springframework.boot:spring-boot-starter-hateoas')
-    compile('org.springframework.boot:spring-boot-starter-mail')
     compile('org.springframework.boot:spring-boot-starter-security')
     compile('org.springframework.boot:spring-boot-starter-thymeleaf')
     compile('org.springframework.boot:spring-boot-starter-web')
+
+    compile('com.microsoft.ews-java-api:ews-java-api:2.0')
 
     // for bootstrap
     compile('org.webjars:bootstrap:3.3.7')
 
     compile('org.springframework.boot:spring-boot-devtools')
+
+    compileOnly('org.projectlombok:lombok:1.16.20')
 
     testCompile('org.springframework.boot:spring-boot-starter-test')
     testCompile('org.springframework.restdocs:spring-restdocs-mockmvc')
