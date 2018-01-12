@@ -31,9 +31,6 @@ public class ExchangeConfiguration {
     @Value("${exchange.autodiscovery.enabled}")
     private boolean exchangeAutodiscoveryEnabled;
 
-    @Value("${spring.config.location}")
-    private String scl;
-
     @Bean
     public ExchangeService exchangeService() throws Exception {
         ExchangeService service = new ExchangeService(ExchangeVersion.Exchange2010_SP2);
