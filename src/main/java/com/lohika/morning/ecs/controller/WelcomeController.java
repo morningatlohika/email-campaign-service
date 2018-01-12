@@ -9,8 +9,8 @@ import java.util.Map;
 @Controller
 public class WelcomeController {
 
-    @Value("${welcome.message:test}")
-    private String message = "Hello World";
+    @Value("${welcome-message:test}")
+    private String message;
 
     @RequestMapping("/")
     public String welcome(Map<String, Object> model) {
