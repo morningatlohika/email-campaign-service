@@ -1,6 +1,5 @@
-package com.lohika.morning.ecs.controller;
+package com.lohika.morning.ecs.domain.email;
 
-import com.lohika.morning.ecs.model.request.EmailRequest;
 import microsoft.exchange.webservices.data.core.ExchangeService;
 import microsoft.exchange.webservices.data.core.service.item.EmailMessage;
 import microsoft.exchange.webservices.data.property.complex.MessageBody;
@@ -23,4 +22,5 @@ public class EmailController {
         msg.getToRecipients().add(request.getTo());
         msg.send();
     }
+
 }

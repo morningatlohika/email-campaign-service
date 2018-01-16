@@ -5,23 +5,9 @@
 # TODO: all secrets should not be stored plain-text
 # ******************************************************************************************
 
-spring:
-  profiles:
-    # on production, override the spring profile
-    # by adding "--spring.profiles.active=prod" option to the command line
-    active: local
-  jpa:
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.DerbyDialect
-    hibernate:
-      ddl-auto: update
-  datasource:
-    url: jdbc:derby:emailCampainData;create=true
-
 security:
   user:
-    password: <change-spring-security-password>
+    password: qweasd
 
 welcome-message: Hello Morning
 
@@ -34,4 +20,12 @@ exchange:
     autodiscovery:
       # It's recommended to use autodiscovery on production.
       # Since it slows down the application startup, it may be disabled during development.
-      enabled: true
+      enabled: false
+
+spring:
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.DerbyDialect
+  datasource:
+    url: jdbc:derby:memory:emailCampainData-test;create=true

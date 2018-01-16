@@ -11,7 +11,7 @@ buildscript {
 }
 
 apply plugin: 'java'
-apply plugin: 'eclipse'
+apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
 
 group = 'com.lohika.morning'
@@ -23,22 +23,30 @@ repositories {
 }
 
 dependencies {
-    compile('org.springframework.boot:spring-boot-starter-aop')
+    // persistence dependencies
+    compile('org.springframework.boot:spring-boot-starter-data-jpa')
+    runtime('org.apache.derby:derby')
+    
+    // Web and REST dependencies
     compile('org.springframework.boot:spring-boot-starter-hateoas')
     compile('org.springframework.boot:spring-boot-starter-security')
     compile('org.springframework.boot:spring-boot-starter-thymeleaf')
     compile('org.springframework.boot:spring-boot-starter-web')
 
-    compile('com.microsoft.ews-java-api:ews-java-api:2.0')
-
     // for bootstrap
     compile('org.webjars:bootstrap:3.3.7')
 
-    compile('org.springframework.boot:spring-boot-devtools')
-
+    // misc
+    compile('org.springframework.boot:spring-boot-starter-aop')
+    compile('com.microsoft.ews-java-api:ews-java-api:2.0')
     compileOnly('org.projectlombok:lombok:1.16.20')
 
+    // dev tools
+    compile('org.springframework.boot:spring-boot-devtools')
+
+    // test dependencies
     testCompile('org.springframework.boot:spring-boot-starter-test')
     testCompile('org.springframework.restdocs:spring-restdocs-mockmvc')
     testCompile('org.springframework.security:spring-security-test')
+    testCompileOnly('org.projectlombok:lombok')
 }
