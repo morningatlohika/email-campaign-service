@@ -1,5 +1,6 @@
 package com.lohika.morning.ecs.domain.event;
 
+import com.lohika.morning.ecs.BaseTest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,7 @@ import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class EventRepositoryTest {
+public class EventRepositoryTest extends BaseTest {
 
     @Autowired
     private EventRepository repository;
@@ -20,30 +21,25 @@ public class EventRepositoryTest {
     @Test
     public void getById_OK() {
         // Given
-        Event event1 = Event.builder()
-                .name("Golang Morning")
-                .description("Another interesting event from Morning@Lohika will take place this December, 16. ")
-                .date(LocalDate.of(2017, 12, 16))
-                .build();
+        Event event1 = given.event("Golang Morning")
+                .withDescription("Another interesting event from Morning@Lohika will take place this December, 16. ")
+                .withDate(LocalDate.of(2017, 12, 16))
+                .save();
 
-        Event noiseEvent = Event.builder()
-                .name("Robotic Morning")
-                .description("After a very short pause, we invite you to our next event dedicated to Robotics. ")
-                .date(LocalDate.of(2017, 11, 11))
-                .build();
-
-        Event savedEvent1 = repository.save(event1);
-        repository.save(noiseEvent);
+        Event noiseEvent = given.event("Robotic Morning")
+                .withDescription("After a very short pause, we invite you to our next event dedicated to Robotics. ")
+                .withDate(LocalDate.of(2017, 11, 11))
+                .save();
 
         // When
-        Event foundEvent = repository.findOne(savedEvent1.getId());
+        Event foundEvent = repository.findOne(event1.getId());
 
         // Then
         assertEquals(2, repository.count());
 
-        assertEquals(savedEvent1.getId(), foundEvent.getId());
-        assertEquals(savedEvent1.getName(), foundEvent.getName());
-        assertEquals(savedEvent1.getDescription(), foundEvent.getDescription());
-        assertEquals(savedEvent1.getDate(), foundEvent.getDate());
+        assertEquals(event1.getId(), foundEvent.getId());
+        assertEquals(event1.getName(), foundEvent.getName());
+        assertEquals(event1.getDescription(), foundEvent.getDescription());
+        assertEquals(event1.getDate(), foundEvent.getDate());
     }
 }

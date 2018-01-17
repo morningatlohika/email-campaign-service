@@ -39,6 +39,11 @@ public class EventDataBuilder {
         return this;
     }
 
+    public EventDataBuilder withDate(LocalDate date) {
+        this.event.setDate(date);
+        return this;
+    }
+
     /**
      * Build {@link Event}.
      * @return Event

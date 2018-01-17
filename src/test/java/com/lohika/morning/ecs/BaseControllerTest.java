@@ -1,6 +1,5 @@
 package com.lohika.morning.ecs;
 
-import com.lohika.morning.ecs.util.TestDataGenerator;
 import org.junit.Before;
 import org.junit.Rule;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,11 +13,8 @@ import javax.servlet.Filter;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.options;
 
-public class BaseControllerTest extends BaseCleanupTest {
+public class BaseControllerTest extends BaseTest {
     public static final String HAL_JSON_CHARSET_UTF_8 = "application/hal+json;charset=UTF-8";
-
-    @Autowired
-    protected TestDataGenerator given;
 
     @Autowired
     private WebApplicationContext context;
@@ -38,6 +34,7 @@ public class BaseControllerTest extends BaseCleanupTest {
                 .apply(documentationConfiguration(this.restDocumentation))
                 .defaultRequest(options("/")
                         .accept(HAL_JSON_CHARSET_UTF_8)
+                        .header("Authorization", "Basic dXNlcjpxd2Vhc2Q=")
                         .contentType(HAL_JSON_CHARSET_UTF_8))
                 .build();
     }
