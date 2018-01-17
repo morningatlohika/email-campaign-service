@@ -1,4 +1,4 @@
-package com.lohika.morning.ecs.controller;
+package com.lohika.morning.ecs.ui;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;

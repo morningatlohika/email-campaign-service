@@ -1,4 +1,4 @@
-package com.lohika.morning.ecs.model.request;
+package com.lohika.morning.ecs.domain.email;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
