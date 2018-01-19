@@ -18,6 +18,9 @@ spring:
       ddl-auto: update
   datasource:
     url: jdbc:derby:emailCampainData;create=true
+  data:
+    rest:
+      base-path: api
 
 security:
   user:

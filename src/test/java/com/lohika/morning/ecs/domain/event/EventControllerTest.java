@@ -34,8 +34,9 @@ public class EventControllerTest extends BaseControllerTest {
         mockMvc.perform(get("/api/events"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(HAL_JSON_CHARSET_UTF_8))
-                .andExpect(content().string("{}"));
+                .andExpect(content().contentType(HAL_JSON_CHARSET_UTF_8));
+                // TODO: verify links
+                //.andExpect(content().string("{}"));
     }
 
     @Test
@@ -60,7 +61,11 @@ public class EventControllerTest extends BaseControllerTest {
                         fieldWithPath("_embedded.events[].name").description("Event name."),
                         fieldWithPath("_embedded.events[].description").description("Event description."),
                         fieldWithPath("_embedded.events[].date").description("Event date."),
-                        fieldWithPath("_embedded.events[]._links").description("Links."),
-                        fieldWithPath("_embedded.events[]._links.self.href").description("Link to self section."))));
+                        fieldWithPath("_embedded.events[]._links").description("Event links."),
+                        fieldWithPath("_embedded.events[]._links.self.href").description("Link to self."),
+                        fieldWithPath("_embedded.events[]._links.event.href").description("Link to self."),
+                        fieldWithPath("_links").description("Collection related links"),
+                        fieldWithPath("page").description("Paging information: page size, total element, total pages, number")
+                )));
     }
 }
