@@ -22,6 +22,10 @@ repositories {
     mavenCentral()
 }
 
+ext {
+    vaadinVersion = '8.2.0'
+}
+
 dependencies {
     // persistence dependencies
     compile('org.springframework.boot:spring-boot-starter-data-jpa')
@@ -33,6 +37,7 @@ dependencies {
     compile('org.springframework.boot:spring-boot-starter-security')
     compile('org.springframework.boot:spring-boot-starter-thymeleaf')
     compile('org.springframework.boot:spring-boot-starter-web')
+    compile('com.vaadin:vaadin-spring-boot-starter')
 
     // for bootstrap
     compile('org.webjars:bootstrap:3.3.7')
@@ -50,4 +55,10 @@ dependencies {
     testCompile('org.springframework.restdocs:spring-restdocs-mockmvc')
     testCompile('org.springframework.security:spring-security-test')
     testCompileOnly('org.projectlombok:lombok')
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "com.vaadin:vaadin-bom:${vaadinVersion}"
+    }
 }
