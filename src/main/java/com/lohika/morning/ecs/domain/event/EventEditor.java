@@ -1,29 +1,25 @@
 package com.lohika.morning.ecs.domain.event;
 
+import com.lohika.morning.ecs.vaadin.MorningPopup;
 import com.vaadin.data.Binder;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.icons.VaadinIcons;
-import com.vaadin.shared.Registration;
 import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.Button;
-import com.vaadin.ui.Component;
 import com.vaadin.ui.DateField;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.ValoTheme;
-import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.io.Serializable;
 import java.util.Optional;
 
 @SpringComponent
 @UIScope
-public class EventEditor extends Window {
+public class EventEditor extends MorningPopup {
     private static final long serialVersionUID = 1L;
 
     private final EventRepository repository;
@@ -51,35 +47,28 @@ public class EventEditor extends Window {
         super("Edit Event");
         this.repository = repository;
 
-        setModal(true);
-        setClosable(false);
-        setResizable(false);
-        setDraggable(false);
-        center();
-
         VerticalLayout container = new VerticalLayout();
         setContent(container);
 
         FormLayout fl = new FormLayout(name, description, date, actions);
         container.addComponent(fl);
+        container.setSpacing(true);
 
         // bind using naming convention
         binder.bindInstanceFields(this);
 
-        // Configure and style components
-        container.setSpacing(true);
-
         save.setStyleName(ValoTheme.BUTTON_PRIMARY);
         save.setClickShortcut(ShortcutAction.KeyCode.ENTER);
 
-        // wire action buttons to save, delete and reset
         cancel.addClickListener(clickEvent -> this.hide());
-        setVisible(false);
+        cancel.setClickShortcut(ShortcutAction.KeyCode.ESCAPE);
+
+        this.hide();
     }
 
     public final void editEvent(Optional<com.lohika.morning.ecs.domain.event.Event> c) {
-        if (c== null  || !c.isPresent()) {
-            setVisible(false);
+        if (c == null  || !c.isPresent()) {
+            this.hide();
             return;
         }
 
@@ -108,41 +97,12 @@ public class EventEditor extends Window {
         // moving values from fields to entities before saving
         binder.setBean(this.event);
 
-        setVisible(true);
+        this.show();
 
         // A hack to ensure the whole form is visible
         cancel.focus();
+
         // Select all text in name field automatically
         name.selectAll();
-    }
-
-    @SneakyThrows(NoSuchMethodException.class)
-    public Registration addHideListener(HideListener listener) {
-        return addListener(HideEvent.class, listener,
-                HideListener.class.getDeclaredMethod("windowHide", HideEvent.class));
-    }
-
-    public static class HideEvent extends Component.Event {
-        public HideEvent(Component source) {
-            super(source);
-        }
-    }
-
-    @FunctionalInterface
-    public interface HideListener extends Serializable {
-        void windowHide(HideEvent hideEvent);
-    }
-
-    @Override
-    public void setVisible(boolean visible) {
-        boolean wasVisible = isVisible();
-        super.setVisible(visible);
-        if (wasVisible && !isVisible()) {
-            fireEvent(new HideEvent(this));
-        }
-    }
-
-    public void hide() {
-        this.setVisible(false);
     }
 }
