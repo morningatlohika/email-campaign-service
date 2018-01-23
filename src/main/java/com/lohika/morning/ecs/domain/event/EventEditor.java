@@ -1,6 +1,7 @@
 package com.lohika.morning.ecs.domain.event;
 
 import com.lohika.morning.ecs.vaadin.MorningPopup;
+import com.vaadin.data.BeanValidationBinder;
 import com.vaadin.data.Binder;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.icons.VaadinIcons;
@@ -40,7 +41,7 @@ public class EventEditor extends MorningPopup {
     private Button delete = new Button("Delete", VaadinIcons.TRASH);
     private HorizontalLayout actions = new HorizontalLayout(save, delete, cancel);
 
-    private Binder<com.lohika.morning.ecs.domain.event.Event> binder = new Binder<>(com.lohika.morning.ecs.domain.event.Event.class);
+    private Binder<com.lohika.morning.ecs.domain.event.Event> binder = new BeanValidationBinder<>(com.lohika.morning.ecs.domain.event.Event.class);
 
     @Autowired
     public EventEditor(EventRepository repository) {

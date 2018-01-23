@@ -34,12 +34,23 @@ public class EventUi extends UI {
         grid.setSelectionMode(Grid.SelectionMode.SINGLE);
         grid.setColumns("name", "description", "date");
         filter.setPlaceholder("Filter by name");
+        filter.setValueChangeMode(ValueChangeMode.LAZY);
     }
 
     @Override
     protected void init(VaadinRequest vaadinRequest) {
-        // Hook logic to components
+        addListeners();
 
+        final HorizontalLayout actions = new HorizontalLayout(buttonNew, filter);
+        final VerticalLayout root = new VerticalLayout(actions, grid);
+
+        addWindow(editor);
+        setContent(root);
+
+        listEvents();
+    }
+
+    private void addListeners() {
         // Connect selected Event to editor or hide if none is selected
         grid.asSingleSelect().addValueChangeListener(e -> editor.editEvent(Optional.ofNullable(e.getValue())));
 
@@ -49,20 +60,7 @@ public class EventUi extends UI {
         buttonNew.addClickListener(ce -> editor.editEvent(Optional.of(com.lohika.morning.ecs.domain.event.Event.builder().build())));
 
         // Replace listing with filtered content when user changes filter
-        filter.setValueChangeMode(ValueChangeMode.LAZY);
         filter.addValueChangeListener(e -> listEvents(e.getValue()));
-
-        // build layout
-        final HorizontalLayout actions = new HorizontalLayout(buttonNew, filter);
-
-        final VerticalLayout root = new VerticalLayout(actions, grid);
-
-//        root.setSizeFull();
-        addWindow(editor);
-        setContent(root);
-
-        // Initialize listing
-        listEvents();
     }
 
     private void listEvents() {
