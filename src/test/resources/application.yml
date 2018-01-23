@@ -4,6 +4,19 @@
 # Default location for any properties, including secrets is $HOME/.morning/ecs/ directory
 # TODO: all secrets should not be stored plain-text
 # ******************************************************************************************
+spring:
+  profiles:
+    # on production, override the spring profile
+    # by adding "--spring.profiles.active=prod" option to the command line
+    active: test
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.DerbyDialect
+        format_sql: true
+  datasource:
+    url: jdbc:derby:memory:emailCampainData-test;create=true
 
 security:
   user:
@@ -22,10 +35,14 @@ exchange:
       # Since it slows down the application startup, it may be disabled during development.
       enabled: false
 
-spring:
-  jpa:
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.DerbyDialect
-  datasource:
-    url: jdbc:derby:memory:emailCampainData-test;create=true
+google:
+  creds-store-dir: test-sheets.googleapis.morning-speakers
+  application-name: Google Sheets API Java Quickstart
+  speaker-application-form:
+    spreadsheet-id: 1e8HB6vUmCSPsDjW-Xd2yFeVjChv-4RtVAQK3K1_KBhU
+    sheet-title: Form Responses 1
+    range: A2:Z
+
+email-client-service:
+  data-dir: test-data
+

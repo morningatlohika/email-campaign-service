@@ -11,12 +11,13 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.DateField;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.Optional;
+import java.time.LocalDate;
 
 @SpringComponent
 @UIScope
@@ -28,12 +29,13 @@ public class EventEditor extends MorningPopup {
     /**
      * The currently edited event
      */
-    private com.lohika.morning.ecs.domain.event.Event event;
+    private MorningEvent event;
 
-    /* Fields to edit properties in Event entity */
+    /* Fields to edit properties in MorningEvent entity */
     private TextField name = new TextField("Name");
-    private TextField description = new TextField("Description");
+    private TextArea description = new TextArea("Description");
     private DateField date = new DateField("Date");
+    private TextField ticketsUrl = new TextField("Tickets URL");
 
     /* Action buttons */
     private Button save = new Button("Save", VaadinIcons.CHECK);
@@ -41,22 +43,25 @@ public class EventEditor extends MorningPopup {
     private Button delete = new Button("Delete", VaadinIcons.TRASH);
     private HorizontalLayout actions = new HorizontalLayout(save, delete, cancel);
 
-    private Binder<com.lohika.morning.ecs.domain.event.Event> binder = new BeanValidationBinder<>(com.lohika.morning.ecs.domain.event.Event.class);
+    private Binder<MorningEvent> binder = new BeanValidationBinder<>(MorningEvent.class);
 
     @Autowired
     public EventEditor(EventRepository repository) {
-        super("Edit Event");
+        super("Edit MorningEvent");
         this.repository = repository;
 
         VerticalLayout container = new VerticalLayout();
         setContent(container);
 
-        FormLayout fl = new FormLayout(name, description, date, actions);
+        FormLayout fl = new FormLayout(name, description, date, ticketsUrl, actions);
         container.addComponent(fl);
         container.setSpacing(true);
 
         // bind using naming convention
         binder.bindInstanceFields(this);
+
+        name.setWidth(90, Unit.PERCENTAGE);
+        ticketsUrl.setWidth(90, Unit.PERCENTAGE);
 
         save.setStyleName(ValoTheme.BUTTON_PRIMARY);
         save.setClickShortcut(ShortcutAction.KeyCode.ENTER);
@@ -64,16 +69,17 @@ public class EventEditor extends MorningPopup {
         cancel.addClickListener(clickEvent -> this.hide());
         cancel.setClickShortcut(ShortcutAction.KeyCode.ESCAPE);
 
+        description.setWidth(90, Unit.PERCENTAGE);
+        description.setHeight(200, Unit.PIXELS);
+
         this.hide();
     }
 
-    public final void editEvent(Optional<com.lohika.morning.ecs.domain.event.Event> c) {
-        if (c == null  || !c.isPresent()) {
+    public final void editEvent(MorningEvent event) {
+        if (event == null) {
             this.hide();
             return;
         }
-
-        com.lohika.morning.ecs.domain.event.Event event = c.get();
 
         final boolean persisted = event.getId() != null;
         if (persisted) {
@@ -82,6 +88,10 @@ public class EventEditor extends MorningPopup {
         } else {
             this.event = event;
         }
+
+        final boolean isEventEditable = this.event.getDate().isAfter(LocalDate.now());
+        save.setEnabled(isEventEditable);
+        delete.setEnabled(isEventEditable);
 
         save.addClickListener(clickEvent -> {
             repository.save(this.event);

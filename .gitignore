@@ -21,3 +21,5 @@ hs_err_pid*
 
 # Derby DB files
 emailCampainData/
+
+client_secret.json

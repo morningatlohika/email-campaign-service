@@ -22,7 +22,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Builder
 @Data
-public class Event {
+public class MorningEvent {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -32,9 +32,13 @@ public class Event {
     private String name;
 
     @NotEmpty
+    @Column(length = 2000)
     private String description;
 
     @NotNull
     @Future
     private LocalDate date;
+
+    @NotEmpty
+    private String ticketsUrl;
 }

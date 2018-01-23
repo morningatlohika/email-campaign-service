@@ -39,6 +39,11 @@ dependencies {
     compile('org.springframework.boot:spring-boot-starter-web')
     compile('com.vaadin:vaadin-spring-boot-starter')
 
+    // Google sheets integration
+    compile 'com.google.api-client:google-api-client:1.23.0'
+    compile 'com.google.oauth-client:google-oauth-client-jetty:1.23.0'
+    compile 'com.google.apis:google-api-services-sheets:v4-rev500-1.23.0'
+
     // for bootstrap
     compile('org.webjars:bootstrap:3.3.7')
 
