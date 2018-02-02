@@ -28,6 +28,10 @@ public class MorningEvent {
     private Long id;
 
     @Column(unique = true)
+    @NotNull
+    private Integer eventNumber;
+
+    @Column(unique = true)
     @NotEmpty
     private String name;
 

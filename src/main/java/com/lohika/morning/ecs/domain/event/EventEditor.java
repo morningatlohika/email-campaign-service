@@ -1,8 +1,10 @@
 package com.lohika.morning.ecs.domain.event;
 
+import com.lohika.morning.ecs.domain.talk.TalkService;
 import com.lohika.morning.ecs.vaadin.MorningPopup;
 import com.vaadin.data.BeanValidationBinder;
 import com.vaadin.data.Binder;
+import com.vaadin.data.converter.StringToIntegerConverter;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.spring.annotation.SpringComponent;
@@ -13,7 +15,6 @@ import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
-import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -25,6 +26,7 @@ public class EventEditor extends MorningPopup {
     private static final long serialVersionUID = 1L;
 
     private final EventRepository repository;
+    private final TalkService talkService;
 
     /**
      * The currently edited event
@@ -32,6 +34,7 @@ public class EventEditor extends MorningPopup {
     private MorningEvent event;
 
     /* Fields to edit properties in MorningEvent entity */
+    private TextField eventNumber = new TextField("Event number");
     private TextField name = new TextField("Name");
     private TextArea description = new TextArea("Description");
     private DateField date = new DateField("Date");
@@ -41,22 +44,25 @@ public class EventEditor extends MorningPopup {
     private Button save = new Button("Save", VaadinIcons.CHECK);
     private Button cancel = new Button("Cancel");
     private Button delete = new Button("Delete", VaadinIcons.TRASH);
-    private HorizontalLayout actions = new HorizontalLayout(save, delete, cancel);
+    private Button importTalks = new Button("Import Talks and Speakers", VaadinIcons.ARROW_DOWN);
+    private HorizontalLayout actions = new HorizontalLayout(save, delete, cancel, importTalks);
 
     private Binder<MorningEvent> binder = new BeanValidationBinder<>(MorningEvent.class);
 
     @Autowired
-    public EventEditor(EventRepository repository) {
+    public EventEditor(EventRepository repository, TalkService talkService) {
         super("Edit MorningEvent");
         this.repository = repository;
+        this.talkService = talkService;
 
-        VerticalLayout container = new VerticalLayout();
+        HorizontalLayout container = new HorizontalLayout();
         setContent(container);
 
-        FormLayout fl = new FormLayout(name, description, date, ticketsUrl, actions);
+        FormLayout fl = new FormLayout(eventNumber, name, description, date, ticketsUrl, actions);
         container.addComponent(fl);
         container.setSpacing(true);
 
+        binder.forMemberField(eventNumber).withConverter(new StringToIntegerConverter("Please enter a number"));
         // bind using naming convention
         binder.bindInstanceFields(this);
 
@@ -101,6 +107,10 @@ public class EventEditor extends MorningPopup {
         delete.addClickListener(clickEvent -> {
             repository.delete(this.event);
             this.hide();
+        });
+
+        importTalks.addClickListener(clickEvent -> {
+            talkService.importTalks(this.event);
         });
 
         // Bind event properties to similarly named fields

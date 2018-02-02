@@ -34,7 +34,8 @@ public class EventUi extends UI {
         this.grid = new Grid<>(MorningEvent.class);
         grid.setSizeFull();
         grid.setSelectionMode(Grid.SelectionMode.SINGLE);
-        grid.setColumns("name", "description", "date");
+        grid.setColumns("eventNumber", "name", "description", "date");
+        grid.getColumn("eventNumber").setCaption("Event #").setMaximumWidth(100);
         grid.getColumn("description").setMaximumWidth(800);
         grid.setSortOrder(new GridSortOrderBuilder<MorningEvent>().thenDesc(grid.getColumn("date")).build());
 
@@ -63,6 +64,7 @@ public class EventUi extends UI {
         editor.addHideListener(hideEvent -> listEvents());
 
         buttonNew.addClickListener(ce -> editor.editEvent(MorningEvent.builder()
+                .eventNumber(eventRepository.findMaxEventNumber() + 1)
                 // set event date 2 weeks ahead by default
                 .date(LocalDate.now().plus(2, ChronoUnit.WEEKS))
                 .build()));

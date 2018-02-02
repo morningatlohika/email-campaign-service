@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.Column;
@@ -29,13 +28,9 @@ public class Speaker {
     private Long id;
 
     @NotEmpty
-    //TODO: workaround to avoid Derby exception. Should be removed when the schema is defined in SQL file
-    @ColumnDefault("''")
     private String firstName;
 
     @NotEmpty
-    //TODO: workaround to avoid Derby exception. Should be removed when the schema is defined in SQL file
-    @ColumnDefault("''")
     private String lastName;
 
     @NotEmpty
@@ -51,8 +46,6 @@ public class Speaker {
 
     @NotEmpty
     @Column
-    //TODO: workaround to avoid Derby exception. Should be removed when the schema is defined in SQL file
-    @ColumnDefault("''")
     private String photoUrl;
 
     @ManyToOne

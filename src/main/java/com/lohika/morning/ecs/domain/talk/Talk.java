@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.CascadeType;
@@ -42,8 +41,6 @@ public class Talk {
 
     @Column(unique = true)
     @NotEmpty
-    //TODO: workaround to avoid Derby exception. Should be removed when the schema is defined in SQL file
-    @ColumnDefault("''")
     private String theses;
 
     @OneToMany(mappedBy = "talk", cascade = CascadeType.ALL)
