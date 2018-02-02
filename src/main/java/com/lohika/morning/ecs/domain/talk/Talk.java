@@ -1,19 +1,25 @@
 package com.lohika.morning.ecs.domain.talk;
 
-import com.lohika.morning.ecs.domain.event.Event;
+import com.lohika.morning.ecs.domain.event.MorningEvent;
+import com.lohika.morning.ecs.domain.speaker.Speaker;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.validator.constraints.NotEmpty;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Entity
 @Table(name = "talks")
@@ -28,24 +34,18 @@ public class Talk {
 
     @OneToOne
     @NotNull
-    private Event event;
+    private MorningEvent event;
 
     @Column(unique = true)
-    @NotNull
+    @NotEmpty
     private String title;
 
-    @NotNull
-    private String description;
+    @Column(unique = true)
+    @NotEmpty
+    //TODO: workaround to avoid Derby exception. Should be removed when the schema is defined in SQL file
+    @ColumnDefault("''")
+    private String theses;
 
-    @NotNull
-    private String speaker;
-
-    @NotNull
-    private String speakerCompany;
-
-    @NotNull
-    private String speakerInfo;
-
-    @NotNull
-    private String ticketsUrl;
+    @OneToMany(mappedBy = "talk", cascade = CascadeType.ALL)
+    private List<Speaker> speakers;
 }

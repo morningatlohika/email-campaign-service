@@ -1,6 +1,7 @@
 package com.lohika.morning.ecs.domain.event;
 
 import com.vaadin.annotations.Theme;
+import com.vaadin.data.provider.GridSortOrderBuilder;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.shared.ui.ValueChangeMode;
@@ -13,13 +14,14 @@ import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.Optional;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 
 @SpringUI(path = "/events")
 @Theme("valo")
 public class EventUi extends UI {
     private EventRepository eventRepository;
-    private Grid<com.lohika.morning.ecs.domain.event.Event> grid;
+    private Grid<MorningEvent> grid;
 
     private final EventEditor editor;
     private final Button buttonNew = new Button("New event", VaadinIcons.PLUS);
@@ -29,10 +31,13 @@ public class EventUi extends UI {
     public EventUi(EventRepository eventRepository, EventEditor editor) {
         this.eventRepository = eventRepository;
         this.editor = editor;
-        this.grid = new Grid<>(com.lohika.morning.ecs.domain.event.Event.class);
+        this.grid = new Grid<>(MorningEvent.class);
         grid.setSizeFull();
         grid.setSelectionMode(Grid.SelectionMode.SINGLE);
         grid.setColumns("name", "description", "date");
+        grid.getColumn("description").setMaximumWidth(800);
+        grid.setSortOrder(new GridSortOrderBuilder<MorningEvent>().thenDesc(grid.getColumn("date")).build());
+
         filter.setPlaceholder("Filter by name");
         filter.setValueChangeMode(ValueChangeMode.LAZY);
     }
@@ -51,13 +56,16 @@ public class EventUi extends UI {
     }
 
     private void addListeners() {
-        // Connect selected Event to editor or hide if none is selected
-        grid.asSingleSelect().addValueChangeListener(e -> editor.editEvent(Optional.ofNullable(e.getValue())));
+        // Connect selected MorningEvent to editor or hide if none is selected
+        grid.asSingleSelect().addValueChangeListener(e -> editor.editEvent(e.getValue()));
 
         // Listen changes made by the editor, refresh data from backend
         editor.addHideListener(hideEvent -> listEvents());
 
-        buttonNew.addClickListener(ce -> editor.editEvent(Optional.of(com.lohika.morning.ecs.domain.event.Event.builder().build())));
+        buttonNew.addClickListener(ce -> editor.editEvent(MorningEvent.builder()
+                // set event date 2 weeks ahead by default
+                .date(LocalDate.now().plus(2, ChronoUnit.WEEKS))
+                .build()));
 
         // Replace listing with filtered content when user changes filter
         filter.addValueChangeListener(e -> listEvents(e.getValue()));

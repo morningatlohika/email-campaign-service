@@ -1,15 +1,17 @@
-package com.lohika.morning.ecs.util;
+package com.lohika.morning.ecs.utils;
 
-import com.lohika.morning.ecs.domain.event.Event;
+import com.lohika.morning.ecs.domain.event.MorningEvent;
 import com.lohika.morning.ecs.domain.event.EventRepository;
+import org.apache.commons.lang3.RandomUtils;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 
 public class EventDataBuilder {
 
     private final EventRepository eventRepository;
 
-    private Event event;
+    private MorningEvent event;
     private boolean idSet;
 
     public EventDataBuilder(EventRepository eventRepository) {
@@ -17,13 +19,14 @@ public class EventDataBuilder {
     }
 
     /**
-     * Create {@link Event}.
+     * Create {@link MorningEvent}.
      */
     EventDataBuilder event(String name) {
-        this.event = Event.builder()
+        this.event = MorningEvent.builder()
                 .name(name)
                 .description(name + " description")
-                .date(LocalDate.now())
+                .date(LocalDate.now().plus(RandomUtils.nextInt(5, 20), ChronoUnit.DAYS))
+                .ticketsUrl("http://tickets.example.com/test")
                 .build();
         return this;
     }
@@ -45,20 +48,20 @@ public class EventDataBuilder {
     }
 
     /**
-     * Build {@link Event}.
-     * @return Event
+     * Build {@link MorningEvent}.
+     * @return MorningEvent
      */
-    public Event build() {
+    public MorningEvent build() {
         return this.event;
     }
 
     /**
-     * Persist {@link Event}
-     * @return Event
+     * Persist {@link MorningEvent}
+     * @return MorningEvent
      */
-    public Event save() {
+    public MorningEvent save() {
         if (idSet) {
-            throw new IllegalStateException("Cannot create Event with predefined id. Did you call withId() accidentally?");
+            throw new IllegalStateException("Cannot create MorningEvent with predefined id. Did you call withId() accidentally?");
         }
 
         return eventRepository.save(this.event);
