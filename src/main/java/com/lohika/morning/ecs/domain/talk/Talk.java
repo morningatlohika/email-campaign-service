@@ -39,9 +39,16 @@ public class Talk {
     @NotEmpty
     private String title;
 
-    @Column(unique = true)
+    @Column(length = 5000)
     @NotEmpty
     private String theses;
+
+    /**
+     * Used during re-import to identify talks to update
+     */
+    @Column(unique = true)
+    @NotNull
+    private String googleSheetsTimestamp;
 
     @OneToMany(mappedBy = "talk", cascade = CascadeType.ALL)
     private List<Speaker> speakers;

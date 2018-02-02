@@ -93,12 +93,13 @@ public class GoogleSheetsService {
         private final Map<String, MorningEvent> events;
 
         private TalkMapper(List<MorningEvent> events) {
-            this.events = events.stream().collect(toMap(e -> e.getId().toString(), identity()));
+            this.events = events.stream().collect(toMap(e -> e.getEventNumber().toString(), identity()));
             this.speakerMapper = new SpeakerMapper();
         }
 
         public Talk mapRow(List<String> row) {
             return Talk.builder()
+                    .googleSheetsTimestamp(row.get(1))
                     .title(row.get(12))
                     .theses(row.get(13))
                     .speakers(speakerMapper.mapRow(row))

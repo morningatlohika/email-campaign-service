@@ -6,6 +6,7 @@ import com.lohika.morning.ecs.service.GoogleSheetsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
@@ -13,9 +14,9 @@ import static java.util.stream.Collectors.toList;
 @Service
 public class TalkService {
 
-    public final EventRepository eventRepository;
-    public final TalkRepository talkRepository;
-    public final GoogleSheetsService googleSheetsService;
+    private final EventRepository eventRepository;
+    private final TalkRepository talkRepository;
+    private final GoogleSheetsService googleSheetsService;
 
     @Autowired
     public TalkService(EventRepository eventRepository, TalkRepository talkRepository, GoogleSheetsService googleSheetsService) {
@@ -25,8 +26,24 @@ public class TalkService {
     }
 
     public void importTalks(MorningEvent event) {
-        List<Talk> allTalks = googleSheetsService.getTalks(eventRepository.findAll());
-        List<Talk> talksToSave = allTalks.stream().filter(t -> t.getEvent().getEventNumber() == event.getEventNumber()).collect(toList());
-        talkRepository.save(talksToSave);
+        List<Talk> sheetTalks = googleSheetsService.getTalks(eventRepository.findAll());
+
+        List<Talk> sheetTalksForGivenEvent = sheetTalks.stream()
+                .filter(t -> t.getEvent().getEventNumber().equals(event.getEventNumber()))
+                .collect(toList());
+
+        for (Talk sheetTalk : sheetTalksForGivenEvent) {
+            talkRepository.findByEventAndGoogleSheetsTimestamp(event, sheetTalk.getGoogleSheetsTimestamp())
+                    .ifPresent(persistentTalk -> sheetTalk.setId(persistentTalk.getId()));
+        }
+
+        talkRepository.save(sheetTalksForGivenEvent);
+    }
+
+    public List<Talk> getTalks(MorningEvent morningEvent) {
+        if (morningEvent.getId() != null) {
+            return talkRepository.findByEvent(morningEvent);
+        }
+        return Collections.emptyList();
     }
 }

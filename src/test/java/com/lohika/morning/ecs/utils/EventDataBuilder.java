@@ -22,7 +22,7 @@ public class EventDataBuilder {
      */
     EventDataBuilder event(String name) {
         this.event = MorningEvent.builder()
-                .eventNumber(RandomUtils.nextInt(1, 1000))
+                .eventNumber(RandomUtils.nextInt(1, 200))
                 .name(name)
                 .description(name + " description")
                 .date(LocalDate.now().plus(RandomUtils.nextInt(5, 20), ChronoUnit.DAYS))
@@ -34,6 +34,11 @@ public class EventDataBuilder {
     public EventDataBuilder withId(long id) {
         this.event.setId(id);
         this.idSet = true;
+        return this;
+    }
+
+    public EventDataBuilder withEventNumber(int eventNumber) {
+        this.event.setEventNumber(eventNumber);
         return this;
     }
 

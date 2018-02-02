@@ -1,5 +1,6 @@
 package com.lohika.morning.ecs.service;
 
+import com.lohika.morning.ecs.BaseTest;
 import com.lohika.morning.ecs.domain.event.MorningEvent;
 import com.lohika.morning.ecs.domain.talk.Talk;
 import org.junit.Test;
@@ -19,7 +20,7 @@ import static org.junit.Assert.assertNull;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @ActiveProfiles("test")
-public class GoogleSheetsServiceTest {
+public class GoogleSheetsServiceTest extends BaseTest {
 
     @Autowired
     private GoogleSheetsService googleSheetsService;
@@ -27,9 +28,9 @@ public class GoogleSheetsServiceTest {
     @Test
     public void test2() throws IOException {
         // Given
-        MorningEvent event1 = MorningEvent.builder().id(1L).build();
-        MorningEvent event2 = MorningEvent.builder().id(2L).build();
-        MorningEvent event3 = MorningEvent.builder().id(3L).build();
+        MorningEvent event1 = given.event("1").withId(1).withEventNumber(1).build();
+        MorningEvent event2 = given.event("2").withId(2).withEventNumber(2).build();
+        MorningEvent event3 = given.event("3").withId(3).withEventNumber(3).build();
 
         // When
         List<Talk> talks = googleSheetsService.getTalks(Arrays.asList(event1, event2, event3));
@@ -42,7 +43,7 @@ public class GoogleSheetsServiceTest {
         assertEquals(2, talk.getSpeakers().size());
         assertEquals("Red", talk.getSpeakers().get(0).getLastName());
         assertEquals("Green", talk.getSpeakers().get(1).getLastName());
-        assertEquals(1L, talk.getEvent().getId().longValue());
+        assertEquals(1L, talk.getEvent().getEventNumber().longValue());
 
         // Talk #2
         talk = talks.get(1);
@@ -50,7 +51,7 @@ public class GoogleSheetsServiceTest {
 
         assertEquals(1, talk.getSpeakers().size());
         assertEquals("Blue", talk.getSpeakers().get(0).getLastName());
-        assertEquals(2L, talk.getEvent().getId().longValue());
+        assertEquals(2L, talk.getEvent().getEventNumber().longValue());
 
         // Talk #3
         talk = talks.get(2);
