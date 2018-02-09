@@ -45,6 +45,7 @@ public class GoogleSheetsService {
     }
 
     private List<List<String>> readValues(String range) throws IOException {
+        log.info("Reading data from https://docs.google.com/spreadsheets/d/{}/edit", sheetId);
         ValueRange response = sheetsClient.spreadsheets().values()
                 .get(sheetId, range)
                 .execute();
