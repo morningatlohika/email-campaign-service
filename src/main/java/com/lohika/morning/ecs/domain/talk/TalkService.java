@@ -46,4 +46,12 @@ public class TalkService {
         }
         return Collections.emptyList();
     }
+
+    public Talk getTalk(long id) {
+        return talkRepository.findOne(id);
+    }
+
+    public void save(Talk talk) {
+        talkRepository.save(talk);
+    }
 }

@@ -14,7 +14,7 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.DateField;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.TextArea;
+import com.vaadin.ui.RichTextArea;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
@@ -36,7 +36,7 @@ public class EventEditorView extends HorizontalLayout implements View {
     /* Fields to edit properties in MorningEvent entity */
     private TextField eventNumber = new TextField("Event number");
     private TextField name = new TextField("Name");
-    private TextArea description = new TextArea("Description");
+    private RichTextArea description = new RichTextArea("Description");
     private DateField date = new DateField("Date");
     private TextField ticketsUrl = new TextField("Tickets URL");
 
@@ -86,6 +86,7 @@ public class EventEditorView extends HorizontalLayout implements View {
     public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
         MorningEvent morningEvent = initMorningEvent(viewChangeEvent);
         binder.setBean(morningEvent);
+        talksList.displayTalks(morningEvent);
 
         // set button states
         final boolean isEventEditable = morningEvent.getDate().isAfter(LocalDate.now());

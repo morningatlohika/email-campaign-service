@@ -1,6 +1,7 @@
 package com.lohika.morning.ecs.domain.speaker;
 
 import com.lohika.morning.ecs.domain.talk.Talk;
+import com.lohika.morning.ecs.utils.EcsUtils;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -51,4 +52,8 @@ public class Speaker {
     @ManyToOne
     @JoinColumn(name = "talkId")
     private Talk talk;
+
+    public String getFullName() {
+        return EcsUtils.formatString("{} {}", firstName, lastName);
+    }
 }
