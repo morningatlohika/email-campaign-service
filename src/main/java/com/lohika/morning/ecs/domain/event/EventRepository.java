@@ -11,4 +11,6 @@ public interface EventRepository extends PagingAndSortingRepository<MorningEvent
 
     @Query("SELECT coalesce(max(e.eventNumber), 0) FROM MorningEvent e")
     Integer findMaxEventNumber();
+
+    MorningEvent findByEventNumber(int eventNumber);
 }

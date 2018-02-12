@@ -29,7 +29,7 @@ public class MorningEvent {
 
     @Column(unique = true)
     @NotNull
-    private Integer eventNumber;
+    private int eventNumber;
 
     @Column(unique = true)
     @NotEmpty

@@ -60,7 +60,7 @@ public class EventEditorView extends HorizontalLayout implements View {
         editForm.addComponents(eventNumber, name,description, date, ticketsUrl, actions);
 
         talksList = new TalksList(talkService);
-        talksPanel = new VerticalLayout(talksList, importTalksBtn);
+        talksPanel = new VerticalLayout(importTalksBtn, talksList);
         addComponents(editForm, talksPanel);
 
         binder.forMemberField(eventNumber).withConverter(new StringToIntegerConverter("Please enter a number"));
@@ -121,8 +121,8 @@ public class EventEditorView extends HorizontalLayout implements View {
         }
 
         // TODO: handle exceptions (invalid ID etc.)
-        Long morningEventId = Long.parseLong(viewChangeEvent.getParameters());
-        return eventService.getEvent(morningEventId);
+        int morningEventNumber = Integer.parseInt(viewChangeEvent.getParameters());
+        return eventService.getEventByNumber(morningEventNumber);
     }
 
 }

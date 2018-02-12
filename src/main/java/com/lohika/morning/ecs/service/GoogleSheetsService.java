@@ -94,7 +94,7 @@ public class GoogleSheetsService {
         private final Map<String, MorningEvent> events;
 
         private TalkMapper(List<MorningEvent> events) {
-            this.events = events.stream().collect(toMap(e -> e.getEventNumber().toString(), identity()));
+            this.events = events.stream().collect(toMap(e -> Integer.toString(e.getEventNumber()), identity()));
             this.speakerMapper = new SpeakerMapper();
         }
 

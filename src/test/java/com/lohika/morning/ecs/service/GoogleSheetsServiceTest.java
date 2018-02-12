@@ -43,7 +43,7 @@ public class GoogleSheetsServiceTest extends BaseTest {
         assertEquals(2, talk.getSpeakers().size());
         assertEquals("Red", talk.getSpeakers().get(0).getLastName());
         assertEquals("Green", talk.getSpeakers().get(1).getLastName());
-        assertEquals(1L, talk.getEvent().getEventNumber().longValue());
+        assertEquals(1, talk.getEvent().getEventNumber());
 
         // Talk #2
         talk = talks.get(1);
@@ -51,7 +51,7 @@ public class GoogleSheetsServiceTest extends BaseTest {
 
         assertEquals(1, talk.getSpeakers().size());
         assertEquals("Blue", talk.getSpeakers().get(0).getLastName());
-        assertEquals(2L, talk.getEvent().getEventNumber().longValue());
+        assertEquals(2, talk.getEvent().getEventNumber());
 
         // Talk #3
         talk = talks.get(2);

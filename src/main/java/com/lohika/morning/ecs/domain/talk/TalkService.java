@@ -29,7 +29,7 @@ public class TalkService {
         List<Talk> sheetTalks = googleSheetsService.getTalks(eventRepository.findAll());
 
         List<Talk> sheetTalksForGivenEvent = sheetTalks.stream()
-                .filter(t -> t.getEvent().getEventNumber().equals(event.getEventNumber()))
+                .filter(t -> t.getEvent().getEventNumber() == event.getEventNumber())
                 .collect(toList());
 
         for (Talk sheetTalk : sheetTalksForGivenEvent) {

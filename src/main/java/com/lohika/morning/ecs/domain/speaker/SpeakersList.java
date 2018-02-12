@@ -1,7 +1,6 @@
 package com.lohika.morning.ecs.domain.speaker;
 
 import com.lohika.morning.ecs.domain.talk.Talk;
-import com.lohika.morning.ecs.domain.talk.TalkService;
 import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.TabSheet;

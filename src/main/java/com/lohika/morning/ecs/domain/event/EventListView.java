@@ -21,7 +21,7 @@ import javax.annotation.PostConstruct;
 @Slf4j
 public class EventListView extends VerticalLayout implements View {
 
-    public static final String VIEW_NAME = "events";
+    public static final String VIEW_NAME = "";
 
     @Autowired
     private EventRepository eventRepository;
@@ -63,7 +63,7 @@ public class EventListView extends VerticalLayout implements View {
     private void addListeners() {
         // Connect selected MorningEvent to editor or hide if none is selected
         grid.asSingleSelect()
-                .addValueChangeListener(selectRowEvent -> getUI().getNavigator().navigateTo(EventEditorView.VIEW_NAME + "/" + selectRowEvent.getValue().getId()));
+                .addValueChangeListener(selectRowEvent -> getUI().getNavigator().navigateTo(EventEditorView.VIEW_NAME + "/" + selectRowEvent.getValue().getEventNumber()));
 
         buttonNew.addClickListener(clickEvent -> getUI().getNavigator().navigateTo(EventEditorView.VIEW_NAME));
 

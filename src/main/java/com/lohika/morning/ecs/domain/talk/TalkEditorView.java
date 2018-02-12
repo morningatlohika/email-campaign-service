@@ -1,7 +1,7 @@
 package com.lohika.morning.ecs.domain.talk;
 
+import com.lohika.morning.ecs.domain.event.EventEditorView;
 import com.lohika.morning.ecs.domain.event.EventListView;
-import com.lohika.morning.ecs.domain.event.EventService;
 import com.lohika.morning.ecs.domain.speaker.SpeakersList;
 import com.vaadin.data.BeanValidationBinder;
 import com.vaadin.data.Binder;
@@ -28,7 +28,6 @@ import java.time.LocalDate;
 public class TalkEditorView extends HorizontalLayout implements View {
     public static final String VIEW_NAME = "editTalk";
 
-    private final EventService eventService;
     private final TalkService talkService;
 
     /* Fields to edit properties in MorningEvent entity */
@@ -38,28 +37,25 @@ public class TalkEditorView extends HorizontalLayout implements View {
     /* Action buttons */
     private Button saveBtn = new Button("Save", VaadinIcons.CHECK);
     private Button cancelBtn = new Button("Cancel");
-    //private Button deleteBtn = new Button("Delete", VaadinIcons.TRASH);
-    //private Button importTalksBtn = new Button("Import Talks and Speakers", VaadinIcons.ARROW_DOWN);
     private HorizontalLayout actions = new HorizontalLayout(saveBtn, cancelBtn);
 
     private SpeakersList speakersList;
+
     private final FormLayout editForm = new FormLayout();
     private final VerticalLayout speakersPanel;
 
     private Binder<Talk> binder = new BeanValidationBinder<>(Talk.class);
 
     @Autowired
-    public TalkEditorView(EventService eventService, TalkService talkService) {
-        this.eventService = eventService;
+    public TalkEditorView(TalkService talkService, SpeakersList speakersList) {
         this.talkService = talkService;
         editForm.addComponents(title, theses, actions);
 
-        speakersList = new SpeakersList();
+        this.speakersList = speakersList;
         speakersPanel = new VerticalLayout(speakersList);
-        addComponents(editForm);
+        addComponents(editForm, speakersPanel);
 
-        //binder.forMemberField(eventNumber).withConverter(new StringToIntegerConverter("Please enter a number"));
-        // bind remaining fields using naming convention
+        // bind fields using naming convention
         binder.bindInstanceFields(this);
 
         // set button styles
@@ -87,23 +83,12 @@ public class TalkEditorView extends HorizontalLayout implements View {
         // set button states
         final boolean isEventEditable = talk.getEvent().getDate().isAfter(LocalDate.now());
         saveBtn.setEnabled(isEventEditable);
-//        deleteBtn.setEnabled(isEventEditable);
 
         // add listeners
         saveBtn.addClickListener(clickEvent -> {
             talkService.save(talk);
-            //navigateToEventsList();
+            getUI().getNavigator().navigateTo(EventEditorView.VIEW_NAME + "/" + talk.getEvent().getEventNumber());
         });
-
-//        deleteBtn.addClickListener(clickEvent -> {
-//            eventService.delete(morningEvent);
-//            navigateToEventsList();
-//        });
-
-//        importTalksBtn.addClickListener(clickEvent -> {
-//            talkService.importTalks(morningEvent);
-//            talksList.displayTalks(morningEvent);
-//        });
 
     }
 

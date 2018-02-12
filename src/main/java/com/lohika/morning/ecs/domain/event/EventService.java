@@ -19,8 +19,8 @@ public class EventService {
                 .build();
     }
 
-    public MorningEvent getEvent(Long id) {
-        return repository.findOne(id);
+    public MorningEvent getEventByNumber(int eventNumber) {
+        return repository.findByEventNumber(eventNumber);
     }
 
     public void save(MorningEvent morningEvent) {
