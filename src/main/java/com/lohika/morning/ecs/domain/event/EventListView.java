@@ -1,40 +1,40 @@
 package com.lohika.morning.ecs.domain.event;
 
-import com.vaadin.annotations.Theme;
 import com.vaadin.data.provider.GridSortOrderBuilder;
 import com.vaadin.icons.VaadinIcons;
-import com.vaadin.server.VaadinRequest;
+import com.vaadin.navigator.View;
+import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.shared.ui.ValueChangeMode;
-import com.vaadin.spring.annotation.SpringUI;
+import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.Component;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.TextField;
-import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
+import javax.annotation.PostConstruct;
 
-@SpringUI(path = "/events")
-@Theme("valo")
-public class EventUi extends UI {
+@SpringView(name = EventListView.VIEW_NAME)
+@Slf4j
+public class EventListView extends VerticalLayout implements View {
+
+    public static final String VIEW_NAME = "";
+
+    @Autowired
     private EventRepository eventRepository;
-    private Grid<MorningEvent> grid;
 
-    private final EventEditor editor;
+    private final Grid<MorningEvent> grid = new Grid<>(MorningEvent.class);
     private final Button buttonNew = new Button("New event", VaadinIcons.PLUS);
     private final TextField filter = new TextField();
 
-    @Autowired
-    public EventUi(EventRepository eventRepository, EventEditor editor) {
-        this.eventRepository = eventRepository;
-        this.editor = editor;
-        this.grid = new Grid<>(MorningEvent.class);
+    public EventListView() {
         grid.setSizeFull();
         grid.setSelectionMode(Grid.SelectionMode.SINGLE);
-        grid.setColumns("name", "description", "date");
+        grid.setColumns("eventNumber", "name", "description", "date");
+        grid.getColumn("eventNumber").setCaption("Event #").setMaximumWidth(100);
         grid.getColumn("description").setMaximumWidth(800);
         grid.setSortOrder(new GridSortOrderBuilder<MorningEvent>().thenDesc(grid.getColumn("date")).build());
 
@@ -42,30 +42,30 @@ public class EventUi extends UI {
         filter.setValueChangeMode(ValueChangeMode.LAZY);
     }
 
-    @Override
-    protected void init(VaadinRequest vaadinRequest) {
+    public EventListView(EventRepository eventRepository, Grid<MorningEvent> grid, Component... children) {
+        super(children);
+        this.eventRepository = eventRepository;
+    }
+
+    @PostConstruct
+    void init() {
         addListeners();
-
         final HorizontalLayout actions = new HorizontalLayout(buttonNew, filter);
-        final VerticalLayout root = new VerticalLayout(actions, grid);
+        addComponents(actions, grid);
+        listEvents();
+    }
 
-        addWindow(editor);
-        setContent(root);
-
+    @Override
+    public void enter(ViewChangeListener.ViewChangeEvent event) {
         listEvents();
     }
 
     private void addListeners() {
         // Connect selected MorningEvent to editor or hide if none is selected
-        grid.asSingleSelect().addValueChangeListener(e -> editor.editEvent(e.getValue()));
+        grid.asSingleSelect()
+                .addValueChangeListener(selectRowEvent -> getUI().getNavigator().navigateTo(EventEditorView.VIEW_NAME + "/" + selectRowEvent.getValue().getEventNumber()));
 
-        // Listen changes made by the editor, refresh data from backend
-        editor.addHideListener(hideEvent -> listEvents());
-
-        buttonNew.addClickListener(ce -> editor.editEvent(MorningEvent.builder()
-                // set event date 2 weeks ahead by default
-                .date(LocalDate.now().plus(2, ChronoUnit.WEEKS))
-                .build()));
+        buttonNew.addClickListener(clickEvent -> getUI().getNavigator().navigateTo(EventEditorView.VIEW_NAME));
 
         // Replace listing with filtered content when user changes filter
         filter.addValueChangeListener(e -> listEvents(e.getValue()));
@@ -78,4 +78,5 @@ public class EventUi extends UI {
     private void listEvents(String filterText) {
         grid.setItems(eventRepository.findByNameContainsIgnoreCase(filterText));
     }
+
 }

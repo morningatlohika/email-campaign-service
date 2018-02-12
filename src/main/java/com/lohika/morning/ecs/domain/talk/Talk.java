@@ -6,12 +6,12 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -40,12 +40,17 @@ public class Talk {
     @NotEmpty
     private String title;
 
-    @Column(unique = true)
+    @Column(length = 5000)
     @NotEmpty
-    //TODO: workaround to avoid Derby exception. Should be removed when the schema is defined in SQL file
-    @ColumnDefault("''")
     private String theses;
 
-    @OneToMany(mappedBy = "talk", cascade = CascadeType.ALL)
+    /**
+     * Used during re-import to identify talks to update
+     */
+    @Column(unique = true)
+    @NotNull
+    private String googleSheetsTimestamp;
+
+    @OneToMany(mappedBy = "talk", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Speaker> speakers;
 }

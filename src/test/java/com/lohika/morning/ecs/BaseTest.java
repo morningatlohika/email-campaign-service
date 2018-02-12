@@ -6,7 +6,9 @@ import com.lohika.morning.ecs.domain.talk.TalkRepository;
 import com.lohika.morning.ecs.utils.TestDataGenerator;
 import org.junit.After;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ActiveProfiles;
 
+@ActiveProfiles("test")
 public class BaseTest {
 
     @Autowired

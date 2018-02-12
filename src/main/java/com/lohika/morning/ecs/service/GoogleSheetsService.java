@@ -45,6 +45,7 @@ public class GoogleSheetsService {
     }
 
     private List<List<String>> readValues(String range) throws IOException {
+        log.info("Reading data from https://docs.google.com/spreadsheets/d/{}/edit", sheetId);
         ValueRange response = sheetsClient.spreadsheets().values()
                 .get(sheetId, range)
                 .execute();
@@ -93,12 +94,13 @@ public class GoogleSheetsService {
         private final Map<String, MorningEvent> events;
 
         private TalkMapper(List<MorningEvent> events) {
-            this.events = events.stream().collect(toMap(e -> e.getId().toString(), identity()));
+            this.events = events.stream().collect(toMap(e -> Integer.toString(e.getEventNumber()), identity()));
             this.speakerMapper = new SpeakerMapper();
         }
 
         public Talk mapRow(List<String> row) {
             return Talk.builder()
+                    .googleSheetsTimestamp(row.get(1))
                     .title(row.get(12))
                     .theses(row.get(13))
                     .speakers(speakerMapper.mapRow(row))
