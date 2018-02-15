@@ -1,7 +1,7 @@
 package com.lohika.morning.ecs.domain.talk;
 
-import com.lohika.morning.ecs.domain.event.EventEditorView;
-import com.lohika.morning.ecs.domain.event.EventListView;
+import com.lohika.morning.ecs.domain.event.EventDetailsView;
+import com.lohika.morning.ecs.domain.event.MorningEvent;
 import com.lohika.morning.ecs.domain.speaker.SpeakersList;
 import com.vaadin.data.BeanValidationBinder;
 import com.vaadin.data.Binder;
@@ -22,6 +22,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
 import java.time.LocalDate;
+
+import static com.lohika.morning.ecs.utils.EcsUtils.formatString;
 
 @SpringView(name = TalkEditorView.VIEW_NAME)
 @Slf4j
@@ -63,9 +65,6 @@ public class TalkEditorView extends HorizontalLayout implements View {
         saveBtn.setClickShortcut(ShortcutAction.KeyCode.ENTER);
 
         cancelBtn.setClickShortcut(ShortcutAction.KeyCode.ESCAPE);
-
-        // static listener for Cancel button
-        cancelBtn.addClickListener(clickEvent -> navigateToEventsList());
     }
 
     @PostConstruct
@@ -87,13 +86,15 @@ public class TalkEditorView extends HorizontalLayout implements View {
         // add listeners
         saveBtn.addClickListener(clickEvent -> {
             talkService.save(talk);
-            getUI().getNavigator().navigateTo(EventEditorView.VIEW_NAME + "/" + talk.getEvent().getEventNumber());
+            navigateToEventsDetails(talk.getEvent());
         });
+
+        cancelBtn.addClickListener(clickEvent -> navigateToEventsDetails(talk.getEvent()));
 
     }
 
-    private void navigateToEventsList() {
-        getUI().getNavigator().navigateTo(EventListView.VIEW_NAME);
+    private void navigateToEventsDetails(MorningEvent morningEvent) {
+        getUI().getNavigator().navigateTo(formatString("{}/{}", EventDetailsView.VIEW_NAME, morningEvent.getEventNumber()));
     }
 
 }

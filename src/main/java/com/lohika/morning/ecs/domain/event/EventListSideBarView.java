@@ -1,18 +1,18 @@
 package com.lohika.morning.ecs.domain.event;
 
-import com.vaadin.data.provider.GridSortOrderBuilder;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
+import com.vaadin.shared.ui.ContentMode;
 import com.vaadin.shared.ui.ValueChangeMode;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.Component;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.renderers.HtmlRenderer;
-import com.vaadin.ui.renderers.Renderer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -20,30 +20,45 @@ import javax.annotation.PostConstruct;
 
 import static com.lohika.morning.ecs.utils.EcsUtils.formatString;
 
-@SpringView(name = EventListView.VIEW_NAME)
+@SpringView(name = EventListSideBarView.VIEW_NAME)
 @Slf4j
-public class EventListView extends VerticalLayout implements View {
+public class EventListSideBarView extends VerticalLayout implements View {
 
-    public static final String VIEW_NAME = "";
+    public static final String VIEW_NAME = "eventsSb";
 
     @Autowired
     private EventRepository eventRepository;
 
-    private final Grid<MorningEvent> grid = new Grid<>(MorningEvent.class);
+    private final Grid<MorningEvent> grid = new Grid<>();
     private final Button buttonNew = new Button("New event", VaadinIcons.PLUS);
     private final TextField filter = new TextField();
 
-    public EventListView() {
+    public EventListSideBarView() {
         grid.setSizeFull();
+        grid.setWidth("250px");
         grid.setSelectionMode(Grid.SelectionMode.SINGLE);
-        grid.setColumns("eventNumber", "name", "description", "date");
-        grid.getColumn("eventNumber").setCaption("Event #").setMaximumWidth(100);
-        grid.getColumn("description").setMaximumWidth(800);
-        grid.getColumn("description").setRenderer((Renderer)new HtmlRenderer());
-        grid.setSortOrder(new GridSortOrderBuilder<MorningEvent>().thenDesc(grid.getColumn("date")).build());
+
+        grid.setHeaderVisible(false);
+        grid.setBodyRowHeight(75);
+
+        Grid.Column<MorningEvent, VerticalLayout> eventColumn = grid.addComponentColumn(morningEvent -> {
+            Label eventName = new Label(formatString("<em>{}: {}</em>", morningEvent.getEventNumber(), morningEvent.getName()), ContentMode.HTML);
+            Label eventDate = new Label(morningEvent.getDate().toString());
+            VerticalLayout root = new VerticalLayout(eventName, eventDate);
+            root.setSpacing(false);
+            root.setMargin(false);
+            root.addLayoutClickListener(clickEvent -> grid.select(morningEvent));
+
+            return root;
+        });
 
         filter.setPlaceholder("Filter by name");
         filter.setValueChangeMode(ValueChangeMode.LAZY);
+    }
+
+    public EventListSideBarView(EventRepository eventRepository, Grid<MorningEvent> grid, Component... children) {
+        super(children);
+        this.eventRepository = eventRepository;
     }
 
     @PostConstruct
@@ -62,20 +77,12 @@ public class EventListView extends VerticalLayout implements View {
     private void addListeners() {
         // Connect selected MorningEvent to editor or hide if none is selected
         grid.asSingleSelect()
-                .addValueChangeListener(selectRowEvent -> navigateTo(EventDetailsView.VIEW_NAME, selectRowEvent.getValue().getEventNumber()));
+                    .addValueChangeListener(selectRowEvent -> getUI().getNavigator().navigateTo(EventEditorView.VIEW_NAME + "/" + selectRowEvent.getValue().getEventNumber()));
 
-        buttonNew.addClickListener(clickEvent -> navigateTo(EventEditorView.VIEW_NAME));
+        buttonNew.addClickListener(clickEvent -> getUI().getNavigator().navigateTo(EventEditorView.VIEW_NAME));
 
         // Replace listing with filtered content when user changes filter
         filter.addValueChangeListener(e -> listEvents(e.getValue()));
-    }
-
-    private void navigateTo(String viewName) {
-        getUI().getNavigator().navigateTo(viewName);
-    }
-
-    private void navigateTo(String viewName, int id) {
-        getUI().getNavigator().navigateTo(formatString("{}/{}", viewName, id));
     }
 
     private void listEvents() {
