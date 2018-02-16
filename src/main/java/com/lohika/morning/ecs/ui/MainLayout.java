@@ -3,6 +3,7 @@ package com.lohika.morning.ecs.ui;
 import com.lohika.morning.ecs.domain.attendee.AttendeeListView;
 import com.lohika.morning.ecs.domain.event.EventListView;
 import com.lohika.morning.ecs.domain.talk.TalkView;
+import com.lohika.morning.ecs.domain.unsubscribe.UnsubscribeListView;
 import com.vaadin.annotations.Theme;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewDisplay;
@@ -34,6 +35,7 @@ public class MainLayout extends UI implements ViewDisplay {
         navigationBar.addComponent(createNavigationButton("Events", EventListView.VIEW_NAME));
         navigationBar.addComponent(createNavigationButton("Talks", TalkView.VIEW_NAME));
         navigationBar.addComponent(createNavigationButton("Attendees", AttendeeListView.VIEW_NAME));
+        navigationBar.addComponent(createNavigationButton("Unsubscribe", UnsubscribeListView.VIEW_NAME));
         root.addComponent(navigationBar);
 
         springViewDisplay = new Panel();
