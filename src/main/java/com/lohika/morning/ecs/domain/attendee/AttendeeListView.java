@@ -34,7 +34,7 @@ public class AttendeeListView extends VerticalLayout implements View {
     header.setSizeFull();
     addComponents(header, grid);
 
-    reloadButton.addClickListener(this::createAttendee);
+    reloadButton.addClickListener(this::reloadAttendees);
 
     filterTextField.setPlaceholder("Filter by first name / last name /email");
     filterTextField.setValueChangeMode(ValueChangeMode.LAZY);
@@ -51,7 +51,7 @@ public class AttendeeListView extends VerticalLayout implements View {
     grid.setItems(attendeeService.filterBy(e.getValue()));
   }
 
-  private void createAttendee(Button.ClickEvent clickEvent) {
+  private void reloadAttendees(Button.ClickEvent clickEvent) {
     attendeeService.reload();
     grid.setItems(attendeeService.findAll());
   }
