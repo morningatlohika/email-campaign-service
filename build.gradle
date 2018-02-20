@@ -56,6 +56,7 @@ dependencies {
 
     // dev tools
     compile('org.springframework.boot:spring-boot-devtools')
+    compile group: 'com.github.javafaker', name: 'javafaker', version: '0.14'
 
     // test dependencies
     testCompile('org.springframework.boot:spring-boot-starter-test')

@@ -1,5 +1,6 @@
 package com.lohika.morning.ecs.ui;
 
+import com.lohika.morning.ecs.domain.attendee.AttendeeListView;
 import com.lohika.morning.ecs.domain.event.EventListView;
 import com.lohika.morning.ecs.domain.talk.TalkView;
 import com.vaadin.annotations.Theme;
@@ -17,7 +18,7 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 
 @Theme("valo")
-@SpringUI(path = "/events")
+@SpringUI(path = "/")
 @SpringViewDisplay
 public class MainLayout extends UI implements ViewDisplay {
     private Panel springViewDisplay;
@@ -32,6 +33,7 @@ public class MainLayout extends UI implements ViewDisplay {
         navigationBar.addStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
         navigationBar.addComponent(createNavigationButton("Events", EventListView.VIEW_NAME));
         navigationBar.addComponent(createNavigationButton("Talks", TalkView.VIEW_NAME));
+        navigationBar.addComponent(createNavigationButton("Attendees", AttendeeListView.VIEW_NAME));
         root.addComponent(navigationBar);
 
         springViewDisplay = new Panel();
