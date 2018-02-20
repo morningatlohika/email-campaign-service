@@ -1,7 +1,9 @@
 package com.lohika.morning.ecs.domain.attendee;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import com.vaadin.data.HasValue;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.shared.ui.ValueChangeMode;
@@ -12,43 +14,45 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 import javax.annotation.PostConstruct;
 
-@SpringView(name = AttendeeListView.VIEW_NAME)
 @Slf4j
+@RequiredArgsConstructor
+@SpringView(name = AttendeeListView.VIEW_NAME)
 public class AttendeeListView extends VerticalLayout implements View {
   public static final String VIEW_NAME = "attendees";
-  private final Grid<Attendee> grid = new Grid<>(Attendee.class);
+
+  private final Button reloadButton = new Button("Reload emails", VaadinIcons.DOWNLOAD);
   private final TextField filterTextField = new TextField();
-  private final Button reloadButton = new Button("Re-load", VaadinIcons.PLUS);
+  private final Grid<Attendee> grid = new Grid<>(Attendee.class);
 
-  @Autowired
-  private AttendeeService attendeeService;
-
-  public AttendeeListView() {
-    grid.setSizeFull();
-    grid.setSelectionMode(Grid.SelectionMode.SINGLE);
-    grid.setColumns("firstName", "secondName", "email");
-
-    filterTextField.setPlaceholder("Filter by first name / second name /email");
-    filterTextField.setValueChangeMode(ValueChangeMode.LAZY);
-  }
+  private final AttendeeService attendeeService;
 
   @PostConstruct
   void init() {
-    filterTextField.addValueChangeListener(e ->
-        grid.setItems(attendeeService.filterBy(e.getValue())));
+    HorizontalLayout header = new HorizontalLayout(reloadButton, filterTextField);
+    header.setSizeFull();
+    addComponents(header, grid);
 
-    reloadButton.addClickListener(clickEvent -> {
-      attendeeService.reLoad();
-      getUI().getNavigator().navigateTo(AttendeeListView.VIEW_NAME);
-    });
+    reloadButton.addClickListener(this::createAttendee);
 
-    final HorizontalLayout actions = new HorizontalLayout(reloadButton, filterTextField);
-    addComponents(actions, grid);
+    filterTextField.setPlaceholder("Filter by first name / last name /email");
+    filterTextField.setValueChangeMode(ValueChangeMode.LAZY);
+    filterTextField.addValueChangeListener(this::filterBy);
+    filterTextField.setSizeFull();
 
+    grid.setSelectionMode(Grid.SelectionMode.SINGLE);
+    grid.setColumns("firstName", "lastName", "email");
+    grid.setItems(attendeeService.findAll());
+    grid.setSizeFull();
+  }
+
+  private void filterBy(HasValue.ValueChangeEvent<String> e) {
+    grid.setItems(attendeeService.filterBy(e.getValue()));
+  }
+
+  private void createAttendee(Button.ClickEvent clickEvent) {
+    attendeeService.reload();
     grid.setItems(attendeeService.findAll());
   }
 }

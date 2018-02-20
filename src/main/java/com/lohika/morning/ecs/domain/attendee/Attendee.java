@@ -26,7 +26,7 @@ public class Attendee {
   private Long id;
 
   private String firstName;
-  private String secondName;
+  private String lastName;
 
   @Column(unique = true)
   @NotEmpty

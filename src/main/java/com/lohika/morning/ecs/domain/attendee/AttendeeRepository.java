@@ -4,6 +4,8 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 
 import java.util.List;
 
-public interface AttendeeRepository extends PagingAndSortingRepository<Attendee, Long>, AttendeeRepositoryCustom {
+public interface AttendeeRepository extends PagingAndSortingRepository<Attendee, Long> {
   List<Attendee> findAll();
+
+  List<Attendee> findByFirstNameLikeOrLastNameLikeOrEmailLike(String firstName, String lastName, String email);
 }
