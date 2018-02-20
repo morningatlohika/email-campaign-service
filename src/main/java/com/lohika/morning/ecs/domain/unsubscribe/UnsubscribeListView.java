@@ -1,7 +1,10 @@
 package com.lohika.morning.ecs.domain.unsubscribe;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import com.lohika.morning.ecs.domain.template.Template;
+import com.vaadin.data.HasValue;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.shared.ui.ValueChangeMode;
@@ -12,46 +15,56 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.renderers.ButtonRenderer;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import com.vaadin.ui.renderers.ClickableRenderer;
 
 import javax.annotation.PostConstruct;
 
-@SpringView(name = UnsubscribeListView.VIEW_NAME)
 @Slf4j
+@RequiredArgsConstructor
+@SpringView(name = UnsubscribeListView.VIEW_NAME)
 public class UnsubscribeListView extends VerticalLayout implements View {
   public static final String VIEW_NAME = "unsubscribe";
-  private final Grid<Unsubscribe> grid = new Grid<>(Unsubscribe.class);
+
+  private final Button addButton = new Button("Add Unsubscribe", VaadinIcons.PLUS);
   private final TextField filterTextField = new TextField();
-  private final Button addButton = new Button("Add", VaadinIcons.PLUS);
+  private final Grid<Unsubscribe> grid = new Grid<>(Unsubscribe.class);
 
-  @Autowired
-  private UnsubscribeService unsubscribeService;
-
-  public UnsubscribeListView() {
-    grid.setSizeFull();
-    grid.setSelectionMode(Grid.SelectionMode.SINGLE);
-    grid.setColumns("email");
-
-    filterTextField.setPlaceholder("Filter by email");
-    filterTextField.setValueChangeMode(ValueChangeMode.LAZY);
-  }
+  private final UnsubscribeService unsubscribeService;
 
   @PostConstruct
   void init() {
-    filterTextField.addValueChangeListener(e -> grid.setItems(unsubscribeService.filterByEmail(e.getValue())));
+    HorizontalLayout header = new HorizontalLayout(addButton, filterTextField);
+    header.setSizeFull();
+    addComponents(header, grid);
 
-    addButton.addClickListener(clickEvent -> getUI().getNavigator().navigateTo(UnsubscribeAddView.VIEW_NAME));
+    addButton.addClickListener(this::createUnsubscribe);
 
-    final HorizontalLayout actions = new HorizontalLayout(addButton, filterTextField);
-    addComponents(actions, grid);
+    filterTextField.setPlaceholder("Filter by email");
+    filterTextField.setValueChangeMode(ValueChangeMode.LAZY);
+    filterTextField.addValueChangeListener(this::filterBy);
+    filterTextField.setSizeFull();
 
     grid.setItems(unsubscribeService.findAll());
+    grid.setSelectionMode(Grid.SelectionMode.SINGLE);
+    grid.setColumns("email");
+    grid.addColumn(unsubscribe -> "X", getButtonRenderer()).setWidth(70);
+    grid.setSizeFull();
+  }
 
-    grid.addColumn(person -> "X",
-        new ButtonRenderer(clickEvent -> {
-          unsubscribeService.delete((Unsubscribe) clickEvent.getItem());
-          getUI().getNavigator().navigateTo(UnsubscribeListView.VIEW_NAME);
-        }));
+  private ButtonRenderer<Unsubscribe> getButtonRenderer() {
+    return new ButtonRenderer<>(this::deleteById);
+  }
+
+  private void deleteById(ClickableRenderer.RendererClickEvent clickEvent) {
+    unsubscribeService.delete((Unsubscribe) clickEvent.getItem());
+    getUI().getNavigator().navigateTo(UnsubscribeListView.VIEW_NAME);
+  }
+
+  private void filterBy(HasValue.ValueChangeEvent<String> e) {
+    grid.setItems(unsubscribeService.filterByEmail(e.getValue()));
+  }
+
+  private void createUnsubscribe(Button.ClickEvent clickEvent) {
+    getUI().getNavigator().navigateTo(UnsubscribeAddView.VIEW_NAME);
   }
 }
