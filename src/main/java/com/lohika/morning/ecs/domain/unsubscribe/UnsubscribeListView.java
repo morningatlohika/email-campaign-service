@@ -54,13 +54,13 @@ public class UnsubscribeListView extends VerticalLayout implements View {
     return new ButtonRenderer<>(this::deleteById);
   }
 
-  private void deleteById(ClickableRenderer.RendererClickEvent clickEvent) {
-    unsubscribeService.delete((Unsubscribe) clickEvent.getItem());
-    getUI().getNavigator().navigateTo(UnsubscribeListView.VIEW_NAME);
+  private void deleteById(ClickableRenderer.RendererClickEvent<Unsubscribe> clickEvent) {
+    unsubscribeService.delete(clickEvent.getItem());
+    grid.setItems(unsubscribeService.findAll());
   }
 
   private void filterBy(HasValue.ValueChangeEvent<String> e) {
-    grid.setItems(unsubscribeService.filterByEmail(e.getValue()));
+    grid.setItems(unsubscribeService.filterBy(e.getValue()));
   }
 
   private void createUnsubscribe(Button.ClickEvent clickEvent) {

@@ -31,14 +31,18 @@ public class UnsubscribeAddView extends HorizontalLayout implements View {
 
     saveButton.setStyleName(ValoTheme.BUTTON_PRIMARY);
     saveButton.setClickShortcut(ShortcutAction.KeyCode.ENTER);
-    saveButton.addClickListener(this::createUnsubscribe);
+    saveButton.addClickListener(this::createUnsubscribes);
 
     cancelButton.setClickShortcut(ShortcutAction.KeyCode.ESCAPE);
-    cancelButton.addClickListener(clickEvent -> getUI().getNavigator().navigateTo(UnsubscribeListView.VIEW_NAME));
+    cancelButton.addClickListener(this::backToList);
   }
 
-  private void createUnsubscribe(Button.ClickEvent clickEvent) {
-    unsubscribeService.add(emails.getValue());
+  private void backToList(Button.ClickEvent clickEvent) {
     getUI().getNavigator().navigateTo(UnsubscribeListView.VIEW_NAME);
+  }
+
+  private void createUnsubscribes(Button.ClickEvent clickEvent) {
+    unsubscribeService.add(emails.getValue());
+    backToList(clickEvent);
   }
 }
