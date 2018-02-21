@@ -60,7 +60,7 @@ public class TemplateListView extends VerticalLayout implements View {
   }
 
   private void filterBy(HasValue.ValueChangeEvent<String> e) {
-    grid.setItems(templateService.filterByEmail(e.getValue()));
+    grid.setItems(templateService.filterBy(e.getValue()));
   }
 
   private void createTemplate(Button.ClickEvent clickEvent) {

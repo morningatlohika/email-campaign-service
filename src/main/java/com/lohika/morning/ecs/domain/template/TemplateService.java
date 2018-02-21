@@ -7,8 +7,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static java.util.Collections.emptyList;
-
 @Service
 @RequiredArgsConstructor
 public class TemplateService {
@@ -22,8 +20,8 @@ public class TemplateService {
     return templateRepository.findAll(new Sort(new Sort.Order(Sort.Direction.ASC, "priority")));
   }
 
-  public List<Template> filterByEmail(String email) {
-    return templateRepository.filterAllByName(email);
+  public List<Template> filterBy(String value) {
+    return templateRepository.findByNameContainingIgnoringCaseOrSubjectContainingIgnoringCase(value, value);
   }
 
   public void save(Template template) {

@@ -10,6 +10,5 @@ import java.util.List;
 public interface TemplateRepository extends PagingAndSortingRepository<Template, Long> {
   List<Template> findAll(Sort sort);
 
-  @Query("SELECT u FROM Template u WHERE u.name like %:string%")
-  List<Template> filterAllByName(@Param("string") String string);
+  List<Template> findByNameContainingIgnoringCaseOrSubjectContainingIgnoringCase(String email, String subject);
 }
