@@ -40,6 +40,6 @@ public class AttendeeService {
   }
 
   public List<Attendee> filterBy(String value) {
-    return attendeeRepository.findByFirstNameLikeOrLastNameLikeOrEmailLike(value, value, value);
+    return attendeeRepository.findByFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCaseOrEmailContainingIgnoreCase(value, value, value);
   }
 }

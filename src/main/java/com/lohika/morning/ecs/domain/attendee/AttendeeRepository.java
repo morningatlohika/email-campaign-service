@@ -7,5 +7,5 @@ import java.util.List;
 public interface AttendeeRepository extends PagingAndSortingRepository<Attendee, Long> {
   List<Attendee> findAll();
 
-  List<Attendee> findByFirstNameLikeOrLastNameLikeOrEmailLike(String firstName, String lastName, String email);
+  List<Attendee> findByFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCaseOrEmailContainingIgnoreCase(String firstName, String lastName, String email);
 }

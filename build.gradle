@@ -40,6 +40,7 @@ dependencies {
 
     // Vaadin
     compile('com.vaadin:vaadin-spring-boot-starter')
+    compile('org.yaml:snakeyaml:1.19')
 
     // Google sheets integration
     compile 'com.google.api-client:google-api-client:1.23.0'
@@ -56,7 +57,7 @@ dependencies {
 
     // dev tools
     compile('org.springframework.boot:spring-boot-devtools')
-    compile group: 'com.github.javafaker', name: 'javafaker', version: '0.14'
+    compile('com.github.javafaker:javafaker:0.14')
 
     // test dependencies
     testCompile('org.springframework.boot:spring-boot-starter-test')

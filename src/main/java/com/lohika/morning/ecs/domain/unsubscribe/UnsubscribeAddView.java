@@ -21,7 +21,7 @@ import javax.annotation.PostConstruct;
 public class UnsubscribeAddView extends HorizontalLayout implements View {
   public static final String VIEW_NAME = "addUnsubscribe";
   private final UnsubscribeService unsubscribeService;
-  private TextArea emails = new TextArea("Comma separated emails");
+  private TextArea emails = new TextArea("Use comma, space, semicolon or newline to separated emails");
   private Button saveButton = new Button("Save", VaadinIcons.CHECK);
   private Button cancelButton = new Button("Cancel");
 

@@ -1,15 +1,15 @@
 package com.lohika.morning.ecs.domain.unsubscribe;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.Set;
 
 import static java.util.Arrays.stream;
-import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toSet;
+import static org.apache.commons.lang3.StringUtils.split;
 
 @Service
 public class UnsubscribeService {
@@ -21,13 +21,13 @@ public class UnsubscribeService {
   }
 
   public List<Unsubscribe> filterBy(String email) {
-    return unsubscribeRepository.findByEmailContaining(email);
+    return unsubscribeRepository.findByEmailContainingIgnoreCase(email);
   }
 
   public void add(String emails) {
-    Set<String> setOfEmails = stream(emails.split(","))
+    Set<String> setOfEmails = stream(split(emails, " ;,\n"))
         .map(String::trim)
-        .filter(email -> !StringUtils.isEmpty(email))
+        .filter(StringUtils::isNotEmpty)
         .collect(toSet());
 
     Set<String> existingEmails = unsubscribeRepository.findByEmailIn(setOfEmails).stream()

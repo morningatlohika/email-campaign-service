@@ -8,7 +8,7 @@ import java.util.List;
 public interface UnsubscribeRepository extends PagingAndSortingRepository<Unsubscribe, Long> {
   List<Unsubscribe> findAll();
 
-  List<Unsubscribe> findByEmailContaining(String email);
+  List<Unsubscribe> findByEmailContainingIgnoreCase(String email);
 
   List<Unsubscribe> findByEmailIn(Collection<String> emails);
 }
