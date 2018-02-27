@@ -20,7 +20,6 @@ import com.vaadin.ui.themes.ValoTheme;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.annotation.PostConstruct;
 import java.time.LocalDate;
 
 import static com.lohika.morning.ecs.utils.EcsUtils.formatString;
@@ -65,11 +64,6 @@ public class TalkEditorView extends HorizontalLayout implements View {
     saveBtn.setClickShortcut(ShortcutAction.KeyCode.ENTER);
 
     cancelBtn.setClickShortcut(ShortcutAction.KeyCode.ESCAPE);
-  }
-
-  @PostConstruct
-  void init() {
-    log.info("========> EventEditorView @PostConstruct");
   }
 
   @Override

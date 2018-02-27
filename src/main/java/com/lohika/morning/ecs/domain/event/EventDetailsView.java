@@ -20,8 +20,6 @@ import com.vaadin.ui.themes.ValoTheme;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.annotation.PostConstruct;
-
 import static com.lohika.morning.ecs.utils.EcsUtils.formatString;
 import static com.lohika.morning.ecs.utils.EcsUtils.isEditable;
 
@@ -77,12 +75,6 @@ public class EventDetailsView extends HorizontalLayout implements View {
     editBtn.setClickShortcut(ShortcutAction.KeyCode.ENTER);
 
     closeBtn.setClickShortcut(ShortcutAction.KeyCode.ESCAPE);
-  }
-
-  @PostConstruct
-  void init() {
-    log.info("========> EventEditorView @PostConstruct");
-    // static listener for Cancel button
     closeBtn.addClickListener(clickEvent -> navigateTo(EventListView.VIEW_NAME));
   }
 

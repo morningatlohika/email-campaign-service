@@ -22,7 +22,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.annotation.PostConstruct;
 import java.time.LocalDate;
 
 import static com.lohika.morning.ecs.utils.EcsUtils.formatString;
@@ -78,11 +77,6 @@ public class EventEditorView extends HorizontalLayout implements View {
     saveBtn.setClickShortcut(ShortcutAction.KeyCode.ENTER);
 
     cancelBtn.setClickShortcut(ShortcutAction.KeyCode.ESCAPE);
-  }
-
-  @PostConstruct
-  void init() {
-    log.info("========> EventEditorView @PostConstruct");
   }
 
   @Override
