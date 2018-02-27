@@ -1,4 +1,4 @@
-package com.lohika.morning.ecs.domain.template;
+package com.lohika.morning.ecs.domain.campaigntemplate;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,9 +31,9 @@ import static java.util.Arrays.asList;
 
 @Slf4j
 @RequiredArgsConstructor
-@SpringView(name = TemplateEditView.VIEW_NAME)
-public class TemplateEditView extends HorizontalLayout implements View {
-  public static final String VIEW_NAME = "addTemplate";
+@SpringView(name = CampaignTemplateEditView.VIEW_NAME)
+public class CampaignTemplateEditView extends HorizontalLayout implements View {
+  public static final String VIEW_NAME = "addCampaignTemplate";
   private static final List<Integer> PERIOD_ITEMS = asList(-14, -7 - 5, 0, 1, 7, 14);
 
   private final TextField name = new TextField("Name");
@@ -46,19 +46,19 @@ public class TemplateEditView extends HorizontalLayout implements View {
   private final Button saveButton = new Button("Save", VaadinIcons.CHECK);
   private final Button deleteButton = new Button("Delete", VaadinIcons.TRASH);
   private final Button cancelButton = new Button("Cancel");
-  private final Binder<Template> validation = new BeanValidationBinder<>(Template.class);
+  private final Binder<CampaignTemplate> binder = new BeanValidationBinder<>(CampaignTemplate.class);
 
-  private final TemplateService templateService;
+  private final CampaignTemplateService campaignTemplateService;
 
   @PostConstruct
   public void init() {
 
-    HorizontalLayout buttons = new HorizontalLayout(saveButton, deleteButton, cancelButton);
+    HorizontalLayout actions = new HorizontalLayout(saveButton, deleteButton, cancelButton);
 
-    FormLayout form = new FormLayout(name, subject, body, attendee, emails, priority, buttons);
+    FormLayout form = new FormLayout(name, subject, body, attendee, emails, priority, actions);
     addComponents(form);
 
-    validation.bindInstanceFields(this);
+    binder.bindInstanceFields(this);
 
     attendee.addValueChangeListener(this::onAttendeeChange);
 
@@ -67,17 +67,16 @@ public class TemplateEditView extends HorizontalLayout implements View {
 
     saveButton.setStyleName(ValoTheme.BUTTON_PRIMARY);
     saveButton.setClickShortcut(ShortcutAction.KeyCode.ENTER);
-    saveButton.addClickListener(this::createTemplate);
+    saveButton.addClickListener(this::editCampaignTemplate);
 
-    deleteButton.addClickListener(this::deleteTemplate);
-    deleteButton.setEnabled(isDeleteEnabled());
+    deleteButton.addClickListener(this::deleteCampaignTemplate);
 
     cancelButton.setClickShortcut(ShortcutAction.KeyCode.ESCAPE);
-    cancelButton.addClickListener(this::cancelTemplate);
+    cancelButton.addClickListener(this::cancelCampaignTemplate);
   }
 
-  private boolean isDeleteEnabled() {
-    return validation.getBean() != null && validation.getBean().getId() != null;
+  private boolean isEntityPersisted() {
+    return binder.getBean().getId() != null;
   }
 
   private String generatePriorityCaption(Integer i) {
@@ -93,34 +92,34 @@ public class TemplateEditView extends HorizontalLayout implements View {
     emails.setVisible(!e.getValue());
   }
 
-  private void createTemplate(Button.ClickEvent clickEvent) {
-    Template template = validation.getBean();
-    templateService.save(template);
-    getUI().getNavigator().navigateTo(TemplateListView.VIEW_NAME);
+  private void editCampaignTemplate(Button.ClickEvent clickEvent) {
+    CampaignTemplate template = binder.getBean();
+    campaignTemplateService.save(template);
+    getUI().getNavigator().navigateTo(CampaignTemplateListView.VIEW_NAME);
   }
 
-  private void deleteTemplate(Button.ClickEvent clickEvent) {
-    Template template = validation.getBean();
-    templateService.delete(template);
-    getUI().getNavigator().navigateTo(TemplateListView.VIEW_NAME);
+  private void deleteCampaignTemplate(Button.ClickEvent clickEvent) {
+    CampaignTemplate template = binder.getBean();
+    campaignTemplateService.delete(template);
+    getUI().getNavigator().navigateTo(CampaignTemplateListView.VIEW_NAME);
   }
 
-  private void cancelTemplate(Button.ClickEvent clickEvent) {
-    getUI().getNavigator().navigateTo(TemplateListView.VIEW_NAME);
+  private void cancelCampaignTemplate(Button.ClickEvent clickEvent) {
+    getUI().getNavigator().navigateTo(CampaignTemplateListView.VIEW_NAME);
   }
 
   @Override
   public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
-    Template template = getTemplate(viewChangeEvent);
-    validation.setBean(template);
-    deleteButton.setEnabled(isDeleteEnabled());
+    CampaignTemplate template = getCampaignTemplate(viewChangeEvent);
+    binder.setBean(template);
+    deleteButton.setEnabled(isEntityPersisted());
   }
 
-  private Template getTemplate(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
+  private CampaignTemplate getCampaignTemplate(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
     if (StringUtils.EMPTY.equals(viewChangeEvent.getParameters())) {
-      return templateService.newTemplate();
+      return campaignTemplateService.newTemplate();
     }
     Long id = Long.valueOf(viewChangeEvent.getParameters());
-    return templateService.findOne(id);
+    return campaignTemplateService.findOne(id);
   }
 }

@@ -1,4 +1,4 @@
-package com.lohika.morning.ecs.domain.template;
+package com.lohika.morning.ecs.domain.campaigntemplate;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,15 +20,15 @@ import javax.annotation.PostConstruct;
 
 @Slf4j
 @RequiredArgsConstructor
-@SpringView(name = TemplateListView.VIEW_NAME)
-public class TemplateListView extends VerticalLayout implements View {
-  public static final String VIEW_NAME = "template";
+@SpringView(name = CampaignTemplateListView.VIEW_NAME)
+public class CampaignTemplateListView extends VerticalLayout implements View {
+  public static final String VIEW_NAME = "campaignTemplate";
 
-  private final Grid<Template> grid = new Grid<>(Template.class);
+  private final Grid<CampaignTemplate> grid = new Grid<>(CampaignTemplate.class);
   private final TextField filterTextField = new TextField();
   private final Button addButton = new Button("Add template", VaadinIcons.PLUS);
 
-  private final TemplateService templateService;
+  private final CampaignTemplateService campaignTemplateService;
 
   @PostConstruct
   void init() {
@@ -36,7 +36,7 @@ public class TemplateListView extends VerticalLayout implements View {
     header.setSizeFull();
     addComponents(header, grid);
 
-    addButton.addClickListener(this::createTemplate);
+    addButton.addClickListener(this::createCampaignTemplate);
 
     filterTextField.addValueChangeListener(this::filterBy);
     filterTextField.setPlaceholder("Filter by name / subject / body / emails");
@@ -45,30 +45,30 @@ public class TemplateListView extends VerticalLayout implements View {
 
     grid.setSelectionMode(Grid.SelectionMode.SINGLE);
     grid.setColumns("name", "subject", "emails");
-    grid.setItems(templateService.findAll());
-    grid.asSingleSelect().addValueChangeListener(this::editTemplate);
+    grid.setItems(campaignTemplateService.findAll());
+    grid.asSingleSelect().addValueChangeListener(this::editCampaignTemplate);
     grid.addColumn(template -> "X", getButtonRenderer()).setWidth(70);
     grid.setSizeFull();
   }
 
-  private ButtonRenderer<Template> getButtonRenderer() {
+  private ButtonRenderer<CampaignTemplate> getButtonRenderer() {
     return new ButtonRenderer<>(this::deleteById);
   }
 
-  private void editTemplate(HasValue.ValueChangeEvent<Template> selectRowEvent) {
-    getUI().getNavigator().navigateTo(TemplateEditView.VIEW_NAME + "/" + selectRowEvent.getValue().getId());
+  private void editCampaignTemplate(HasValue.ValueChangeEvent<CampaignTemplate> selectRowEvent) {
+    getUI().getNavigator().navigateTo(CampaignTemplateEditView.VIEW_NAME + "/" + selectRowEvent.getValue().getId());
   }
 
   private void filterBy(HasValue.ValueChangeEvent<String> e) {
-    grid.setItems(templateService.filterBy(e.getValue()));
+    grid.setItems(campaignTemplateService.filterBy(e.getValue()));
   }
 
-  private void createTemplate(Button.ClickEvent clickEvent) {
-    getUI().getNavigator().navigateTo(TemplateEditView.VIEW_NAME);
+  private void createCampaignTemplate(Button.ClickEvent clickEvent) {
+    getUI().getNavigator().navigateTo(CampaignTemplateEditView.VIEW_NAME);
   }
 
-  private void deleteById(ClickableRenderer.RendererClickEvent<Template> clickEvent) {
-    templateService.delete(clickEvent.getItem());
-    getUI().getNavigator().navigateTo(TemplateListView.VIEW_NAME);
+  private void deleteById(ClickableRenderer.RendererClickEvent<CampaignTemplate> clickEvent) {
+    campaignTemplateService.delete(clickEvent.getItem());
+    grid.setItems(campaignTemplateService.findAll());
   }
 }

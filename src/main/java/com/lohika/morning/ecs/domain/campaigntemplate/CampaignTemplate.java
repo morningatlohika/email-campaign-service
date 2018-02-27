@@ -1,4 +1,4 @@
-package com.lohika.morning.ecs.domain.template;
+package com.lohika.morning.ecs.domain.campaigntemplate;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,12 +15,12 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "templates")
+@Table(name = "campaign_templates")
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Data
-public class Template {
+public class CampaignTemplate {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;

@@ -1,4 +1,4 @@
-package com.lohika.morning.ecs.domain.template;
+package com.lohika.morning.ecs.domain.campaigntemplate;
 
 import lombok.RequiredArgsConstructor;
 
@@ -9,31 +9,31 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class TemplateService {
-  private final TemplateRepository templateRepository;
+public class CampaignTemplateService {
+  private final CampaignTemplateRepository templateRepository;
 
-  public Template findOne(Long id) {
+  public CampaignTemplate findOne(Long id) {
     return templateRepository.findOne(id);
   }
 
-  public List<Template> findAll() {
+  public List<CampaignTemplate> findAll() {
     return templateRepository.findAll(new Sort(new Sort.Order(Sort.Direction.ASC, "priority")));
   }
 
-  public List<Template> filterBy(String value) {
+  public List<CampaignTemplate> filterBy(String value) {
     return templateRepository.findByNameContainingIgnoringCaseOrSubjectContainingIgnoringCase(value, value);
   }
 
-  public void save(Template template) {
+  public void save(CampaignTemplate template) {
     templateRepository.save(template);
   }
 
-  public void delete(Template unsubscribe) {
+  public void delete(CampaignTemplate unsubscribe) {
     templateRepository.delete(unsubscribe);
   }
 
-  public Template newTemplate() {
-    return Template.builder()
+  public CampaignTemplate newTemplate() {
+    return CampaignTemplate.builder()
         .build();
   }
 }
