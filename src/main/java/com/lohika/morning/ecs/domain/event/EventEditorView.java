@@ -45,11 +45,11 @@ public class EventEditorView extends HorizontalLayout implements View {
     /* Action buttons */
     private Button saveBtn = new Button("Save", VaadinIcons.CHECK);
     private Button cancelBtn = new Button("Cancel");
-    private Button importTalksBtn = new Button("Import Talks and Speakers", VaadinIcons.ARROW_DOWN);
+    private Button importTalksBtn = new Button("Import Talks and Speakers", VaadinIcons.DOWNLOAD);
     private HorizontalLayout actions = new HorizontalLayout(saveBtn, cancelBtn);
 
     private TalksList talksList;
-    private final FormLayout editForm = new FormLayout();
+    private final FormLayout editForm;
     private final VerticalLayout talksPanel;
 
     private Binder<MorningEvent> binder = new BeanValidationBinder<>(MorningEvent.class);
@@ -58,14 +58,19 @@ public class EventEditorView extends HorizontalLayout implements View {
     public EventEditorView(EventService eventService, TalkService talkService) {
         this.eventService = eventService;
         this.talkService = talkService;
-        editForm.addComponents(eventNumber, name, description, date, ticketsUrl, actions);
+
+        name.setWidth(100, Unit.PERCENTAGE);
+        description.setWidth(100, Unit.PERCENTAGE);
+        ticketsUrl.setWidth(100, Unit.PERCENTAGE);
+
+        editForm = new FormLayout(eventNumber, name, description, date, ticketsUrl, actions);
 
         talksList = new TalksList(talkService);
         talksPanel = new VerticalLayout(importTalksBtn, talksList);
         addComponents(editForm, talksPanel);
+        setWidth(100, Unit.PERCENTAGE);
 
         binder.forMemberField(eventNumber).withConverter(new StringToIntegerConverter("Please enter a number"));
-        // bind remaining fields using naming convention
         binder.bindInstanceFields(this);
 
         // set button styles
@@ -94,8 +99,10 @@ public class EventEditorView extends HorizontalLayout implements View {
 
         // add listeners
         saveBtn.addClickListener(clickEvent -> {
-            eventService.save(morningEvent);
-            navigateTo(EventDetailsView.VIEW_NAME, morningEvent.getEventNumber());
+            if (binder.validate().isOk()) {
+                eventService.save(morningEvent);
+                navigateTo(EventDetailsView.VIEW_NAME, morningEvent.getEventNumber());
+            }
         });
 
         importTalksBtn.addClickListener(clickEvent -> {
