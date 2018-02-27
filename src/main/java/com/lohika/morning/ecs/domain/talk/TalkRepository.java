@@ -9,6 +9,7 @@ import java.util.Optional;
 
 @Repository
 public interface TalkRepository extends CrudRepository<Talk, Long> {
-    List<Talk> findByEvent(MorningEvent morningEvent);
-    Optional<Talk> findByEventAndGoogleSheetsTimestamp(MorningEvent morningEvent, String googleSheetTimestamp);
+  List<Talk> findByEvent(MorningEvent morningEvent);
+
+  Optional<Talk> findByEventAndGoogleSheetsTimestamp(MorningEvent morningEvent, String googleSheetTimestamp);
 }

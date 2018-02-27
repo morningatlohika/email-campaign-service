@@ -25,18 +25,18 @@ import java.util.stream.Collectors;
 @Slf4j
 public class EventTreeView extends VerticalLayout implements View {
 
-    public static final String VIEW_NAME = "eventsTree";
+  public static final String VIEW_NAME = "eventsTree";
 
-    @Autowired
-    private EventRepository eventRepository;
+  @Autowired
+  private EventRepository eventRepository;
 
-    //private final Grid<MorningEvent> grid = new Grid<>(MorningEvent.class);
-    private final Button buttonNew = new Button("New event", VaadinIcons.PLUS);
-    private final TextField filter = new TextField();
+  //private final Grid<MorningEvent> grid = new Grid<>(MorningEvent.class);
+  private final Button buttonNew = new Button("New event", VaadinIcons.PLUS);
+  private final TextField filter = new TextField();
 
-    private final Tree tree = new Tree();
+  private final Tree tree = new Tree();
 
-    public EventTreeView() {
+  public EventTreeView() {
 //        grid.setSizeFull();
 //        grid.setSelectionMode(Grid.SelectionMode.SINGLE);
 //        grid.setColumns("eventNumber", "name", "description", "date");
@@ -45,54 +45,54 @@ public class EventTreeView extends VerticalLayout implements View {
 //        grid.setSortOrder(new GridSortOrderBuilder<MorningEvent>().thenDesc(grid.getColumn("date")).build());
 
 
-        filter.setPlaceholder("Filter by name");
-        filter.setValueChangeMode(ValueChangeMode.LAZY);
-    }
+    filter.setPlaceholder("Filter by name");
+    filter.setValueChangeMode(ValueChangeMode.LAZY);
+  }
 
-    public EventTreeView(EventRepository eventRepository, Grid<MorningEvent> grid, Component... children) {
-        super(children);
-        this.eventRepository = eventRepository;
-    }
+  public EventTreeView(EventRepository eventRepository, Grid<MorningEvent> grid, Component... children) {
+    super(children);
+    this.eventRepository = eventRepository;
+  }
 
-    private static TreeNode<MorningEvent> wrap(MorningEvent e) {
-        return new TreeNode<MorningEvent>(e) {
-            @Override
-            public String getLabel() {
-                return this.getEntity().getName();
-            }
-        };
-    }
+  private static TreeNode<MorningEvent> wrap(MorningEvent e) {
+    return new TreeNode<MorningEvent>(e) {
+      @Override
+      public String getLabel() {
+        return this.getEntity().getName();
+      }
+    };
+  }
 
-    @PostConstruct
-    void init() {
-        addListeners();
-        final HorizontalLayout actions = new HorizontalLayout(buttonNew, filter);
-        addComponents(actions, tree);
+  @PostConstruct
+  void init() {
+    addListeners();
+    final HorizontalLayout actions = new HorizontalLayout(buttonNew, filter);
+    addComponents(actions, tree);
 //        listEvents();
-    }
+  }
 
-    @Override
-    public void enter(ViewChangeListener.ViewChangeEvent event) {
-        TreeData<Labelable> eventsData = new TreeData<>();
-        List<Labelable> treeNodes = eventRepository.findAll().stream().map(EventTreeView::wrap).collect(Collectors.toList());
+  @Override
+  public void enter(ViewChangeListener.ViewChangeEvent event) {
+    TreeData<Labelable> eventsData = new TreeData<>();
+    List<Labelable> treeNodes = eventRepository.findAll().stream().map(EventTreeView::wrap).collect(Collectors.toList());
 
-        eventsData.addRootItems(treeNodes);
+    eventsData.addRootItems(treeNodes);
 
-        tree.setDataProvider(new TreeDataProvider<>(eventsData));
+    tree.setDataProvider(new TreeDataProvider<>(eventsData));
 
-        //listEvents();
-    }
+    //listEvents();
+  }
 
-    private void addListeners() {
-        // Connect selected MorningEvent to editor or hide if none is selected
+  private void addListeners() {
+    // Connect selected MorningEvent to editor or hide if none is selected
 //        grid.asSingleSelect()
 //                .addValueChangeListener(selectRowEvent -> getUI().getNavigator().navigateTo(EventEditorView.VIEW_NAME + "/" + selectRowEvent.getValue().getId()));
 
-        buttonNew.addClickListener(clickEvent -> getUI().getNavigator().navigateTo(EventEditorView.VIEW_NAME));
+    buttonNew.addClickListener(clickEvent -> getUI().getNavigator().navigateTo(EventEditorView.VIEW_NAME));
 
-        // Replace listing with filtered content when user changes filter
+    // Replace listing with filtered content when user changes filter
 //        filter.addValueChangeListener(e -> listEvents(e.getValue()));
-    }
+  }
 
 //    private void listEvents() {
 //        grid.setItems(eventRepository.findAll());
@@ -107,24 +107,24 @@ public class EventTreeView extends VerticalLayout implements View {
 
 @FunctionalInterface
 interface Labelable {
-    String getLabel();
+  String getLabel();
 }
 
 abstract class TreeNode<T> implements Labelable {
-    private T entity;
+  private T entity;
 
-    public TreeNode(T entity) {
-        this.entity = entity;
-    }
+  public TreeNode(T entity) {
+    this.entity = entity;
+  }
 
-    T getEntity() {
-        return this.entity;
-    }
+  T getEntity() {
+    return this.entity;
+  }
 
-    @Override
-    public String toString() {
-        return getLabel();
-    }
+  @Override
+  public String toString() {
+    return getLabel();
+  }
 }
 
 

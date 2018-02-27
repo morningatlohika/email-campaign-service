@@ -11,28 +11,28 @@ import org.springframework.stereotype.Service;
 @Scope("prototype")
 public class TestDataGenerator {
 
-    @Autowired
-    private EventRepository eventRepository;
+  @Autowired
+  private EventRepository eventRepository;
 
-    @Autowired
-    private TalkRepository talkRepository;
+  @Autowired
+  private TalkRepository talkRepository;
 
-    @Autowired
-    private SpeakerRepository speakerRepository;
+  @Autowired
+  private SpeakerRepository speakerRepository;
 
-    public EventDataBuilder event(String name) {
-        return new EventDataBuilder(eventRepository).event(name);
-    }
+  public EventDataBuilder event(String name) {
+    return new EventDataBuilder(eventRepository).event(name);
+  }
 
-    public TalkDataBuilder talk(String title) {
-        return new TalkDataBuilder(talkRepository).talk(title);
-    }
+  public TalkDataBuilder talk(String title) {
+    return new TalkDataBuilder(talkRepository).talk(title);
+  }
 
-    public SpeakerDataBuilder speaker(String firstName, String lastName) {
-        return new SpeakerDataBuilder(speakerRepository).speaker(firstName, lastName);
-    }
+  public SpeakerDataBuilder speaker(String firstName, String lastName) {
+    return new SpeakerDataBuilder(speakerRepository).speaker(firstName, lastName);
+  }
 
-    public SpeakerDataBuilder speaker(String firstName) {
-        return new SpeakerDataBuilder(speakerRepository).speaker(firstName, firstName + "brown");
-    }
+  public SpeakerDataBuilder speaker(String firstName) {
+    return new SpeakerDataBuilder(speakerRepository).speaker(firstName, firstName + "brown");
+  }
 }

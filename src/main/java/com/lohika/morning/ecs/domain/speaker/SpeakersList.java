@@ -9,14 +9,14 @@ import com.vaadin.ui.TabSheet;
 @UIScope
 public class SpeakersList extends TabSheet {
 
-    public SpeakersList() {
-        setWidth(500, Unit.PIXELS);
-        setHeight(500, Unit.PIXELS);
-    }
+  public SpeakersList() {
+    setWidth(500, Unit.PIXELS);
+    setHeight(500, Unit.PIXELS);
+  }
 
-    public void displaySpeakers(Talk talk) {
-        removeAllComponents();
-        talk.getSpeakers().forEach(speaker -> addTab(new SpeakerPanel(speaker), speaker.getFullName()));
-    }
+  public void displaySpeakers(Talk talk) {
+    removeAllComponents();
+    talk.getSpeakers().forEach(speaker -> addTab(new SpeakerPanel(speaker), speaker.getFullName()));
+  }
 
 }

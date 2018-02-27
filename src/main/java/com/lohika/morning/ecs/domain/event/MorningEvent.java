@@ -23,26 +23,26 @@ import java.time.LocalDate;
 @Builder
 @Data
 public class MorningEvent {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private Long id;
 
-    @Column(unique = true)
-    @NotNull
-    private int eventNumber;
+  @Column(unique = true)
+  @NotNull
+  private int eventNumber;
 
-    @Column(unique = true)
-    @NotEmpty
-    private String name;
+  @Column(unique = true)
+  @NotEmpty
+  private String name;
 
-    @NotEmpty
-    @Column(length = 2000)
-    private String description;
+  @NotEmpty
+  @Column(length = 2000)
+  private String description;
 
-    @NotNull
-    @Future
-    private LocalDate date;
+  @NotNull
+  @Future
+  private LocalDate date;
 
-    @NotEmpty
-    private String ticketsUrl;
+  @NotEmpty
+  private String ticketsUrl;
 }

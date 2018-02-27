@@ -28,29 +28,29 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 public class Talk {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private Long id;
 
-    @OneToOne
-    @NotNull
-    private MorningEvent event;
+  @OneToOne
+  @NotNull
+  private MorningEvent event;
 
-    @Column(unique = true)
-    @NotEmpty
-    private String title;
+  @Column(unique = true)
+  @NotEmpty
+  private String title;
 
-    @Column(length = 5000)
-    @NotEmpty
-    private String theses;
+  @Column(length = 5000)
+  @NotEmpty
+  private String theses;
 
-    /**
-     * Used during re-import to identify talks to update
-     */
-    @Column(unique = true)
-    @NotNull
-    private String googleSheetsTimestamp;
+  /**
+   * Used during re-import to identify talks to update
+   */
+  @Column(unique = true)
+  @NotNull
+  private String googleSheetsTimestamp;
 
-    @OneToMany(mappedBy = "talk", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<Speaker> speakers;
+  @OneToMany(mappedBy = "talk", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+  private List<Speaker> speakers;
 }

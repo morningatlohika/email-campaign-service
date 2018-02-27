@@ -11,16 +11,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class EmailController {
 
-    @Autowired
-    private ExchangeService exchangeService;
+  @Autowired
+  private ExchangeService exchangeService;
 
-    @PostMapping("email")
-    public void sendTestEmail(@RequestBody EmailRequest request) throws Exception {
-        EmailMessage msg = new EmailMessage(exchangeService);
-        msg.setSubject(request.getSubject());
-        msg.setBody(MessageBody.getMessageBodyFromText(request.getContent()));
-        msg.getToRecipients().add(request.getTo());
-        msg.send();
-    }
+  @PostMapping("email")
+  public void sendTestEmail(@RequestBody EmailRequest request) throws Exception {
+    EmailMessage msg = new EmailMessage(exchangeService);
+    msg.setSubject(request.getSubject());
+    msg.setBody(MessageBody.getMessageBodyFromText(request.getContent()));
+    msg.getToRecipients().add(request.getTo());
+    msg.send();
+  }
 
 }

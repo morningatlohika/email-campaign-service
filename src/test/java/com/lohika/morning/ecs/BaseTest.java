@@ -11,22 +11,22 @@ import org.springframework.test.context.ActiveProfiles;
 @ActiveProfiles("test")
 public class BaseTest {
 
-    @Autowired
-    protected TestDataGenerator given;
+  @Autowired
+  protected TestDataGenerator given;
 
-    @Autowired
-    protected EventRepository eventRepository;
+  @Autowired
+  protected EventRepository eventRepository;
 
-    @Autowired
-    protected TalkRepository talkRepository;
+  @Autowired
+  protected TalkRepository talkRepository;
 
-    @Autowired
-    protected SpeakerRepository speakerRepository;
+  @Autowired
+  protected SpeakerRepository speakerRepository;
 
-    @After
-    public void cleanUp() {
-        speakerRepository.deleteAll();
-        talkRepository.deleteAll();
-        eventRepository.deleteAll();
-    }
+  @After
+  public void cleanUp() {
+    speakerRepository.deleteAll();
+    talkRepository.deleteAll();
+    eventRepository.deleteAll();
+  }
 }

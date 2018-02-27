@@ -6,11 +6,12 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import java.util.List;
 
 public interface EventRepository extends PagingAndSortingRepository<MorningEvent, Long> {
-    List<MorningEvent> findAll();
-    List<MorningEvent> findByNameContainsIgnoreCase(String pattern);
+  List<MorningEvent> findAll();
 
-    @Query("SELECT coalesce(max(e.eventNumber), 0) FROM MorningEvent e")
-    Integer findMaxEventNumber();
+  List<MorningEvent> findByNameContainsIgnoreCase(String pattern);
 
-    MorningEvent findByEventNumber(int eventNumber);
+  @Query("SELECT coalesce(max(e.eventNumber), 0) FROM MorningEvent e")
+  Integer findMaxEventNumber();
+
+  MorningEvent findByEventNumber(int eventNumber);
 }

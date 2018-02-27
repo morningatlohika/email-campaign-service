@@ -24,73 +24,73 @@ import static com.lohika.morning.ecs.utils.EcsUtils.formatString;
 @Slf4j
 public class EventListSideBarView extends VerticalLayout implements View {
 
-    public static final String VIEW_NAME = "eventsSb";
+  public static final String VIEW_NAME = "eventsSb";
 
-    @Autowired
-    private EventRepository eventRepository;
+  @Autowired
+  private EventRepository eventRepository;
 
-    private final Grid<MorningEvent> grid = new Grid<>();
-    private final Button buttonNew = new Button("New event", VaadinIcons.PLUS);
-    private final TextField filter = new TextField();
+  private final Grid<MorningEvent> grid = new Grid<>();
+  private final Button buttonNew = new Button("New event", VaadinIcons.PLUS);
+  private final TextField filter = new TextField();
 
-    public EventListSideBarView() {
-        grid.setSizeFull();
-        grid.setWidth("250px");
-        grid.setSelectionMode(Grid.SelectionMode.SINGLE);
+  public EventListSideBarView() {
+    grid.setSizeFull();
+    grid.setWidth("250px");
+    grid.setSelectionMode(Grid.SelectionMode.SINGLE);
 
-        grid.setHeaderVisible(false);
-        grid.setBodyRowHeight(75);
+    grid.setHeaderVisible(false);
+    grid.setBodyRowHeight(75);
 
-        Grid.Column<MorningEvent, VerticalLayout> eventColumn = grid.addComponentColumn(morningEvent -> {
-            Label eventName = new Label(formatString("<em>{}: {}</em>", morningEvent.getEventNumber(), morningEvent.getName()), ContentMode.HTML);
-            Label eventDate = new Label(morningEvent.getDate().toString());
-            VerticalLayout root = new VerticalLayout(eventName, eventDate);
-            root.setSpacing(false);
-            root.setMargin(false);
-            root.addLayoutClickListener(clickEvent -> grid.select(morningEvent));
+    Grid.Column<MorningEvent, VerticalLayout> eventColumn = grid.addComponentColumn(morningEvent -> {
+      Label eventName = new Label(formatString("<em>{}: {}</em>", morningEvent.getEventNumber(), morningEvent.getName()), ContentMode.HTML);
+      Label eventDate = new Label(morningEvent.getDate().toString());
+      VerticalLayout root = new VerticalLayout(eventName, eventDate);
+      root.setSpacing(false);
+      root.setMargin(false);
+      root.addLayoutClickListener(clickEvent -> grid.select(morningEvent));
 
-            return root;
-        });
+      return root;
+    });
 
-        filter.setPlaceholder("Filter by name");
-        filter.setValueChangeMode(ValueChangeMode.LAZY);
-    }
+    filter.setPlaceholder("Filter by name");
+    filter.setValueChangeMode(ValueChangeMode.LAZY);
+  }
 
-    public EventListSideBarView(EventRepository eventRepository, Grid<MorningEvent> grid, Component... children) {
-        super(children);
-        this.eventRepository = eventRepository;
-    }
+  public EventListSideBarView(EventRepository eventRepository, Grid<MorningEvent> grid, Component... children) {
+    super(children);
+    this.eventRepository = eventRepository;
+  }
 
-    @PostConstruct
-    void init() {
-        addListeners();
-        final HorizontalLayout actions = new HorizontalLayout(buttonNew, filter);
-        addComponents(actions, grid);
-        listEvents();
-    }
+  @PostConstruct
+  void init() {
+    addListeners();
+    final HorizontalLayout actions = new HorizontalLayout(buttonNew, filter);
+    addComponents(actions, grid);
+    listEvents();
+  }
 
-    @Override
-    public void enter(ViewChangeListener.ViewChangeEvent event) {
-        listEvents();
-    }
+  @Override
+  public void enter(ViewChangeListener.ViewChangeEvent event) {
+    listEvents();
+  }
 
-    private void addListeners() {
-        // Connect selected MorningEvent to editor or hide if none is selected
-        grid.asSingleSelect()
-                    .addValueChangeListener(selectRowEvent -> getUI().getNavigator().navigateTo(EventEditorView.VIEW_NAME + "/" + selectRowEvent.getValue().getEventNumber()));
+  private void addListeners() {
+    // Connect selected MorningEvent to editor or hide if none is selected
+    grid.asSingleSelect()
+            .addValueChangeListener(selectRowEvent -> getUI().getNavigator().navigateTo(EventEditorView.VIEW_NAME + "/" + selectRowEvent.getValue().getEventNumber()));
 
-        buttonNew.addClickListener(clickEvent -> getUI().getNavigator().navigateTo(EventEditorView.VIEW_NAME));
+    buttonNew.addClickListener(clickEvent -> getUI().getNavigator().navigateTo(EventEditorView.VIEW_NAME));
 
-        // Replace listing with filtered content when user changes filter
-        filter.addValueChangeListener(e -> listEvents(e.getValue()));
-    }
+    // Replace listing with filtered content when user changes filter
+    filter.addValueChangeListener(e -> listEvents(e.getValue()));
+  }
 
-    private void listEvents() {
-        grid.setItems(eventRepository.findAll());
-    }
+  private void listEvents() {
+    grid.setItems(eventRepository.findAll());
+  }
 
-    private void listEvents(String filterText) {
-        grid.setItems(eventRepository.findByNameContainsIgnoreCase(filterText));
-    }
+  private void listEvents(String filterText) {
+    grid.setItems(eventRepository.findByNameContainsIgnoreCase(filterText));
+  }
 
 }

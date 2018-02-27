@@ -13,15 +13,15 @@ import javax.annotation.PostConstruct;
 @Slf4j
 public class TalkView extends VerticalLayout implements View {
 
-    public static final String VIEW_NAME = "talks";
+  public static final String VIEW_NAME = "talks";
 
-    @PostConstruct
-    void init() {
-        addComponent(new Label("This is a talks view"));
-    }
+  @PostConstruct
+  void init() {
+    addComponent(new Label("This is a talks view"));
+  }
 
-    @Override
-    public void enter(ViewChangeListener.ViewChangeEvent event) {
-        log.debug("Opening talks view");
-    }
+  @Override
+  public void enter(ViewChangeListener.ViewChangeEvent event) {
+    log.debug("Opening talks view");
+  }
 }

@@ -24,36 +24,36 @@ import javax.persistence.Table;
 @NoArgsConstructor
 @Builder
 public class Speaker {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private Long id;
 
-    @NotEmpty
-    private String firstName;
+  @NotEmpty
+  private String firstName;
 
-    @NotEmpty
-    private String lastName;
+  @NotEmpty
+  private String lastName;
 
-    @NotEmpty
-    private String company;
+  @NotEmpty
+  private String company;
 
-    private String position;
+  private String position;
 
-    private String webProfileUrl;
+  private String webProfileUrl;
 
-    @NotEmpty
-    @Column(length = 1000)
-    private String about;
+  @NotEmpty
+  @Column(length = 1000)
+  private String about;
 
-    @NotEmpty
-    @Column
-    private String photoUrl;
+  @NotEmpty
+  @Column
+  private String photoUrl;
 
-    @ManyToOne
-    @JoinColumn(name = "talkId")
-    private Talk talk;
+  @ManyToOne
+  @JoinColumn(name = "talkId")
+  private Talk talk;
 
-    public String getFullName() {
-        return EcsUtils.formatString("{} {}", firstName, lastName);
-    }
+  public String getFullName() {
+    return EcsUtils.formatString("{} {}", firstName, lastName);
+  }
 }

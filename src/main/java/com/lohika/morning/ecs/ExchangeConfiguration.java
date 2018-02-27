@@ -16,48 +16,48 @@ import java.net.URI;
 @Slf4j
 public class ExchangeConfiguration {
 
-    @Value("${exchange.username}")
-    private String user;
+  @Value("${exchange.username}")
+  private String user;
 
-    @Value("${exchange.password}")
-    private String pwd;
+  @Value("${exchange.password}")
+  private String pwd;
 
-    @Value("${exchange.trace.enabled}")
-    private boolean exchangeTraceEnabled;
+  @Value("${exchange.trace.enabled}")
+  private boolean exchangeTraceEnabled;
 
-    @Value("${exchange.default-url}")
-    private String exchangeServiceDefaultUrl;
+  @Value("${exchange.default-url}")
+  private String exchangeServiceDefaultUrl;
 
-    @Value("${exchange.autodiscovery.enabled}")
-    private boolean exchangeAutodiscoveryEnabled;
+  @Value("${exchange.autodiscovery.enabled}")
+  private boolean exchangeAutodiscoveryEnabled;
 
-    @Bean
-    public ExchangeService exchangeService() throws Exception {
-        ExchangeService service = new ExchangeService(ExchangeVersion.Exchange2010_SP2);
+  @Bean
+  public ExchangeService exchangeService() throws Exception {
+    ExchangeService service = new ExchangeService(ExchangeVersion.Exchange2010_SP2);
 
-        ExchangeCredentials credentials = new WebCredentials(user, pwd);
-        service.setCredentials(credentials);
+    ExchangeCredentials credentials = new WebCredentials(user, pwd);
+    service.setCredentials(credentials);
 
-        service.setTraceListener((traceType, traceMessage) -> log.info("Type: {}; Message: {}", traceType, traceMessage));
-        service.setTraceEnabled(exchangeTraceEnabled);
+    service.setTraceListener((traceType, traceMessage) -> log.info("Type: {}; Message: {}", traceType, traceMessage));
+    service.setTraceEnabled(exchangeTraceEnabled);
 
-        service.setUrl(new URI(exchangeServiceDefaultUrl));
+    service.setUrl(new URI(exchangeServiceDefaultUrl));
 
-        if (exchangeAutodiscoveryEnabled) {
-            log.info("Auto-discovering exchange service URL...");
+    if (exchangeAutodiscoveryEnabled) {
+      log.info("Auto-discovering exchange service URL...");
 
-            try {
-                service.autodiscoverUrl(user, url -> {
-                    log.info("Autodiscovered exchange service URL: {}", url.toLowerCase());
-                    return url.toLowerCase().startsWith("https://");
-                });
-            } catch (AutodiscoverLocalException e) {
-                log.warn("Exchange service autodiscovery failed. Using default exchange service URL");
-            }
-        }
-
-        log.info("Final exchange service URL: {}", service.getUrl());
-
-        return service;
+      try {
+        service.autodiscoverUrl(user, url -> {
+          log.info("Autodiscovered exchange service URL: {}", url.toLowerCase());
+          return url.toLowerCase().startsWith("https://");
+        });
+      } catch (AutodiscoverLocalException e) {
+        log.warn("Exchange service autodiscovery failed. Using default exchange service URL");
+      }
     }
+
+    log.info("Final exchange service URL: {}", service.getUrl());
+
+    return service;
+  }
 }

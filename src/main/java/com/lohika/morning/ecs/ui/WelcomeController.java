@@ -9,13 +9,13 @@ import java.util.Map;
 @Controller
 public class WelcomeController {
 
-    @Value("${welcome-message:test}")
-    private String message;
+  @Value("${welcome-message:test}")
+  private String message;
 
-    @RequestMapping("/")
-    public String welcome(Map<String, Object> model) {
-        model.put("message", this.message);
-        return "welcome";
-    }
+  @RequestMapping("/")
+  public String welcome(Map<String, Object> model) {
+    model.put("message", this.message);
+    return "welcome";
+  }
 
 }
