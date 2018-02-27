@@ -93,6 +93,9 @@ public class CampaignTemplateEditView extends HorizontalLayout implements View {
   }
 
   private void editCampaignTemplate(Button.ClickEvent clickEvent) {
+    if (binder.validate().hasErrors()) {
+      return;
+    }
     CampaignTemplate template = binder.getBean();
     campaignTemplateService.save(template);
     getUI().getNavigator().navigateTo(CampaignTemplateListView.VIEW_NAME);
