@@ -30,101 +30,101 @@ import static com.lohika.morning.ecs.utils.EcsUtils.formatString;
 @SpringView(name = EventEditorView.VIEW_NAME)
 @Slf4j
 public class EventEditorView extends HorizontalLayout implements View {
-    public static final String VIEW_NAME = "editEvent";
+  public static final String VIEW_NAME = "editEvent";
 
-    private final EventService eventService;
-    private final TalkService talkService;
+  private final EventService eventService;
+  private final TalkService talkService;
 
-    /* Fields to edit properties in MorningEvent entity */
-    private TextField eventNumber = new TextField("Event number");
-    private TextField name = new TextField("Name");
-    private RichTextArea description = new RichTextArea("Description");
-    private DateField date = new DateField("Date");
-    private TextField ticketsUrl = new TextField("Tickets URL");
+  /* Fields to edit properties in MorningEvent entity */
+  private TextField eventNumber = new TextField("Event number");
+  private TextField name = new TextField("Name");
+  private RichTextArea description = new RichTextArea("Description");
+  private DateField date = new DateField("Date");
+  private TextField ticketsUrl = new TextField("Tickets URL");
 
-    /* Action buttons */
-    private Button saveBtn = new Button("Save", VaadinIcons.CHECK);
-    private Button cancelBtn = new Button("Cancel");
-    private Button importTalksBtn = new Button("Import Talks and Speakers", VaadinIcons.DOWNLOAD);
-    private HorizontalLayout actions = new HorizontalLayout(saveBtn, cancelBtn);
+  /* Action buttons */
+  private Button saveBtn = new Button("Save", VaadinIcons.CHECK);
+  private Button cancelBtn = new Button("Cancel");
+  private Button importTalksBtn = new Button("Import Talks and Speakers", VaadinIcons.DOWNLOAD);
+  private HorizontalLayout actions = new HorizontalLayout(saveBtn, cancelBtn);
 
-    private TalksList talksList;
-    private final FormLayout editForm;
-    private final VerticalLayout talksPanel;
+  private TalksList talksList;
+  private final FormLayout editForm;
+  private final VerticalLayout talksPanel;
 
-    private Binder<MorningEvent> binder = new BeanValidationBinder<>(MorningEvent.class);
+  private Binder<MorningEvent> binder = new BeanValidationBinder<>(MorningEvent.class);
 
-    @Autowired
-    public EventEditorView(EventService eventService, TalkService talkService) {
-        this.eventService = eventService;
-        this.talkService = talkService;
+  @Autowired
+  public EventEditorView(EventService eventService, TalkService talkService) {
+    this.eventService = eventService;
+    this.talkService = talkService;
 
-        name.setWidth(100, Unit.PERCENTAGE);
-        description.setWidth(100, Unit.PERCENTAGE);
-        ticketsUrl.setWidth(100, Unit.PERCENTAGE);
+    name.setWidth(100, Unit.PERCENTAGE);
+    description.setWidth(100, Unit.PERCENTAGE);
+    ticketsUrl.setWidth(100, Unit.PERCENTAGE);
 
-        editForm = new FormLayout(eventNumber, name, description, date, ticketsUrl, actions);
+    editForm = new FormLayout(eventNumber, name, description, date, ticketsUrl, actions);
 
-        talksList = new TalksList(talkService);
-        talksPanel = new VerticalLayout(importTalksBtn, talksList);
-        addComponents(editForm, talksPanel);
-        setWidth(100, Unit.PERCENTAGE);
+    talksList = new TalksList(talkService);
+    talksPanel = new VerticalLayout(importTalksBtn, talksList);
+    addComponents(editForm, talksPanel);
+    setWidth(100, Unit.PERCENTAGE);
 
-        binder.forMemberField(eventNumber).withConverter(new StringToIntegerConverter("Please enter a number"));
-        binder.bindInstanceFields(this);
+    binder.forMemberField(eventNumber).withConverter(new StringToIntegerConverter("Please enter a number"));
+    binder.bindInstanceFields(this);
 
-        // set button styles
-        saveBtn.setStyleName(ValoTheme.BUTTON_PRIMARY);
-        saveBtn.setClickShortcut(ShortcutAction.KeyCode.ENTER);
+    // set button styles
+    saveBtn.setStyleName(ValoTheme.BUTTON_PRIMARY);
+    saveBtn.setClickShortcut(ShortcutAction.KeyCode.ENTER);
 
-        cancelBtn.setClickShortcut(ShortcutAction.KeyCode.ESCAPE);
+    cancelBtn.setClickShortcut(ShortcutAction.KeyCode.ESCAPE);
+  }
+
+  @PostConstruct
+  void init() {
+    log.info("========> EventEditorView @PostConstruct");
+  }
+
+  @Override
+  public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
+    MorningEvent morningEvent = initMorningEvent(viewChangeEvent);
+    binder.setBean(morningEvent);
+    talksList.displayTalks(morningEvent);
+
+    // set button states
+    final boolean isEventEditable = morningEvent.getDate().isAfter(LocalDate.now());
+    final boolean isEventPersisted = morningEvent.getId() != null;
+    saveBtn.setEnabled(isEventEditable);
+    importTalksBtn.setEnabled(isEventPersisted && isEventEditable);
+
+    // add listeners
+    saveBtn.addClickListener(clickEvent -> {
+      if (binder.validate().isOk()) {
+        eventService.save(morningEvent);
+        navigateTo(EventDetailsView.VIEW_NAME, morningEvent.getEventNumber());
+      }
+    });
+
+    importTalksBtn.addClickListener(clickEvent -> {
+      talkService.importTalks(morningEvent);
+      talksList.displayTalks(morningEvent);
+    });
+
+    cancelBtn.addClickListener(clickEvent -> navigateTo(EventDetailsView.VIEW_NAME, morningEvent.getEventNumber()));
+  }
+
+  private void navigateTo(String viewName, int id) {
+    getUI().getNavigator().navigateTo(formatString("{}/{}", viewName, id));
+  }
+
+  private MorningEvent initMorningEvent(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
+    if (StringUtils.EMPTY.equals(viewChangeEvent.getParameters())) {
+      return eventService.newEvent();
     }
 
-    @PostConstruct
-    void init() {
-        log.info("========> EventEditorView @PostConstruct");
-    }
-
-    @Override
-    public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
-        MorningEvent morningEvent = initMorningEvent(viewChangeEvent);
-        binder.setBean(morningEvent);
-        talksList.displayTalks(morningEvent);
-
-        // set button states
-        final boolean isEventEditable = morningEvent.getDate().isAfter(LocalDate.now());
-        final boolean isEventPersisted = morningEvent.getId() != null;
-        saveBtn.setEnabled(isEventEditable);
-        importTalksBtn.setEnabled(isEventPersisted && isEventEditable);
-
-        // add listeners
-        saveBtn.addClickListener(clickEvent -> {
-            if (binder.validate().isOk()) {
-                eventService.save(morningEvent);
-                navigateTo(EventDetailsView.VIEW_NAME, morningEvent.getEventNumber());
-            }
-        });
-
-        importTalksBtn.addClickListener(clickEvent -> {
-            talkService.importTalks(morningEvent);
-            talksList.displayTalks(morningEvent);
-        });
-
-        cancelBtn.addClickListener(clickEvent -> navigateTo(EventDetailsView.VIEW_NAME, morningEvent.getEventNumber()));
-    }
-
-    private void navigateTo(String viewName, int id) {
-        getUI().getNavigator().navigateTo(formatString("{}/{}", viewName, id));
-    }
-
-    private MorningEvent initMorningEvent(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
-        if (StringUtils.EMPTY.equals(viewChangeEvent.getParameters())) {
-            return eventService.newEvent();
-        }
-
-        // TODO: handle exceptions (invalid ID etc.)
-        int morningEventNumber = Integer.parseInt(viewChangeEvent.getParameters());
-        return eventService.getEventByNumber(morningEventNumber);
-    }
+    // TODO: handle exceptions (invalid ID etc.)
+    int morningEventNumber = Integer.parseInt(viewChangeEvent.getParameters());
+    return eventService.getEventByNumber(morningEventNumber);
+  }
 
 }

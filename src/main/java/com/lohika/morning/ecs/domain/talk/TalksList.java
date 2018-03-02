@@ -14,23 +14,23 @@ import static com.lohika.morning.ecs.utils.EcsUtils.isEditable;
 @SpringComponent
 @UIScope
 public class TalksList extends TabSheet {
-    private final TalkService talkService;
+  private final TalkService talkService;
 
-    public TalksList(TalkService talkService) {
-        this.talkService = talkService;
-        setWidth(100, Unit.PERCENTAGE);
-        setHeight(100, Unit.PERCENTAGE);
+  public TalksList(TalkService talkService) {
+    this.talkService = talkService;
+    setWidth(100, Unit.PERCENTAGE);
+    setHeight(100, Unit.PERCENTAGE);
+  }
+
+  public void displayTalks(MorningEvent morningEvent) {
+    removeAllComponents();
+    List<Talk> talks = talkService.getTalks(morningEvent);
+
+    if (CollectionUtils.isEmpty(talks)) {
+      addComponent(new Label("There are no talks for this event yet"));
     }
 
-    public void displayTalks(MorningEvent morningEvent) {
-        removeAllComponents();
-        List<Talk> talks = talkService.getTalks(morningEvent);
-
-        if (CollectionUtils.isEmpty(talks)) {
-            addComponent(new Label("There are no talks for this event yet"));
-        }
-
-        talks.forEach(talk -> addTab(new TalkPanel(talk, isEditable(morningEvent)), talk.getTitle()));
-    }
+    talks.forEach(talk -> addTab(new TalkPanel(talk, isEditable(morningEvent)), talk.getTitle()));
+  }
 
 }

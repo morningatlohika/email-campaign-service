@@ -7,12 +7,12 @@ import java.time.LocalDate;
 
 public class FutureValidator implements ConstraintValidator<Future, LocalDate> {
 
-    @Override
-    public void initialize(Future constraintAnnotation) {
-    }
+  @Override
+  public void initialize(Future constraintAnnotation) {
+  }
 
-    @Override
-    public boolean isValid(LocalDate value, ConstraintValidatorContext context) {
-        return value == null || value.isAfter(LocalDate.now()) ;
-    }
+  @Override
+  public boolean isValid(LocalDate value, ConstraintValidatorContext context) {
+    return value == null || value.isAfter(LocalDate.now());
+  }
 }

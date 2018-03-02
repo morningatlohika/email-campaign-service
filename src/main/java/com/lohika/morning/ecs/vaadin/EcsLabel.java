@@ -10,7 +10,8 @@ import static com.lohika.morning.ecs.utils.EcsUtils.formatString;
 
 public class EcsLabel extends Label implements HasValue<String> {
   private boolean isLink = false;
-  private static final Listener VOID_LISTENER = e -> {};
+  private static final Listener VOID_LISTENER = e -> {
+  };
 
   public EcsLabel(String caption) {
     setCaptionAsHtml(true);

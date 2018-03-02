@@ -8,26 +8,26 @@ import java.time.temporal.ChronoUnit;
 
 @Service
 public class EventService {
-    @Autowired
-    private EventRepository repository;
+  @Autowired
+  private EventRepository repository;
 
-    public MorningEvent newEvent() {
-        return MorningEvent.builder()
-                .eventNumber(repository.findMaxEventNumber() + 1)
-                // set event date 2 weeks ahead by default
-                .date(LocalDate.now().plus(2, ChronoUnit.WEEKS))
-                .build();
-    }
+  public MorningEvent newEvent() {
+    return MorningEvent.builder()
+            .eventNumber(repository.findMaxEventNumber() + 1)
+            // set event date 2 weeks ahead by default
+            .date(LocalDate.now().plus(2, ChronoUnit.WEEKS))
+            .build();
+  }
 
-    public MorningEvent getEventByNumber(int eventNumber) {
-        return repository.findByEventNumber(eventNumber);
-    }
+  public MorningEvent getEventByNumber(int eventNumber) {
+    return repository.findByEventNumber(eventNumber);
+  }
 
-    public void save(MorningEvent morningEvent) {
-        repository.save(morningEvent);
-    }
+  public void save(MorningEvent morningEvent) {
+    repository.save(morningEvent);
+  }
 
-    public void delete(MorningEvent morningEvent) {
-        repository.delete(morningEvent);
-    }
+  public void delete(MorningEvent morningEvent) {
+    repository.delete(morningEvent);
+  }
 }

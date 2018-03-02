@@ -14,28 +14,28 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.options;
 
 public class BaseControllerTest extends BaseTest {
-    public static final String HAL_JSON_CHARSET_UTF_8 = "application/hal+json;charset=UTF-8";
+  public static final String HAL_JSON_CHARSET_UTF_8 = "application/hal+json;charset=UTF-8";
 
-    @Autowired
-    private WebApplicationContext context;
+  @Autowired
+  private WebApplicationContext context;
 
-    @Autowired
-    private Filter springSecurityFilterChain;
+  @Autowired
+  private Filter springSecurityFilterChain;
 
-    protected MockMvc mockMvc;
+  protected MockMvc mockMvc;
 
-    @Rule
-    public final JUnitRestDocumentation restDocumentation = new JUnitRestDocumentation("build/generated-snippets");
+  @Rule
+  public final JUnitRestDocumentation restDocumentation = new JUnitRestDocumentation("build/generated-snippets");
 
-    @Before
-    public void setUp() {
-        this.mockMvc = MockMvcBuilders.webAppContextSetup(this.context)
-                .addFilters(springSecurityFilterChain)
-                .apply(documentationConfiguration(this.restDocumentation))
-                .defaultRequest(options("/")
-                        .accept(HAL_JSON_CHARSET_UTF_8)
-                        .header("Authorization", "Basic dXNlcjpxd2Vhc2Q=")
-                        .contentType(HAL_JSON_CHARSET_UTF_8))
-                .build();
-    }
+  @Before
+  public void setUp() {
+    this.mockMvc = MockMvcBuilders.webAppContextSetup(this.context)
+            .addFilters(springSecurityFilterChain)
+            .apply(documentationConfiguration(this.restDocumentation))
+            .defaultRequest(options("/")
+                    .accept(HAL_JSON_CHARSET_UTF_8)
+                    .header("Authorization", "Basic dXNlcjpxd2Vhc2Q=")
+                    .contentType(HAL_JSON_CHARSET_UTF_8))
+            .build();
+  }
 }

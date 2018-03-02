@@ -31,51 +31,52 @@ import java.util.List;
 @Slf4j
 public class GoogleSheetsConfiguration {
 
-    /**
-     * Global instance of the scopes required by this quickstart.
-     *
-     * If modifying these scopes, delete your previously saved credentials
-     * at ${spring.config.location}/${GOOGLE_CREDENTIALS_STORE_DIR}
-     */
-    private static final List<String> SCOPES = Arrays.asList(SheetsScopes.SPREADSHEETS_READONLY);
+  /**
+   * Global instance of the scopes required by this quickstart.
+   * <p>
+   * If modifying these scopes, delete your previously saved credentials
+   * at ${spring.config.location}/${GOOGLE_CREDENTIALS_STORE_DIR}
+   */
+  private static final List<String> SCOPES = Arrays.asList(SheetsScopes.SPREADSHEETS_READONLY);
 
-    @Value("${google.application-name}")
-    private String applicationName;
+  @Value("${google.application-name}")
+  private String applicationName;
 
-    @Bean
-    public Sheets getSheetsClient(@Autowired Environment environment) throws GeneralSecurityException, IOException {
-        JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
-        HttpTransport httpTransport = GoogleNetHttpTransport.newTrustedTransport();
-        File credentialsStore = new File(environment.getProperty(ApplicationEnvironmentTuner.SYS_PROP_GOOGLE_CREDS_STORE));
+  @Bean
+  public Sheets getSheetsClient(@Autowired Environment environment) throws GeneralSecurityException, IOException {
+    JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
+    HttpTransport httpTransport = GoogleNetHttpTransport.newTrustedTransport();
+    File credentialsStore = new File(environment.getProperty(ApplicationEnvironmentTuner.SYS_PROP_GOOGLE_CREDS_STORE));
 
-        Credential credentials = authorize(jsonFactory, httpTransport, credentialsStore);
+    Credential credentials = authorize(jsonFactory, httpTransport, credentialsStore);
 
-        return new Sheets.Builder(httpTransport, jsonFactory, credentials)
-                .setApplicationName(applicationName)
-                .build();
-    }
+    return new Sheets.Builder(httpTransport, jsonFactory, credentials)
+            .setApplicationName(applicationName)
+            .build();
+  }
 
-    /**
-     * Creates an authorized Credential object.
-     * @return an authorized Credential object.
-     * @throws IOException
-     */
-    private Credential authorize(JsonFactory jsonFactory, HttpTransport httpTransport, File credentialsStore) throws IOException {
-        FileDataStoreFactory dataStoreFactory = new FileDataStoreFactory(credentialsStore);
+  /**
+   * Creates an authorized Credential object.
+   *
+   * @return an authorized Credential object.
+   * @throws IOException
+   */
+  private Credential authorize(JsonFactory jsonFactory, HttpTransport httpTransport, File credentialsStore) throws IOException {
+    FileDataStoreFactory dataStoreFactory = new FileDataStoreFactory(credentialsStore);
 
-        // Load client secrets.
-        InputStream in = this.getClass().getResourceAsStream("/client_secret.json");
-        GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(jsonFactory, new InputStreamReader(in));
+    // Load client secrets.
+    InputStream in = this.getClass().getResourceAsStream("/client_secret.json");
+    GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(jsonFactory, new InputStreamReader(in));
 
-        // Build flow and trigger user authorization request.
-        GoogleAuthorizationCodeFlow flow =
-                new GoogleAuthorizationCodeFlow.Builder(httpTransport, jsonFactory, clientSecrets, SCOPES)
-                        .setDataStoreFactory(dataStoreFactory)
-                        .setAccessType("offline")
-                        .build();
-        Credential credential = new AuthorizationCodeInstalledApp(flow, new LocalServerReceiver()).authorize("user");
-        log.info("Credentials saved to {}", credentialsStore.getAbsolutePath());
-        return credential;
-    }
+    // Build flow and trigger user authorization request.
+    GoogleAuthorizationCodeFlow flow =
+            new GoogleAuthorizationCodeFlow.Builder(httpTransport, jsonFactory, clientSecrets, SCOPES)
+                    .setDataStoreFactory(dataStoreFactory)
+                    .setAccessType("offline")
+                    .build();
+    Credential credential = new AuthorizationCodeInstalledApp(flow, new LocalServerReceiver()).authorize("user");
+    log.info("Credentials saved to {}", credentialsStore.getAbsolutePath());
+    return credential;
+  }
 
 }

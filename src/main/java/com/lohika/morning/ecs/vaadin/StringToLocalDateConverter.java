@@ -24,25 +24,25 @@ import java.time.LocalDate;
 
 public class StringToLocalDateConverter implements Converter<String, LocalDate> {
 
-    @Override
-    public Result<LocalDate> convertToModel(String value, ValueContext context) {
-        if (value == null) {
-            return Result.ok(null);
-        }
-
-        value = value.trim();
-
-        LocalDate parsedValue = LocalDate.parse(value);
-        return Result.ok(parsedValue);
+  @Override
+  public Result<LocalDate> convertToModel(String value, ValueContext context) {
+    if (value == null) {
+      return Result.ok(null);
     }
 
-    @Override
-    public String convertToPresentation(LocalDate value, ValueContext context) {
-        if (value == null) {
-            return null;
-        }
+    value = value.trim();
 
-        return value.toString();
+    LocalDate parsedValue = LocalDate.parse(value);
+    return Result.ok(parsedValue);
+  }
+
+  @Override
+  public String convertToPresentation(LocalDate value, ValueContext context) {
+    if (value == null) {
+      return null;
     }
+
+    return value.toString();
+  }
 
 }

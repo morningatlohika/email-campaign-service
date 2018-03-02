@@ -28,73 +28,73 @@ import static com.lohika.morning.ecs.utils.EcsUtils.formatString;
 @SpringView(name = TalkEditorView.VIEW_NAME)
 @Slf4j
 public class TalkEditorView extends HorizontalLayout implements View {
-    public static final String VIEW_NAME = "editTalk";
+  public static final String VIEW_NAME = "editTalk";
 
-    private final TalkService talkService;
+  private final TalkService talkService;
 
-    /* Fields to edit properties in MorningEvent entity */
-    private TextField title = new TextField("Title");
-    private RichTextArea theses = new RichTextArea("Theses");
+  /* Fields to edit properties in MorningEvent entity */
+  private TextField title = new TextField("Title");
+  private RichTextArea theses = new RichTextArea("Theses");
 
-    /* Action buttons */
-    private Button saveBtn = new Button("Save", VaadinIcons.CHECK);
-    private Button cancelBtn = new Button("Cancel");
-    private HorizontalLayout actions = new HorizontalLayout(saveBtn, cancelBtn);
+  /* Action buttons */
+  private Button saveBtn = new Button("Save", VaadinIcons.CHECK);
+  private Button cancelBtn = new Button("Cancel");
+  private HorizontalLayout actions = new HorizontalLayout(saveBtn, cancelBtn);
 
-    private SpeakersList speakersList;
+  private SpeakersList speakersList;
 
-    private final FormLayout editForm = new FormLayout();
-    private final VerticalLayout speakersPanel;
+  private final FormLayout editForm = new FormLayout();
+  private final VerticalLayout speakersPanel;
 
-    private Binder<Talk> binder = new BeanValidationBinder<>(Talk.class);
+  private Binder<Talk> binder = new BeanValidationBinder<>(Talk.class);
 
-    @Autowired
-    public TalkEditorView(TalkService talkService, SpeakersList speakersList) {
-        this.talkService = talkService;
-        editForm.addComponents(title, theses, actions);
+  @Autowired
+  public TalkEditorView(TalkService talkService, SpeakersList speakersList) {
+    this.talkService = talkService;
+    editForm.addComponents(title, theses, actions);
 
-        this.speakersList = speakersList;
-        speakersPanel = new VerticalLayout(speakersList);
-        addComponents(editForm, speakersPanel);
+    this.speakersList = speakersList;
+    speakersPanel = new VerticalLayout(speakersList);
+    addComponents(editForm, speakersPanel);
 
-        // bind fields using naming convention
-        binder.bindInstanceFields(this);
+    // bind fields using naming convention
+    binder.bindInstanceFields(this);
 
-        // set button styles
-        saveBtn.setStyleName(ValoTheme.BUTTON_PRIMARY);
-        saveBtn.setClickShortcut(ShortcutAction.KeyCode.ENTER);
+    // set button styles
+    saveBtn.setStyleName(ValoTheme.BUTTON_PRIMARY);
+    saveBtn.setClickShortcut(ShortcutAction.KeyCode.ENTER);
 
-        cancelBtn.setClickShortcut(ShortcutAction.KeyCode.ESCAPE);
-    }
+    cancelBtn.setClickShortcut(ShortcutAction.KeyCode.ESCAPE);
+  }
 
-    @PostConstruct
-    void init() {
-        log.info("========> EventEditorView @PostConstruct");
-    }
+  @PostConstruct
+  void init() {
+    log.info("========> EventEditorView @PostConstruct");
+  }
 
-    @Override
-    public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
-        Talk talk = talkService.getTalk(Long.parseLong(viewChangeEvent.getParameters()));
+  @Override
+  public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
+    Talk talk = talkService.getTalk(Long.parseLong(viewChangeEvent.getParameters()));
 
-        binder.setBean(talk);
-        speakersList.displaySpeakers(talk);
+    binder.setBean(talk);
+    speakersList.displaySpeakers(talk);
 
-        // set button states
-        final boolean isEventEditable = talk.getEvent().getDate().isAfter(LocalDate.now());
-        saveBtn.setEnabled(isEventEditable);
+    // set button states
+    final boolean isEventEditable = talk.getEvent().getDate().isAfter(LocalDate.now());
+    saveBtn.setEnabled(isEventEditable);
 
-        // add listeners
-        saveBtn.addClickListener(clickEvent -> {
-            talkService.save(talk);
-            navigateToEventsDetails(talk.getEvent());
-        });
+    // add listeners
+    saveBtn.addClickListener(clickEvent -> {
+      talkService.save(talk);
+      navigateToEventsDetails(talk.getEvent());
+    });
 
-        cancelBtn.addClickListener(clickEvent -> navigateToEventsDetails(talk.getEvent()));
+    cancelBtn.addClickListener(clickEvent -> navigateToEventsDetails(talk.getEvent()));
 
-    }
+  }
 
-    private void navigateToEventsDetails(MorningEvent morningEvent) {
-        getUI().getNavigator().navigateTo(formatString("{}/{}", EventDetailsView.VIEW_NAME, morningEvent.getEventNumber()));
-    }
+  private void navigateToEventsDetails(MorningEvent morningEvent) {
+    getUI().getNavigator().navigateTo(formatString("{}/{}", EventDetailsView.VIEW_NAME, morningEvent.getEventNumber()));
+  }
 
 }

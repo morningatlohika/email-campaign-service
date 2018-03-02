@@ -1,7 +1,6 @@
 package com.lohika.morning.ecs.domain.attendee;
 
 import com.github.javafaker.Faker;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,13 +23,13 @@ public class AttendeeService {
       String firstName = faker.name().firstName();
       String lastName = faker.name().lastName();
       String email = String.valueOf(firstName.charAt(0)).toLowerCase() + lastName.toLowerCase()
-                     + "@" + faker.pokemon().name().toLowerCase() + ".com";
+              + "@" + faker.pokemon().name().toLowerCase() + ".com";
 
       return Attendee.builder()
-          .firstName(firstName)
-          .lastName(lastName)
-          .email(email)
-          .build();
+              .firstName(firstName)
+              .lastName(lastName)
+              .email(email)
+              .build();
     }).collect(toList());
     attendeeRepository.save(collect);
   }

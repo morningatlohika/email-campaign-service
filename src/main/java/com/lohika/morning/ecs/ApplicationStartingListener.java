@@ -13,18 +13,18 @@ import static org.springframework.boot.context.config.ConfigFileApplicationListe
 @Slf4j
 public class ApplicationStartingListener implements ApplicationListener<ApplicationStartingEvent> {
 
-    @Override
-    public void onApplicationEvent(ApplicationStartingEvent event) {
-        setSpringConfigLocation();
-    }
+  @Override
+  public void onApplicationEvent(ApplicationStartingEvent event) {
+    setSpringConfigLocation();
+  }
 
-    private static void setSpringConfigLocation() {
-        if (System.getProperty(CONFIG_LOCATION_PROPERTY) == null) {
-            log.info("{} not specified. Setting default value...", CONFIG_LOCATION_PROPERTY);
+  private static void setSpringConfigLocation() {
+    if (System.getProperty(CONFIG_LOCATION_PROPERTY) == null) {
+      log.info("{} not specified. Setting default value...", CONFIG_LOCATION_PROPERTY);
 
-            System.setProperty(CONFIG_LOCATION_PROPERTY,
-                    Paths.get(SystemUtils.USER_HOME, ".morning", "ecs").toString() + File.separator);
-        }
-        log.info("{} = {}", CONFIG_LOCATION_PROPERTY, System.getProperty(CONFIG_LOCATION_PROPERTY));
+      System.setProperty(CONFIG_LOCATION_PROPERTY,
+              Paths.get(SystemUtils.USER_HOME, ".morning", "ecs").toString() + File.separator);
     }
+    log.info("{} = {}", CONFIG_LOCATION_PROPERTY, System.getProperty(CONFIG_LOCATION_PROPERTY));
+  }
 }
