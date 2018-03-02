@@ -9,16 +9,18 @@ import com.vaadin.ui.VerticalLayout;
 
 public class TalkPanel extends VerticalLayout {
 
-    private Button editBtn = new Button(VaadinIcons.EDIT);
+    private Button editBtn = new Button("Edit", VaadinIcons.EDIT);
     private HorizontalLayout actions = new HorizontalLayout(editBtn);
     private Label theses;
 
-    public TalkPanel(Talk talk) {
-        setWidth(45, Unit.PERCENTAGE);
+    public TalkPanel(Talk talk, boolean isEditable) {
+        setWidth(100, Unit.PERCENTAGE);
         theses = new Label(talk.getTheses());
-        theses.setWidth(400, Unit.PIXELS);
+        theses.setWidth(100, Unit.PERCENTAGE);
         theses.setContentMode(ContentMode.HTML);
         addComponents(actions, theses);
+
+        editBtn.setEnabled(isEditable);
 
         editBtn.addClickListener(clickEvent -> getUI().getNavigator().navigateTo(TalkEditorView.VIEW_NAME + "/" + talk.getId()));
     }
