@@ -27,7 +27,7 @@ import static java.util.stream.Collectors.toMap;
 @Slf4j
 public class GoogleSheetsService {
 
-  @Autowired
+  @Autowired(required = false)
   private Sheets sheetsClient;
 
   @Value("${google.speaker-application-form.spreadsheet-id}")
