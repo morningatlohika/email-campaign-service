@@ -37,7 +37,7 @@ exchange:
   autodiscovery:
     # It's recommended to use autodiscovery on production.
     # Since it slows down the application startup, it may be disabled during development.
-    enabled: false
+    enabled: true
 
 google:
   creds-store-dir: sheets.googleapis.morning-speakers
@@ -46,7 +46,7 @@ google:
     spreadsheet-id: 18a-2otq5ND1T-aZTqQp3DoFk90x-OqaZU_TN4QQzK8g
     sheet-title: Form Responses 1
     range: A2:Z
-  enabled: false
+  enabled: true
 
 email-client-service:
   data-dir: data
