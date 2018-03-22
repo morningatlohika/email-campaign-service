@@ -27,7 +27,7 @@ public class EventListView extends VerticalLayout implements View {
   public static final String VIEW_NAME = "";
 
   @Autowired
-  private EventRepository eventRepository;
+  private EventService eventService;
 
   private final Grid<MorningEvent> grid = new Grid<>(MorningEvent.class);
   private final Button buttonNew = new Button("New event", VaadinIcons.PLUS);
@@ -79,11 +79,11 @@ public class EventListView extends VerticalLayout implements View {
   }
 
   private void listEvents() {
-    grid.setItems(eventRepository.findAll());
+    grid.setItems(eventService.findAll());
   }
 
   private void listEvents(String filterText) {
-    grid.setItems(eventRepository.findByNameContainsIgnoreCase(filterText));
+    grid.setItems(eventService.findByNameContainsIgnoreCase(filterText));
   }
 
 }

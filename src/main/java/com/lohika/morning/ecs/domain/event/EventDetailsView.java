@@ -1,5 +1,7 @@
 package com.lohika.morning.ecs.domain.event;
 
+import com.lohika.morning.ecs.domain.campaign.AutoCampaignService;
+import com.lohika.morning.ecs.domain.campaign.CampaignListView;
 import com.lohika.morning.ecs.domain.talk.TalkService;
 import com.lohika.morning.ecs.domain.talk.TalksList;
 import com.lohika.morning.ecs.vaadin.EcsLabel;
@@ -30,6 +32,7 @@ public class EventDetailsView extends HorizontalLayout implements View {
 
   private final EventService eventService;
   private final TalkService talkService;
+  private final AutoCampaignService autoCampaignService;
 
   /* Fields to edit properties in MorningEvent entity */
   private EcsLabel eventNumber = new EcsLabel("Event number");
@@ -40,10 +43,11 @@ public class EventDetailsView extends HorizontalLayout implements View {
 
   /* Action buttons */
   private Button editBtn = new Button("Edit", VaadinIcons.EDIT);
+  private Button autoCampaignBtn = new Button("Auto provision campaign", VaadinIcons.MODAL_LIST);
   private Button closeBtn = new Button("Close", VaadinIcons.CLOSE);
   private Button deleteBtn = new Button("Delete", VaadinIcons.TRASH);
   private Button importTalksBtn = new Button("Import Talks and Speakers", VaadinIcons.DOWNLOAD);
-  private HorizontalLayout actions = new HorizontalLayout(editBtn, deleteBtn, closeBtn);
+  private HorizontalLayout actions = new HorizontalLayout(editBtn, autoCampaignBtn, deleteBtn, closeBtn);
 
   private TalksList talksList;
   private final FormLayout eventDetails;
@@ -52,9 +56,10 @@ public class EventDetailsView extends HorizontalLayout implements View {
   private Binder<MorningEvent> binder = new Binder<>(MorningEvent.class);
 
   @Autowired
-  public EventDetailsView(EventService eventService, TalkService talkService) {
+  public EventDetailsView(EventService eventService, TalkService talkService, AutoCampaignService autoCampaignService) {
     this.eventService = eventService;
     this.talkService = talkService;
+    this.autoCampaignService = autoCampaignService;
 
     description.setContentMode(ContentMode.HTML);
     description.setWidth(100, Unit.PERCENTAGE);
@@ -95,6 +100,10 @@ public class EventDetailsView extends HorizontalLayout implements View {
     editBtn.addClickListener(clickEvent -> {
       navigateTo(EventEditorView.VIEW_NAME, morningEvent.getEventNumber());
     });
+
+    autoCampaignBtn.addClickListener(clickEvent -> {
+      autoCampaignService.autoProvisionCampaigns(morningEvent);
+      navigateTo(CampaignListView.VIEW_NAME);});
 
     deleteBtn.addClickListener(clickEvent -> {
       eventService.delete(morningEvent);

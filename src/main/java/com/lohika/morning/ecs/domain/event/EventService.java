@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 
 @Service
 public class EventService {
@@ -19,6 +20,10 @@ public class EventService {
             .build();
   }
 
+  public List<MorningEvent> findAll() {
+    return repository.findAll();
+  }
+
   public MorningEvent getEventByNumber(int eventNumber) {
     return repository.findByEventNumber(eventNumber);
   }
@@ -29,5 +34,9 @@ public class EventService {
 
   public void delete(MorningEvent morningEvent) {
     repository.delete(morningEvent);
+  }
+
+  public List<MorningEvent> findByNameContainsIgnoreCase(String text) {
+    return repository.findByNameContainsIgnoreCase(text);
   }
 }
