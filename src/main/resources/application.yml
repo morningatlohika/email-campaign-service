@@ -46,6 +46,7 @@ google:
     spreadsheet-id: 18a-2otq5ND1T-aZTqQp3DoFk90x-OqaZU_TN4QQzK8g
     sheet-title: Form Responses 1
     range: A2:Z
+  enabled: true
 
 email-client-service:
   data-dir: data
