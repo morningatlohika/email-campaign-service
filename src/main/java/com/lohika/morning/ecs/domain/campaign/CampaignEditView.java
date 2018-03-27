@@ -4,12 +4,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import com.lohika.morning.ecs.domain.event.EventDataProvider;
-import com.lohika.morning.ecs.domain.event.EventService;
 import com.lohika.morning.ecs.domain.event.MorningEvent;
 import com.vaadin.data.BeanValidationBinder;
 import com.vaadin.data.Binder;
 import com.vaadin.data.HasValue;
-import com.vaadin.data.provider.ListDataProvider;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
@@ -28,10 +26,7 @@ import com.vaadin.ui.themes.ValoTheme;
 
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 
@@ -58,17 +53,17 @@ public class CampaignEditView extends HorizontalLayout implements View {
   private final Label parentTemplateName = new Label("Parent template name");
 
   private final Button saveButton = new Button("Save", VaadinIcons.CHECK);
+  private final Button previewButton = new Button("Preview", VaadinIcons.ANGLE_DOUBLE_RIGHT);
   private final Button deleteButton = new Button("Delete", VaadinIcons.TRASH);
   private final Button cancelButton = new Button("Cancel");
   private final Binder<Campaign> binder = new BeanValidationBinder<>(Campaign.class);
 
   private final CampaignService campaignService;
-  private final EventService eventService;
 
   @PostConstruct
   public void init() {
 
-    HorizontalLayout actions = new HorizontalLayout(saveButton, deleteButton, cancelButton);
+    HorizontalLayout actions = new HorizontalLayout(saveButton, previewButton, deleteButton, cancelButton);
 
     FormLayout form = new FormLayout(name, subject, body, attendee, emails, priority, actions);
 
@@ -85,6 +80,8 @@ public class CampaignEditView extends HorizontalLayout implements View {
     saveButton.setStyleName(ValoTheme.BUTTON_PRIMARY);
     saveButton.setClickShortcut(ShortcutAction.KeyCode.ENTER);
     saveButton.addClickListener(this::editCampaign);
+
+    previewButton.addClickListener(this::previewCampaign);
 
     deleteButton.addClickListener(this::deleteCampaign);
 
@@ -119,6 +116,10 @@ public class CampaignEditView extends HorizontalLayout implements View {
     }
     campaignService.save(campaign);
     getUI().getNavigator().navigateTo(CampaignListView.VIEW_NAME);
+  }
+
+  private void previewCampaign(Button.ClickEvent clickEvent) {
+    getUI().getNavigator().navigateTo(CampaignPreviewView.VIEW_NAME + "/" + binder.getBean().getId());
   }
 
   private void deleteCampaign(Button.ClickEvent clickEvent) {

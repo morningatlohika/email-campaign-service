@@ -10,6 +10,7 @@ import com.lohika.morning.ecs.domain.event.MorningEvent;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -51,6 +52,7 @@ public class Campaign {
   private String subject = "";
 
   @NotEmpty
+  @Column(length = 2_000)
   @Builder.Default
   private String body = "";
 

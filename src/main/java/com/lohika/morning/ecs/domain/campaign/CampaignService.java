@@ -27,6 +27,7 @@ public class CampaignService {
   public List<Campaign> filterBy(String value) {
     return campaignRepository.findByNameContainingIgnoringCaseOrSubjectContainingIgnoringCase(value, value);
   }
+
   public List<Campaign> findByEventId(MorningEvent event) {
     return campaignRepository.findByEvent(event);
   }
