@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static org.hibernate.internal.util.collections.CollectionHelper.isNotEmpty;
+import static org.springframework.util.CollectionUtils.isEmpty;
 
 import static java.util.stream.Collectors.toList;
 
@@ -21,7 +21,7 @@ public class AutoCampaignService {
   private final CampaignTemplateService campaignTemplateService;
 
   public void autoProvisionCampaigns(MorningEvent event) {
-    if (isNotEmpty(campaignService.findByEventId(event))) {
+    if (!isEmpty(campaignService.findByEventId(event))) {
       throw new RuntimeException("Can not perform auto provision. Some campaign(s) exist.");
     }
 
