@@ -19,7 +19,7 @@ public class CampaignPreviewService {
   public Campaign findOne(Long id) {
     Campaign campaign = campaignService.findOne(id);
 
-    Map<String, String> variable = getVariable(campaign.getEvent());
+    Map<String, String> variable = getVariable(campaign);
 
     campaign.setSubject(processor(campaign.getSubject(), variable));
     campaign.setBody(processor(campaign.getBody(), variable));
@@ -27,11 +27,15 @@ public class CampaignPreviewService {
     return campaign;
   }
 
-  private HashMap<String, String> getVariable(MorningEvent event) {
+  private HashMap<String, String> getVariable(Campaign campaign) {
     HashMap<String, String> variable = new HashMap<>();
+    variable.put("promo_code", campaign.getPromoCode());
+
+    MorningEvent event = campaign.getEvent();
     variable.put("event_name", event.getName());
     variable.put("event_description", event.getDescription());
     variable.put("event_tickets_url", event.getTicketsUrl());
+
     return variable;
   }
 

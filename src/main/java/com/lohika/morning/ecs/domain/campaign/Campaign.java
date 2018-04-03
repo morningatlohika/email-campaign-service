@@ -65,6 +65,9 @@ public class Campaign {
   @Builder.Default
   private String emails = "";
 
+  @Builder.Default
+  private String promoCode = "";
+
   public Campaign(MorningEvent event, CampaignTemplate campaignTemplate) {
     this.event = event;
     this.campaignTemplate = campaignTemplate;
