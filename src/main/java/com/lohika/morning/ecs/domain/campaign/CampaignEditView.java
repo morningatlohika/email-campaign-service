@@ -46,6 +46,7 @@ public class CampaignEditView extends HorizontalLayout implements View {
   private final ComboBox<Integer> priority = new ComboBox<>("Select priority", PERIOD_ITEMS);
   private final CheckBox attendee = new CheckBox("For all attendee");
   private final TextField emails = new TextField("Emails");
+  private final TextField promoCode = new TextField("Promo code");
 
   private final Label eventName = new Label("Event name");
   private final ComboBox<MorningEvent> eventComboBox = new ComboBox<>("Event");
@@ -65,7 +66,7 @@ public class CampaignEditView extends HorizontalLayout implements View {
 
     HorizontalLayout actions = new HorizontalLayout(saveButton, previewButton, deleteButton, cancelButton);
 
-    FormLayout form = new FormLayout(name, subject, body, attendee, emails, priority, actions);
+    FormLayout form = new FormLayout(name, subject, body, attendee, emails, promoCode, priority, actions);
 
     VerticalLayout details = new VerticalLayout(eventComboBox, eventName, parentTemplateName);
     addComponents(form, details);
