@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.Column;
@@ -34,6 +35,7 @@ public class CampaignTemplate {
   private String subject = "";
 
   @NotEmpty
+  @Column(length = 2_000)
   @Builder.Default
   private String body = "";
 

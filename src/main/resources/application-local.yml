@@ -6,3 +6,5 @@ exchange:
       enabled: true
     autodiscovery:
       enabled: false
+google:
+  enabled: false

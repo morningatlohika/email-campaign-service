@@ -1,13 +1,13 @@
 buildscript {
-    ext {
-        springBootVersion = '1.5.9.RELEASE'
-    }
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-    }
+  ext {
+    springBootVersion = '1.5.9.RELEASE'
+  }
+  repositories {
+    mavenCentral()
+  }
+  dependencies {
+    classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+  }
 }
 
 apply plugin: 'java'
@@ -19,55 +19,58 @@ version = '0.0.1-SNAPSHOT'
 sourceCompatibility = 1.8
 
 repositories {
-    mavenCentral()
+  mavenCentral()
 }
 
 ext {
-    vaadinVersion = '8.3.1'
+  vaadinVersion = '8.3.1'
 }
 
 dependencies {
-    // persistence dependencies
-    compile('org.springframework.boot:spring-boot-starter-data-jpa')
-    runtime('org.apache.derby:derby')
-    compile("org.springframework.boot:spring-boot-starter-data-rest")
+  // persistence dependencies
+  compile('org.springframework.boot:spring-boot-starter-data-jpa')
+  runtime('org.apache.derby:derby')
+  compile("org.springframework.boot:spring-boot-starter-data-rest")
 
-    // Web and REST dependencies
-    compile('org.springframework.boot:spring-boot-starter-hateoas')
-    compile('org.springframework.boot:spring-boot-starter-security')
-    compile('org.springframework.boot:spring-boot-starter-thymeleaf')
-    compile('org.springframework.boot:spring-boot-starter-web')
+  // Web and REST dependencies
+  compile('org.springframework.boot:spring-boot-starter-hateoas')
+  compile('org.springframework.boot:spring-boot-starter-security')
+  compile('org.springframework.boot:spring-boot-starter-thymeleaf')
+  compile('org.springframework.boot:spring-boot-starter-web')
 
-    // Vaadin
-    compile('com.vaadin:vaadin-spring-boot-starter')
-    compile('org.yaml:snakeyaml:1.19')
+  // Vaadin
+  compile('com.vaadin:vaadin-spring-boot-starter')
+  compile('org.yaml:snakeyaml:1.19')
 
-    // Google sheets integration
-    compile 'com.google.api-client:google-api-client:1.23.0'
-    compile 'com.google.oauth-client:google-oauth-client-jetty:1.23.0'
-    compile 'com.google.apis:google-api-services-sheets:v4-rev500-1.23.0'
+  // Google sheets integration
+  compile 'com.google.api-client:google-api-client:1.23.0'
+  compile 'com.google.oauth-client:google-oauth-client-jetty:1.23.0'
+  compile 'com.google.apis:google-api-services-sheets:v4-rev500-1.23.0'
 
-    // for bootstrap
-    compile('org.webjars:bootstrap:3.3.7')
+  // for bootstrap
+  compile('org.webjars:bootstrap:3.3.7')
 
-    // misc
-    compile('org.springframework.boot:spring-boot-starter-aop')
-    compile('com.microsoft.ews-java-api:ews-java-api:2.0')
-    compileOnly('org.projectlombok:lombok:1.16.20')
+  // template
+  compile group: 'org.antlr', name: 'stringtemplate', version: '3.2'
 
-    // dev tools
-    compile('org.springframework.boot:spring-boot-devtools')
-    compile('com.github.javafaker:javafaker:0.14')
+  // misc
+  compile('org.springframework.boot:spring-boot-starter-aop')
+  compile('com.microsoft.ews-java-api:ews-java-api:2.0')
+  compileOnly('org.projectlombok:lombok:1.16.20')
 
-    // test dependencies
-    testCompile('org.springframework.boot:spring-boot-starter-test')
-    testCompile('org.springframework.restdocs:spring-restdocs-mockmvc')
-    testCompile('org.springframework.security:spring-security-test')
-    testCompileOnly('org.projectlombok:lombok')
+  // dev tools
+  compile('org.springframework.boot:spring-boot-devtools')
+  compile('com.github.javafaker:javafaker:0.14')
+
+  // test dependencies
+  testCompile('org.springframework.boot:spring-boot-starter-test')
+  testCompile('org.springframework.restdocs:spring-restdocs-mockmvc')
+  testCompile('org.springframework.security:spring-security-test')
+  testCompileOnly('org.projectlombok:lombok')
 }
 
 dependencyManagement {
-    imports {
-        mavenBom "com.vaadin:vaadin-bom:${vaadinVersion}"
-    }
+  imports {
+    mavenBom "com.vaadin:vaadin-bom:${vaadinVersion}"
+  }
 }
