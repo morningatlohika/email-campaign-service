@@ -16,7 +16,7 @@ public class SettingsService {
     List<Settings> all = settingsRepository.findAll();
 
     if (all.size() > 1) {
-      throw new RuntimeException("Something going wrong. Can not get settings.");
+      throw new RuntimeException("At most 1 settings record should be in DB, but " + all.size() + " found");
     }
 
     Optional<Settings> first = all.stream().findFirst();

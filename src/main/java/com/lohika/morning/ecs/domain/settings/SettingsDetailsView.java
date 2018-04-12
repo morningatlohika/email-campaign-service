@@ -29,22 +29,20 @@ public class SettingsDetailsView extends HorizontalLayout implements View {
   private final Binder<Settings> binder = new BeanValidationBinder<>(Settings.class);
 
   private final Button editButton = new Button("Edit", VaadinIcons.EDIT);
-  private final Button sendButton = new Button("Send", VaadinIcons.ANGLE_DOUBLE_RIGHT);
-  private final Button cancelButton = new Button("Cancel");
+  private final Button closeButton = new Button("Close");
 
   private final SettingsService settingsService;
 
   @PostConstruct
   public void init() {
-    HorizontalLayout actions = new HorizontalLayout(editButton, sendButton, cancelButton);
+    HorizontalLayout actions = new HorizontalLayout(editButton, closeButton);
     FormLayout form = new FormLayout(signature, actions);
     addComponents(form);
 
     signature.setContentMode(ContentMode.HTML);
-    sendButton.setEnabled(false);
 
     editButton.addClickListener(this::editSettings);
-    cancelButton.addClickListener(this::cancelSettings);
+    closeButton.addClickListener(this::cancelSettings);
   }
 
   private void editSettings(Button.ClickEvent clickEvent) {

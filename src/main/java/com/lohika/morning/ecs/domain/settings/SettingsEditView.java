@@ -45,13 +45,13 @@ public class SettingsEditView extends HorizontalLayout implements View {
 
     saveButton.setStyleName(ValoTheme.BUTTON_PRIMARY);
     saveButton.setClickShortcut(ShortcutAction.KeyCode.ENTER);
-    saveButton.addClickListener(this::editSettings);
+    saveButton.addClickListener(this::saveSettings);
 
     cancelButton.setClickShortcut(ShortcutAction.KeyCode.ESCAPE);
     cancelButton.addClickListener(this::cancelSettings);
   }
 
-  private void editSettings(Button.ClickEvent clickEvent) {
+  private void saveSettings(Button.ClickEvent clickEvent) {
     if (binder.validate().hasErrors()) {
       return;
     }
