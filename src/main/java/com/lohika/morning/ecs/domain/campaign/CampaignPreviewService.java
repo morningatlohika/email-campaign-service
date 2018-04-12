@@ -3,6 +3,7 @@ package com.lohika.morning.ecs.domain.campaign;
 import lombok.RequiredArgsConstructor;
 
 import com.lohika.morning.ecs.domain.event.MorningEvent;
+import com.lohika.morning.ecs.domain.settings.SettingsService;
 
 import org.antlr.stringtemplate.StringTemplate;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,7 @@ import java.util.Map;
 public class CampaignPreviewService {
 
   private final CampaignService campaignService;
+  private final SettingsService settingsService;
 
   public Campaign findOne(Long id) {
     Campaign campaign = campaignService.findOne(id);
@@ -22,7 +24,9 @@ public class CampaignPreviewService {
     Map<String, String> variable = getVariable(campaign);
 
     campaign.setSubject(processor(campaign.getSubject(), variable));
-    campaign.setBody(processor(campaign.getBody(), variable));
+
+    String body = processor(campaign.getBody() + settingsService.getSettings().getSignature(), variable);
+    campaign.setBody(body);
 
     return campaign;
   }

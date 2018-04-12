@@ -4,6 +4,7 @@ import com.lohika.morning.ecs.domain.attendee.AttendeeListView;
 import com.lohika.morning.ecs.domain.campaign.CampaignListView;
 import com.lohika.morning.ecs.domain.campaigntemplate.CampaignTemplateListView;
 import com.lohika.morning.ecs.domain.event.EventListView;
+import com.lohika.morning.ecs.domain.settings.SettingsDetailsView;
 import com.lohika.morning.ecs.domain.unsubscribe.UnsubscribeListView;
 import com.vaadin.annotations.Theme;
 import com.vaadin.navigator.View;
@@ -41,6 +42,7 @@ public class MainLayout extends UI implements ViewDisplay {
     navigationBar.addComponent(createNavigationButton("Attendees", AttendeeListView.VIEW_NAME));
     navigationBar.addComponent(createNavigationButton("Unsubscribe", UnsubscribeListView.VIEW_NAME));
     navigationBar.addComponent(createNavigationButton("Campaign template", CampaignTemplateListView.VIEW_NAME));
+    navigationBar.addComponent(createNavigationButton("Settings", SettingsDetailsView.VIEW_NAME));
     root.addComponent(navigationBar);
 
     VerticalLayout popupContent = new VerticalLayout();
