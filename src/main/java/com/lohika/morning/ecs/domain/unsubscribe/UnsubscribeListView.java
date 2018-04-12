@@ -1,5 +1,8 @@
 package com.lohika.morning.ecs.domain.unsubscribe;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
 import com.vaadin.data.HasValue;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
@@ -12,8 +15,6 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.renderers.ButtonRenderer;
 import com.vaadin.ui.renderers.ClickableRenderer;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 import javax.annotation.PostConstruct;
 

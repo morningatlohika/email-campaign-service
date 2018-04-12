@@ -1,6 +1,7 @@
 package com.lohika.morning.ecs.domain.campaigntemplate;
 
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -33,6 +34,6 @@ public class CampaignTemplateService {
 
   public CampaignTemplate newTemplate() {
     return CampaignTemplate.builder()
-            .build();
+        .build();
   }
 }

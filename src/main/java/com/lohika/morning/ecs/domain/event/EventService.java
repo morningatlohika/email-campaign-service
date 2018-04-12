@@ -14,10 +14,10 @@ public class EventService {
 
   public MorningEvent newEvent() {
     return MorningEvent.builder()
-            .eventNumber(repository.findMaxEventNumber() + 1)
-            // set event date 2 weeks ahead by default
-            .date(LocalDate.now().plus(2, ChronoUnit.WEEKS))
-            .build();
+        .eventNumber(repository.findMaxEventNumber() + 1)
+        // set event date 2 weeks ahead by default
+        .date(LocalDate.now().plus(2, ChronoUnit.WEEKS))
+        .build();
   }
 
   public List<MorningEvent> findAll() {

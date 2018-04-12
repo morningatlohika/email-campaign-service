@@ -1,6 +1,7 @@
 package com.lohika.morning.ecs;
 
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.boot.context.event.ApplicationEnvironmentPreparedEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.core.env.ConfigurableEnvironment;

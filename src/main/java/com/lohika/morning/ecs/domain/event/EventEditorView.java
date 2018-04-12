@@ -1,5 +1,7 @@
 package com.lohika.morning.ecs.domain.event;
 
+import lombok.extern.slf4j.Slf4j;
+
 import com.lohika.morning.ecs.domain.talk.TalkService;
 import com.lohika.morning.ecs.domain.talk.TalksList;
 import com.vaadin.data.BeanValidationBinder;
@@ -18,7 +20,7 @@ import com.vaadin.ui.RichTextArea;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
-import lombok.extern.slf4j.Slf4j;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 

@@ -1,11 +1,13 @@
 package com.lohika.morning.ecs.domain.speaker;
 
-import com.lohika.morning.ecs.domain.talk.Talk;
-import com.lohika.morning.ecs.utils.EcsUtils;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import com.lohika.morning.ecs.domain.talk.Talk;
+import com.lohika.morning.ecs.utils.EcsUtils;
+
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.Column;

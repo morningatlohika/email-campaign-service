@@ -1,13 +1,15 @@
 package com.lohika.morning.ecs.service;
 
+import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
+
 import com.google.api.services.sheets.v4.Sheets;
 import com.google.api.services.sheets.v4.model.ValueRange;
 import com.lohika.morning.ecs.domain.event.MorningEvent;
 import com.lohika.morning.ecs.domain.speaker.Speaker;
 import com.lohika.morning.ecs.domain.talk.Talk;
 import com.lohika.morning.ecs.utils.EcsUtils;
-import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
+
 import org.apache.commons.lang3.BooleanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -47,8 +49,8 @@ public class GoogleSheetsService {
   private List<List<String>> readValues(String range) throws IOException {
     log.info("Reading data from https://docs.google.com/spreadsheets/d/{}/edit", sheetId);
     ValueRange response = sheetsClient.spreadsheets().values()
-            .get(sheetId, range)
-            .execute();
+        .get(sheetId, range)
+        .execute();
 
     List values = response.getValues();
 
@@ -73,14 +75,14 @@ public class GoogleSheetsService {
 
     private Speaker parseSpeaker(List<String> row, int startColumn) {
       return Speaker.builder()
-              .firstName(row.get(startColumn))
-              .lastName(row.get(++startColumn))
-              .company(row.get(++startColumn))
-              .position(row.get(++startColumn))
-              .about(row.get(++startColumn))
-              .webProfileUrl(row.get(++startColumn))
-              .photoUrl(row.get(++startColumn))
-              .build();
+          .firstName(row.get(startColumn))
+          .lastName(row.get(++startColumn))
+          .company(row.get(++startColumn))
+          .position(row.get(++startColumn))
+          .about(row.get(++startColumn))
+          .webProfileUrl(row.get(++startColumn))
+          .photoUrl(row.get(++startColumn))
+          .build();
     }
   }
 
@@ -100,12 +102,12 @@ public class GoogleSheetsService {
 
     public Talk mapRow(List<String> row) {
       return Talk.builder()
-              .googleSheetsTimestamp(row.get(1))
-              .title(row.get(12))
-              .theses(row.get(13))
-              .speakers(speakerMapper.mapRow(row))
-              .event(events.get(row.get(0)))
-              .build();
+          .googleSheetsTimestamp(row.get(1))
+          .title(row.get(12))
+          .theses(row.get(13))
+          .speakers(speakerMapper.mapRow(row))
+          .event(events.get(row.get(0)))
+          .build();
     }
 
     public List<Talk> map(List<List<String>> rows) {

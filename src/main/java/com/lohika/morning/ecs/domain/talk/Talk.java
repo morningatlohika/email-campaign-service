@@ -1,12 +1,16 @@
 package com.lohika.morning.ecs.domain.talk;
 
-import com.lohika.morning.ecs.domain.event.MorningEvent;
-import com.lohika.morning.ecs.domain.speaker.Speaker;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import com.lohika.morning.ecs.domain.event.MorningEvent;
+import com.lohika.morning.ecs.domain.speaker.Speaker;
+
 import org.hibernate.validator.constraints.NotEmpty;
+
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -19,7 +23,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-import java.util.List;
 
 @Entity
 @Table(name = "talks")

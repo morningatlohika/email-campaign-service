@@ -3,6 +3,7 @@ package com.lohika.morning.ecs.domain.speaker;
 import com.lohika.morning.ecs.BaseTest;
 import com.lohika.morning.ecs.domain.event.MorningEvent;
 import com.lohika.morning.ecs.domain.talk.Talk;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -26,14 +27,14 @@ public class SpeakerRepositoryTest extends BaseTest {
     Speaker speaker3 = given.speaker("James", "Black").build();
 
     Talk expectedTalk = given.talk("Red is not blue")
-            .withEvent(event1)
-            .withSpeakers(speaker1, speaker2)
-            .save();
+        .withEvent(event1)
+        .withSpeakers(speaker1, speaker2)
+        .save();
 
     Talk noiseTalk = given.talk("Green is not blue")
-            .withEvent(event1)
-            .withSpeakers(speaker3)
-            .save();
+        .withEvent(event1)
+        .withSpeakers(speaker3)
+        .save();
 
     // When
     Talk foundTalk = talkRepository.findOne(expectedTalk.getId());

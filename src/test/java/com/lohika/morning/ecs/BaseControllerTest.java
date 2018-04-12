@@ -30,12 +30,12 @@ public class BaseControllerTest extends BaseTest {
   @Before
   public void setUp() {
     this.mockMvc = MockMvcBuilders.webAppContextSetup(this.context)
-            .addFilters(springSecurityFilterChain)
-            .apply(documentationConfiguration(this.restDocumentation))
-            .defaultRequest(options("/")
-                    .accept(HAL_JSON_CHARSET_UTF_8)
-                    .header("Authorization", "Basic dXNlcjpxd2Vhc2Q=")
-                    .contentType(HAL_JSON_CHARSET_UTF_8))
-            .build();
+        .addFilters(springSecurityFilterChain)
+        .apply(documentationConfiguration(this.restDocumentation))
+        .defaultRequest(options("/")
+            .accept(HAL_JSON_CHARSET_UTF_8)
+            .header("Authorization", "Basic dXNlcjpxd2Vhc2Q=")
+            .contentType(HAL_JSON_CHARSET_UTF_8))
+        .build();
   }
 }

@@ -1,5 +1,8 @@
 package com.lohika.morning.ecs.domain.campaigntemplate;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
 import com.vaadin.data.BeanValidationBinder;
 import com.vaadin.data.Binder;
 import com.vaadin.data.HasValue;
@@ -16,12 +19,12 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.RichTextArea;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.themes.ValoTheme;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+
 import org.apache.commons.lang3.StringUtils;
 
-import javax.annotation.PostConstruct;
 import java.util.List;
+
+import javax.annotation.PostConstruct;
 
 import static java.lang.Math.abs;
 import static java.util.Arrays.asList;

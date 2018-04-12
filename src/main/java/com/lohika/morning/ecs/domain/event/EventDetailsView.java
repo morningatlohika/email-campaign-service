@@ -1,5 +1,7 @@
 package com.lohika.morning.ecs.domain.event;
 
+import lombok.extern.slf4j.Slf4j;
+
 import com.lohika.morning.ecs.domain.campaign.AutoCampaignService;
 import com.lohika.morning.ecs.domain.campaign.CampaignListView;
 import com.lohika.morning.ecs.domain.talk.TalkService;
@@ -19,7 +21,7 @@ import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
-import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import static com.lohika.morning.ecs.utils.EcsUtils.formatString;
@@ -103,7 +105,8 @@ public class EventDetailsView extends HorizontalLayout implements View {
 
     autoCampaignBtn.addClickListener(clickEvent -> {
       autoCampaignService.autoProvisionCampaigns(morningEvent);
-      navigateTo(CampaignListView.VIEW_NAME);});
+      navigateTo(CampaignListView.VIEW_NAME);
+    });
 
     deleteBtn.addClickListener(clickEvent -> {
       eventService.delete(morningEvent);

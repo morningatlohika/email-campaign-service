@@ -4,6 +4,7 @@ import com.lohika.morning.ecs.domain.event.MorningEvent;
 import com.lohika.morning.ecs.domain.speaker.Speaker;
 import com.lohika.morning.ecs.domain.talk.Talk;
 import com.lohika.morning.ecs.domain.talk.TalkRepository;
+
 import org.apache.commons.lang3.RandomUtils;
 
 import java.util.Arrays;
@@ -24,10 +25,10 @@ public class TalkDataBuilder {
    */
   TalkDataBuilder talk(String title) {
     this.talk = Talk.builder()
-            .googleSheetsTimestamp(new String(RandomUtils.nextBytes(15)))
-            .title(title)
-            .theses(title + " theses")
-            .build();
+        .googleSheetsTimestamp(new String(RandomUtils.nextBytes(15)))
+        .title(title)
+        .theses(title + " theses")
+        .build();
     return this;
   }
 

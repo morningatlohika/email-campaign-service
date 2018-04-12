@@ -2,6 +2,7 @@ package com.lohika.morning.ecs.utils;
 
 import com.lohika.morning.ecs.domain.event.EventRepository;
 import com.lohika.morning.ecs.domain.event.MorningEvent;
+
 import org.apache.commons.lang3.RandomUtils;
 
 import java.time.LocalDate;
@@ -22,12 +23,12 @@ public class EventDataBuilder {
    */
   EventDataBuilder event(String name) {
     this.event = MorningEvent.builder()
-            .eventNumber(RandomUtils.nextInt(1, 200))
-            .name(name)
-            .description(name + " description")
-            .date(LocalDate.now().plus(RandomUtils.nextInt(5, 20), ChronoUnit.DAYS))
-            .ticketsUrl("http://tickets.example.com/test")
-            .build();
+        .eventNumber(RandomUtils.nextInt(1, 200))
+        .name(name)
+        .description(name + " description")
+        .date(LocalDate.now().plus(RandomUtils.nextInt(5, 20), ChronoUnit.DAYS))
+        .ticketsUrl("http://tickets.example.com/test")
+        .build();
     return this;
   }
 

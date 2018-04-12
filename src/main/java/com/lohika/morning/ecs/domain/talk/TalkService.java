@@ -5,6 +5,7 @@ import lombok.Getter;
 import com.lohika.morning.ecs.domain.event.EventRepository;
 import com.lohika.morning.ecs.domain.event.MorningEvent;
 import com.lohika.morning.ecs.service.GoogleSheetsService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -39,12 +40,12 @@ public class TalkService {
     List<Talk> sheetTalks = googleSheetsService.getTalks(eventRepository.findAll());
 
     List<Talk> sheetTalksForGivenEvent = sheetTalks.stream()
-            .filter(t -> t.getEvent().getEventNumber() == event.getEventNumber())
-            .collect(toList());
+        .filter(t -> t.getEvent().getEventNumber() == event.getEventNumber())
+        .collect(toList());
 
     for (Talk sheetTalk : sheetTalksForGivenEvent) {
       talkRepository.findByEventAndGoogleSheetsTimestamp(event, sheetTalk.getGoogleSheetsTimestamp())
-              .ifPresent(persistentTalk -> sheetTalk.setId(persistentTalk.getId()));
+          .ifPresent(persistentTalk -> sheetTalk.setId(persistentTalk.getId()));
     }
 
     talkRepository.save(sheetTalksForGivenEvent);

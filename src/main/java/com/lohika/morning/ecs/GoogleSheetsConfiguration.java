@@ -1,5 +1,7 @@
 package com.lohika.morning.ecs;
 
+import lombok.extern.slf4j.Slf4j;
+
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp;
 import com.google.api.client.extensions.jetty.auth.oauth2.LocalServerReceiver;
@@ -12,7 +14,7 @@ import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.client.util.store.FileDataStoreFactory;
 import com.google.api.services.sheets.v4.Sheets;
 import com.google.api.services.sheets.v4.SheetsScopes;
-import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -53,15 +55,14 @@ public class GoogleSheetsConfiguration {
     Credential credentials = authorize(jsonFactory, httpTransport, credentialsStore);
 
     return new Sheets.Builder(httpTransport, jsonFactory, credentials)
-            .setApplicationName(applicationName)
-            .build();
+        .setApplicationName(applicationName)
+        .build();
   }
 
   /**
    * Creates an authorized Credential object.
    *
    * @return an authorized Credential object.
-   * @throws IOException
    */
   private Credential authorize(JsonFactory jsonFactory, HttpTransport httpTransport, File credentialsStore) throws IOException {
     FileDataStoreFactory dataStoreFactory = new FileDataStoreFactory(credentialsStore);
@@ -72,10 +73,10 @@ public class GoogleSheetsConfiguration {
 
     // Build flow and trigger user authorization request.
     GoogleAuthorizationCodeFlow flow =
-            new GoogleAuthorizationCodeFlow.Builder(httpTransport, jsonFactory, clientSecrets, SCOPES)
-                    .setDataStoreFactory(dataStoreFactory)
-                    .setAccessType("offline")
-                    .build();
+        new GoogleAuthorizationCodeFlow.Builder(httpTransport, jsonFactory, clientSecrets, SCOPES)
+            .setDataStoreFactory(dataStoreFactory)
+            .setAccessType("offline")
+            .build();
     Credential credential = new AuthorizationCodeInstalledApp(flow, new LocalServerReceiver()).authorize("user");
     log.info("Credentials saved to {}", credentialsStore.getAbsolutePath());
     return credential;

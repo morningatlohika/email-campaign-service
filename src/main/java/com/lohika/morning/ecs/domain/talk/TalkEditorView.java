@@ -1,5 +1,7 @@
 package com.lohika.morning.ecs.domain.talk;
 
+import lombok.extern.slf4j.Slf4j;
+
 import com.lohika.morning.ecs.domain.event.EventDetailsView;
 import com.lohika.morning.ecs.domain.event.MorningEvent;
 import com.lohika.morning.ecs.domain.speaker.SpeakersList;
@@ -17,7 +19,7 @@ import com.vaadin.ui.RichTextArea;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
-import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDate;

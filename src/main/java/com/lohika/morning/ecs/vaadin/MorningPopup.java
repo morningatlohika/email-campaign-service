@@ -1,9 +1,10 @@
 package com.lohika.morning.ecs.vaadin;
 
+import lombok.SneakyThrows;
+
 import com.vaadin.shared.Registration;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Window;
-import lombok.SneakyThrows;
 
 import java.io.Serializable;
 
@@ -23,7 +24,7 @@ public abstract class MorningPopup extends Window {
   @SneakyThrows(NoSuchMethodException.class)
   public Registration addHideListener(HideListener listener) {
     return addListener(HideEvent.class, listener,
-            HideListener.class.getDeclaredMethod("windowHide", HideEvent.class));
+        HideListener.class.getDeclaredMethod("windowHide", HideEvent.class));
   }
 
   public static class HideEvent extends Component.Event {

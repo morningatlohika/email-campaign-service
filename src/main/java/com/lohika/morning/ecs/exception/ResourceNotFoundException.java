@@ -9,25 +9,25 @@ public class ResourceNotFoundException extends RuntimeException {
 
   public <T> ResourceNotFoundException(Class<T> entityClass, long... ids) {
     super(MessageFormatter.format(
-            ids.length > 1 ? MESSAGE_PATTERN_PLURAL : MESSAGE_PATTERN_SINGULAR,
-            entityClass.getSimpleName(),
-            ids.length == 1 ? ids[0] : ids).getMessage());
+        ids.length > 1 ? MESSAGE_PATTERN_PLURAL : MESSAGE_PATTERN_SINGULAR,
+        entityClass.getSimpleName(),
+        ids.length == 1 ? ids[0] : ids).getMessage());
   }
 
   public <T> ResourceNotFoundException(Class<T> entityClass, String name) {
     super(MessageFormatter.format(
-            MESSAGE_PATTERN_SINGULAR,
-            entityClass.getSimpleName(),
-            name).getMessage());
+        MESSAGE_PATTERN_SINGULAR,
+        entityClass.getSimpleName(),
+        name).getMessage());
   }
 
   public <O, T> ResourceNotFoundException(Class<O> owningEntityClass, long owningEntityId, Class<T> missingEntityClass, long missingEntityId) {
     super(MessageFormatter.arrayFormat(MESSAGE_PATTERN_EMBEDDED,
-            new Object[]{
-                    owningEntityClass.getSimpleName(),
-                    owningEntityId,
-                    missingEntityClass.getSimpleName(),
-                    missingEntityId}
+        new Object[]{
+            owningEntityClass.getSimpleName(),
+            owningEntityId,
+            missingEntityClass.getSimpleName(),
+            missingEntityId}
     ).getMessage());
   }
 

@@ -1,6 +1,7 @@
 package com.lohika.morning.ecs.utils;
 
 import com.lohika.morning.ecs.domain.event.MorningEvent;
+
 import org.slf4j.helpers.MessageFormatter;
 
 import java.time.LocalDate;

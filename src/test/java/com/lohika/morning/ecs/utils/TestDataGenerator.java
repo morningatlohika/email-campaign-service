@@ -3,6 +3,7 @@ package com.lohika.morning.ecs.utils;
 import com.lohika.morning.ecs.domain.event.EventRepository;
 import com.lohika.morning.ecs.domain.speaker.SpeakerRepository;
 import com.lohika.morning.ecs.domain.talk.TalkRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;

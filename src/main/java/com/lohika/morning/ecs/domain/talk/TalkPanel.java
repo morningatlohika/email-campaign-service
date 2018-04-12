@@ -22,6 +22,8 @@ public class TalkPanel extends VerticalLayout {
 
     editBtn.setEnabled(isEditable);
 
-    editBtn.addClickListener(clickEvent -> getUI().getNavigator().navigateTo(TalkEditorView.VIEW_NAME + "/" + talk.getId()));
+    editBtn.addClickListener(clickEvent -> getUI().getNavigator().navigateTo(TalkEditorView.VIEW_NAME
+                                                                             + "/"
+                                                                             + talk.getId()));
   }
 }

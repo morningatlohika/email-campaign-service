@@ -1,9 +1,10 @@
 package com.lohika.morning.ecs.validator;
 
+import java.time.LocalDate;
+
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import javax.validation.constraints.Future;
-import java.time.LocalDate;
 
 public class FutureValidator implements ConstraintValidator<Future, LocalDate> {
 

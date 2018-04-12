@@ -21,14 +21,14 @@ public class SpeakerDataBuilder {
    */
   SpeakerDataBuilder speaker(String firstName, String lastName) {
     this.speaker = Speaker.builder()
-            .firstName(firstName)
-            .lastName(lastName)
-            .about(formatString("{} {} bio", firstName, lastName))
-            .webProfileUrl(formatString("https://social.example.com/{}_{}", firstName, lastName))
-            .photoUrl(formatString("https://photo.example.com/{}_{}", firstName, lastName))
-            .position("Senior engineer")
-            .company(formatString("{} {} LTD", firstName, lastName))
-            .build();
+        .firstName(firstName)
+        .lastName(lastName)
+        .about(formatString("{} {} bio", firstName, lastName))
+        .webProfileUrl(formatString("https://social.example.com/{}_{}", firstName, lastName))
+        .photoUrl(formatString("https://photo.example.com/{}_{}", firstName, lastName))
+        .position("Senior engineer")
+        .company(formatString("{} {} LTD", firstName, lastName))
+        .build();
     return this;
   }
 

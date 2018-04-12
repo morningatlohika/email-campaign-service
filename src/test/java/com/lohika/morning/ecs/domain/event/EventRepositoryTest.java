@@ -1,6 +1,7 @@
 package com.lohika.morning.ecs.domain.event;
 
 import com.lohika.morning.ecs.BaseTest;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,12 +17,12 @@ public class EventRepositoryTest extends BaseTest {
   public void getById_OK() {
     // Given
     MorningEvent event1 = given.event("Golang Morning")
-            .withDescription("Another interesting event from Morning@Lohika will take place this December, 16. ")
-            .save();
+        .withDescription("Another interesting event from Morning@Lohika will take place this December, 16. ")
+        .save();
 
     MorningEvent noiseEvent = given.event("Robotic Morning")
-            .withDescription("After a very short pause, we invite you to our next event dedicated to Robotics. ")
-            .save();
+        .withDescription("After a very short pause, we invite you to our next event dedicated to Robotics. ")
+        .save();
 
     // When
     MorningEvent foundEvent = eventRepository.findOne(event1.getId());
