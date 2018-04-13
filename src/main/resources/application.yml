@@ -53,7 +53,6 @@ email-client-service:
 
 attendee-aggregator:
   enabled: false
-  host: localhost
-  port: 8080
+  url: http://localhost:8080/
   username: admin
   password: <change-password>

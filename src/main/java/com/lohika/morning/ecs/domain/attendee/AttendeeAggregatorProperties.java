@@ -17,10 +17,7 @@ public class AttendeeAggregatorProperties {
   private Boolean enabled;
 
   @NotBlank
-  private String host;
-
-  @NotNull
-  private Integer port;
+  private String url;
 
   @NotBlank
   private String username;

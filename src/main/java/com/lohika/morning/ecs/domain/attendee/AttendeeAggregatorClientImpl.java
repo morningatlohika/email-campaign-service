@@ -5,9 +5,11 @@ import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -15,13 +17,18 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AttendeeAggregatorClientImpl implements AttendeeAggregatorClient {
   private final AttendeeAggregatorProperties attendeeAggregatorProperties;
+  private final RestTemplate attendeeAggregatorRestTemplate;
 
   @Override
   public List<Attendee> load() {
-    if (!attendeeAggregatorProperties.getEnabled()) {
-      log.warn("Attendee aggregator service is disable!");
-      return Collections.emptyList();
-    }
-    return Collections.emptyList();
+    Object[] list = attendeeAggregatorRestTemplate.getForObject(attendeeAggregatorProperties.getUrl(), Object[].class);
+    List<Object> objects = Arrays.asList(list);
+
+    return objects.stream()
+        .map(Object::toString)
+        .map(email -> Attendee.builder()
+            .email(email)
+            .build())
+        .collect(Collectors.toList());
   }
 }
