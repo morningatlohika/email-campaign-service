@@ -21,11 +21,10 @@ public class AttendeeAggregatorClientImpl implements AttendeeAggregatorClient {
 
   @Override
   public List<Attendee> load() {
-    Object[] list = attendeeAggregatorRestTemplate.getForObject(attendeeAggregatorProperties.getUrl(), Object[].class);
-    List<Object> objects = Arrays.asList(list);
+    String[] list = attendeeAggregatorRestTemplate.getForObject(attendeeAggregatorProperties.getUrl(), String[].class);
+    List<String> objects = Arrays.asList(list);
 
     return objects.stream()
-        .map(Object::toString)
         .map(email -> Attendee.builder()
             .email(email)
             .build())
