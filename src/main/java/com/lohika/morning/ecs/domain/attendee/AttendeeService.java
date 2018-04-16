@@ -1,37 +1,20 @@
 package com.lohika.morning.ecs.domain.attendee;
 
-import com.github.javafaker.Faker;
+import lombok.RequiredArgsConstructor;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.IntStream;
-
-import static java.util.stream.Collectors.toList;
 
 @Service
+@RequiredArgsConstructor
 public class AttendeeService {
-  @Autowired
-  private AttendeeRepository attendeeRepository;
+  private final AttendeeRepository attendeeRepository;
+  private final AttendeeAggregatorClient attendeeAggregatorClient;
 
-  private Faker faker = new Faker();
-
-  void reload() {
+  public void reload() {
     attendeeRepository.deleteAll();
-    List<Attendee> collect = IntStream.range(1, 100).mapToObj(i -> {
-
-      String firstName = faker.name().firstName();
-      String lastName = faker.name().lastName();
-      String email = String.valueOf(firstName.charAt(0)).toLowerCase() + lastName.toLowerCase()
-                     + "@" + faker.pokemon().name().toLowerCase() + ".com";
-
-      return Attendee.builder()
-          .firstName(firstName)
-          .lastName(lastName)
-          .email(email)
-          .build();
-    }).collect(toList());
+    List<Attendee> collect = attendeeAggregatorClient.load();
     attendeeRepository.save(collect);
   }
 

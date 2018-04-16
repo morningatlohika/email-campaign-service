@@ -50,3 +50,9 @@ google:
 
 email-client-service:
   data-dir: data
+
+attendee-aggregator:
+  enabled: false
+  url: http://localhost:8080/
+  username: admin
+  password: <change-password>
