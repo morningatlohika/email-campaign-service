@@ -1,5 +1,6 @@
 package com.lohika.morning.ecs.domain.campaign;
 
+import com.vaadin.ui.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -8,11 +9,6 @@ import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.shared.ui.ValueChangeMode;
 import com.vaadin.spring.annotation.SpringView;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.Grid;
-import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.TextField;
-import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.renderers.ButtonRenderer;
 import com.vaadin.ui.renderers.ClickableRenderer;
 
@@ -44,17 +40,12 @@ public class CampaignListView extends VerticalLayout implements View {
     filterTextField.setSizeFull();
 
     grid.setSelectionMode(Grid.SelectionMode.SINGLE);
-    grid.setColumns("event.name", "name", "subject", "emails");
+    grid.setColumns("event.name", "name", "subject", "emails", "status");
     grid.getColumn("event.name").setCaption("Event");
 
     grid.setItems(campaignService.findAll());
     grid.asSingleSelect().addValueChangeListener(this::editCampaign);
-    grid.addColumn(campaign -> "X", getButtonRenderer()).setWidth(70);
     grid.setSizeFull();
-  }
-
-  private ButtonRenderer<Campaign> getButtonRenderer() {
-    return new ButtonRenderer<>(this::deleteById);
   }
 
   private void editCampaign(HasValue.ValueChangeEvent<Campaign> selectRowEvent) {
@@ -69,8 +60,4 @@ public class CampaignListView extends VerticalLayout implements View {
     getUI().getNavigator().navigateTo(CampaignEditView.VIEW_NAME);
   }
 
-  private void deleteById(ClickableRenderer.RendererClickEvent<Campaign> clickEvent) {
-    campaignService.delete(clickEvent.getItem());
-    grid.setItems(campaignService.findAll());
-  }
 }

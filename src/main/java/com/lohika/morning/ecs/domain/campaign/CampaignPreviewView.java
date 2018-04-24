@@ -1,5 +1,6 @@
 package com.lohika.morning.ecs.domain.campaign;
 
+import com.lohika.morning.ecs.domain.email.EmailService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -36,16 +37,22 @@ public class CampaignPreviewView extends HorizontalLayout implements View {
 
   private final CampaignPreviewService campaignPreviewService;
 
+  private final EmailService emailService;
+
   @PostConstruct
   public void init() {
     HorizontalLayout actions = new HorizontalLayout(editButton, sendButton, cancelButton);
     FormLayout form = new FormLayout(subject, body, actions);
     addComponents(form);
     body.setContentMode(ContentMode.HTML);
-    sendButton.setEnabled(false);
 
     editButton.addClickListener(this::editCampaign);
     cancelButton.addClickListener(this::cancelCampaign);
+    sendButton.addClickListener(this::generateEmails);
+  }
+
+  private void generateEmails(Button.ClickEvent clickEvent) {
+    emailService.compileEmails(binder.getBean().getId());
   }
 
   private void editCampaign(Button.ClickEvent clickEvent) {

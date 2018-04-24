@@ -3,6 +3,7 @@ package com.lohika.morning.ecs.ui;
 import com.lohika.morning.ecs.domain.attendee.AttendeeListView;
 import com.lohika.morning.ecs.domain.campaign.CampaignListView;
 import com.lohika.morning.ecs.domain.campaigntemplate.CampaignTemplateListView;
+import com.lohika.morning.ecs.domain.email.EmailListView;
 import com.lohika.morning.ecs.domain.event.EventListView;
 import com.lohika.morning.ecs.domain.settings.SettingsDetailsView;
 import com.lohika.morning.ecs.domain.unsubscribe.UnsubscribeListView;
@@ -39,6 +40,7 @@ public class MainLayout extends UI implements ViewDisplay {
     navigationBar.addStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
     navigationBar.addComponent(createNavigationButton("Events", EventListView.VIEW_NAME));
     navigationBar.addComponent(createNavigationButton("Campaigns", CampaignListView.VIEW_NAME));
+    navigationBar.addComponent(createNavigationButton("Emails", EmailListView.VIEW_NAME));
     navigationBar.addComponent(createNavigationButton("Attendees", AttendeeListView.VIEW_NAME));
     navigationBar.addComponent(createNavigationButton("Unsubscribe", UnsubscribeListView.VIEW_NAME));
     navigationBar.addComponent(createNavigationButton("Campaign template", CampaignTemplateListView.VIEW_NAME));
