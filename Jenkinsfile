@@ -12,7 +12,7 @@ node {
         gradle.resolver repo:'remote-repos', server: server
 
     stage 'Gradle build'
-        sh ls -ll
+        sh 'ls -ll'
         def buildInfo = gradle.run rootDir: "./", buildFile: 'build.gradle', tasks: 'clean build -x text'
 
     stage 'Publish build info'
