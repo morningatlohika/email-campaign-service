@@ -5,7 +5,7 @@ node {
     def rtGradle = Artifactory.newGradleBuild()
 
     stage 'Clone sources'
-        git url: 'https://github.com/jfrogdev/project-examples.git'
+        git url: 'https://github.com/morningatlohika/email-campaign-service.git'
 
     stage 'Artifactory configuration'
         // Tool name from Jenkins configuration
