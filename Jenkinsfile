@@ -6,12 +6,11 @@ node {
         git url: 'https://github.com/morningatlohika/email-campaign-service.git'
 
     stage 'Artifactory configuration'
-        gradle.useWrapper = true
-
         gradle.deployer repo:'ext-release-local', server: server
         gradle.resolver repo:'remote-repos', server: server
 
     stage 'Gradle build'
+        gradle.useWrapper = true
         def buildInfo = gradle.run rootDir: "./", buildFile: 'build.gradle', tasks: 'clean build -x test'
 
     stage 'Publish build info'
