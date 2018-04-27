@@ -1,9 +1,9 @@
 package com.lohika.morning.ecs.domain.campaign;
 
-import com.lohika.morning.ecs.domain.email.EmailService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import com.lohika.morning.ecs.domain.email.EmailService;
 import com.lohika.morning.ecs.vaadin.EcsLabel;
 import com.vaadin.data.BeanValidationBinder;
 import com.vaadin.data.Binder;
@@ -32,7 +32,7 @@ public class CampaignPreviewView extends HorizontalLayout implements View {
   private final Binder<Campaign> binder = new BeanValidationBinder<>(Campaign.class);
 
   private final Button editButton = new Button("Edit", VaadinIcons.EDIT);
-  private final Button sendButton = new Button("Send", VaadinIcons.ANGLE_DOUBLE_RIGHT);
+  private final Button sendButton = new Button("Confirm", VaadinIcons.ANGLE_DOUBLE_RIGHT);
   private final Button cancelButton = new Button("Cancel");
 
   private final CampaignPreviewService campaignPreviewService;
@@ -60,7 +60,7 @@ public class CampaignPreviewView extends HorizontalLayout implements View {
   }
 
   private void cancelCampaign(Button.ClickEvent clickEvent) {
-    getUI().getNavigator().navigateTo(CampaignListView.VIEW_NAME);
+    getUI().getNavigator().navigateTo(CampaignDetailsView.VIEW_NAME + "/" + binder.getBean().getId());
   }
 
   @Override

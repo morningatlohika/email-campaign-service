@@ -54,8 +54,6 @@ public class CampaignEditView extends HorizontalLayout implements View {
   private final Label parentTemplateName = new Label("Parent template name");
 
   private final Button saveButton = new Button("Save", VaadinIcons.CHECK);
-  private final Button previewButton = new Button("Preview", VaadinIcons.ANGLE_DOUBLE_RIGHT);
-  private final Button deleteButton = new Button("Delete", VaadinIcons.TRASH);
   private final Button cancelButton = new Button("Cancel");
   private final Binder<Campaign> binder = new BeanValidationBinder<>(Campaign.class);
 
@@ -64,7 +62,7 @@ public class CampaignEditView extends HorizontalLayout implements View {
   @PostConstruct
   public void init() {
 
-    HorizontalLayout actions = new HorizontalLayout(saveButton, previewButton, deleteButton, cancelButton);
+    HorizontalLayout actions = new HorizontalLayout(saveButton, cancelButton);
 
     FormLayout form = new FormLayout(name, subject, body, attendee, emails, promoCode, priority, actions);
 
@@ -81,10 +79,6 @@ public class CampaignEditView extends HorizontalLayout implements View {
     saveButton.setStyleName(ValoTheme.BUTTON_PRIMARY);
     saveButton.setClickShortcut(ShortcutAction.KeyCode.ENTER);
     saveButton.addClickListener(this::editCampaign);
-
-    previewButton.addClickListener(this::previewCampaign);
-
-    deleteButton.addClickListener(this::deleteCampaign);
 
     cancelButton.setClickShortcut(ShortcutAction.KeyCode.ESCAPE);
     cancelButton.addClickListener(this::cancelCampaign);
@@ -116,7 +110,7 @@ public class CampaignEditView extends HorizontalLayout implements View {
       campaign.setEvent(eventComboBox.getValue());
     }
     campaignService.save(campaign);
-    getUI().getNavigator().navigateTo(CampaignListView.VIEW_NAME);
+    getUI().getNavigator().navigateTo(CampaignDetailsView.VIEW_NAME + "/" + campaign.getId());
   }
 
   private void previewCampaign(Button.ClickEvent clickEvent) {
@@ -130,7 +124,7 @@ public class CampaignEditView extends HorizontalLayout implements View {
   }
 
   private void cancelCampaign(Button.ClickEvent clickEvent) {
-    getUI().getNavigator().navigateTo(CampaignListView.VIEW_NAME);
+    getUI().getNavigator().navigateTo(CampaignDetailsView.VIEW_NAME + "/" + binder.getBean().getId());
   }
 
   @Override
@@ -151,8 +145,6 @@ public class CampaignEditView extends HorizontalLayout implements View {
     if (parentTemplateName.isVisible()) {
       parentTemplateName.setCaption(campaign.getCampaignTemplate().getName());
     }
-
-    deleteButton.setEnabled(isEntityPersisted());
   }
 
   private Campaign getCampaign(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
