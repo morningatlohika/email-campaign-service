@@ -40,12 +40,21 @@ public class CampaignService {
     campaignRepository.save(campaigns);
   }
 
-  public void delete(Campaign unsubscribe) {
-    campaignRepository.delete(unsubscribe);
+  public void delete(Campaign campaign) {
+    if (!Campaign.Status.NEW.equals(campaign.getStatus())) {
+      throw new RuntimeException("Cannot delete campaign in status " + campaign.getStatus());
+    }
+    campaignRepository.delete(campaign);
   }
 
   public Campaign newCampaign() {
     return Campaign.builder()
         .build();
+  }
+
+  public Campaign updateStatus(final Long campaignId, Campaign.Status status) {
+    Campaign campaignToUpdate = campaignRepository.findOne(campaignId);
+    campaignToUpdate.setStatus(status);
+    return campaignRepository.save(campaignToUpdate);
   }
 }
