@@ -47,7 +47,7 @@ public class CampaignPreviewView extends HorizontalLayout implements View {
     body.setContentMode(ContentMode.HTML);
 
     editButton.addClickListener(this::editCampaign);
-    cancelButton.addClickListener(this::cancelCampaign);
+    cancelButton.addClickListener(this::cancel);
     sendButton.addClickListener(this::generateEmails);
   }
 
@@ -59,7 +59,7 @@ public class CampaignPreviewView extends HorizontalLayout implements View {
     getUI().getNavigator().navigateTo(CampaignEditView.VIEW_NAME + "/" + binder.getBean().getId());
   }
 
-  private void cancelCampaign(Button.ClickEvent clickEvent) {
+  private void cancel(Button.ClickEvent clickEvent) {
     getUI().getNavigator().navigateTo(CampaignDetailsView.VIEW_NAME + "/" + binder.getBean().getId());
   }
 

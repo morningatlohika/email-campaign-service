@@ -3,6 +3,7 @@ package com.lohika.morning.ecs.domain.campaign;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import com.lohika.morning.ecs.utils.PriorityUtil;
 import com.lohika.morning.ecs.vaadin.EcsLabel;
 import com.vaadin.data.BeanValidationBinder;
 import com.vaadin.data.Binder;
@@ -22,18 +23,16 @@ import org.apache.commons.lang3.StringUtils;
 
 import javax.annotation.PostConstruct;
 
-import static java.lang.Math.abs;
-
 @Slf4j
 @RequiredArgsConstructor
 @SpringView(name = CampaignDetailsView.VIEW_NAME)
 public class CampaignDetailsView extends HorizontalLayout implements View {
-  public static final String VIEW_NAME = "campaigDetailsn";
+  public static final String VIEW_NAME = "campaigDetails";
 
   private final EcsLabel name = new EcsLabel("Name");
   private final EcsLabel subject = new EcsLabel("Subject");
   private final EcsLabel body = new EcsLabel("Body");
-  private final EcsLabel campaignPriority = new EcsLabel("Piority");
+  private final EcsLabel campaignPriority = new EcsLabel("Priority");
   private final EcsLabel campaignEmails = new EcsLabel("Emails");
   private final EcsLabel promoCode = new EcsLabel("Promo code");
 
@@ -70,16 +69,7 @@ public class CampaignDetailsView extends HorizontalLayout implements View {
     deleteButton.addClickListener(this::deleteCampaign);
 
     cancelButton.setClickShortcut(ShortcutAction.KeyCode.ESCAPE);
-    cancelButton.addClickListener(this::cancelCampaign);
-  }
-
-  private String generatePriorityCaption(Integer i) {
-    if (i == 0) {
-      return "in event day";
-    } else if (i % 7 == 0) {
-      return abs(i / 7) + " week(s) " + ((i > 0) ? "after" : "before");
-    }
-    return abs(i) + " day(s) " + ((i > 0) ? "after" : "before");
+    cancelButton.addClickListener(this::cancel);
   }
 
   private void editCampaign(Button.ClickEvent clickEvent) {
@@ -96,14 +86,14 @@ public class CampaignDetailsView extends HorizontalLayout implements View {
     getUI().getNavigator().navigateTo(CampaignListView.VIEW_NAME);
   }
 
-  private void cancelCampaign(Button.ClickEvent clickEvent) {
+  private void cancel(Button.ClickEvent clickEvent) {
     getUI().getNavigator().navigateTo(CampaignListView.VIEW_NAME);
   }
 
   @Override
   public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
     Campaign campaign = getCampaign(viewChangeEvent);
-    campaignPriority.setValue(generatePriorityCaption(campaign.getPriority()));
+    campaignPriority.setValue(PriorityUtil.generatePriorityCaption(campaign.getPriority()));
     eventName.setValue(campaign.getEvent().getName());
 
     parentTemplateName.setVisible(campaign.getCampaignTemplate() != null);

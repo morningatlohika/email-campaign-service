@@ -44,11 +44,11 @@ public class CampaignListView extends VerticalLayout implements View {
     grid.getColumn("event.name").setCaption("Event");
 
     grid.setItems(campaignService.findAll());
-    grid.asSingleSelect().addValueChangeListener(this::campaignDetail);
+    grid.asSingleSelect().addValueChangeListener(this::campaignDetails);
     grid.setSizeFull();
   }
 
-  private void campaignDetail(HasValue.ValueChangeEvent<Campaign> selectRowEvent) {
+  private void campaignDetails(HasValue.ValueChangeEvent<Campaign> selectRowEvent) {
     getUI().getNavigator().navigateTo(CampaignDetailsView.VIEW_NAME + "/" + selectRowEvent.getValue().getId());
   }
 
@@ -59,5 +59,4 @@ public class CampaignListView extends VerticalLayout implements View {
   private void createCampaign(Button.ClickEvent clickEvent) {
     getUI().getNavigator().navigateTo(CampaignEditView.VIEW_NAME);
   }
-
 }
