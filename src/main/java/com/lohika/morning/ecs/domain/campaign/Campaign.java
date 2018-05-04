@@ -61,6 +61,7 @@ public class Campaign {
   @Builder.Default
   private String promoCode = "";
 
+  @NotNull
   @Enumerated(EnumType.STRING)
   @Builder.Default
   private Status status = Status.NEW;
@@ -75,6 +76,7 @@ public class Campaign {
     priority = campaignTemplate.getPriority();
     attendee = campaignTemplate.isAttendee();
     emails = campaignTemplate.getEmails();
+    status = Status.NEW;
   }
 
   public String getEmails() {
