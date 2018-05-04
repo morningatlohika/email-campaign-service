@@ -16,8 +16,6 @@ public abstract class BaseMenu extends CssLayout {
   protected Button createNavigationButton(String caption, final String viewName) {
     Button button = new Button(caption);
     button.setId(viewName);
-    // If you didn't choose Java 8 when creating the project, convert this
-    // to an anonymous listener class
     button.addClickListener(event -> {
       this.forEach(component -> component.removeStyleName(ValoTheme.BUTTON_PRIMARY));
       event.getButton().addStyleName(ValoTheme.BUTTON_PRIMARY);
