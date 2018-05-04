@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import com.lohika.morning.ecs.domain.event.EventDataProvider;
 import com.lohika.morning.ecs.domain.event.MorningEvent;
+import com.lohika.morning.ecs.utils.PriorityUtil;
 import com.vaadin.data.BeanValidationBinder;
 import com.vaadin.data.Binder;
 import com.vaadin.data.HasValue;
@@ -30,7 +31,6 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 
-import static java.lang.Math.abs;
 import static java.util.Arrays.asList;
 
 @Slf4j
@@ -54,8 +54,6 @@ public class CampaignEditView extends HorizontalLayout implements View {
   private final Label parentTemplateName = new Label("Parent template name");
 
   private final Button saveButton = new Button("Save", VaadinIcons.CHECK);
-  private final Button previewButton = new Button("Preview", VaadinIcons.ANGLE_DOUBLE_RIGHT);
-  private final Button deleteButton = new Button("Delete", VaadinIcons.TRASH);
   private final Button cancelButton = new Button("Cancel");
   private final Binder<Campaign> binder = new BeanValidationBinder<>(Campaign.class);
 
@@ -64,7 +62,7 @@ public class CampaignEditView extends HorizontalLayout implements View {
   @PostConstruct
   public void init() {
 
-    HorizontalLayout actions = new HorizontalLayout(saveButton, previewButton, deleteButton, cancelButton);
+    HorizontalLayout actions = new HorizontalLayout(saveButton, cancelButton);
 
     FormLayout form = new FormLayout(name, subject, body, attendee, emails, promoCode, priority, actions);
 
@@ -75,32 +73,15 @@ public class CampaignEditView extends HorizontalLayout implements View {
 
     attendee.addValueChangeListener(this::onAttendeeChange);
 
-    priority.setItemCaptionGenerator(this::generatePriorityCaption);
+    priority.setItemCaptionGenerator(PriorityUtil::generatePriorityCaption);
     priority.setEmptySelectionAllowed(false);
 
     saveButton.setStyleName(ValoTheme.BUTTON_PRIMARY);
     saveButton.setClickShortcut(ShortcutAction.KeyCode.ENTER);
     saveButton.addClickListener(this::editCampaign);
 
-    previewButton.addClickListener(this::previewCampaign);
-
-    deleteButton.addClickListener(this::deleteCampaign);
-
     cancelButton.setClickShortcut(ShortcutAction.KeyCode.ESCAPE);
-    cancelButton.addClickListener(this::cancelCampaign);
-  }
-
-  private boolean isEntityPersisted() {
-    return binder.getBean().getId() != null;
-  }
-
-  private String generatePriorityCaption(Integer i) {
-    if (i == 0) {
-      return "in event day";
-    } else if (i % 7 == 0) {
-      return abs(i / 7) + " week(s) " + ((i > 0) ? "after" : "before");
-    }
-    return abs(i) + " day(s) " + ((i > 0) ? "after" : "before");
+    cancelButton.addClickListener(this::cancel);
   }
 
   private void onAttendeeChange(HasValue.ValueChangeEvent<Boolean> e) {
@@ -116,21 +97,11 @@ public class CampaignEditView extends HorizontalLayout implements View {
       campaign.setEvent(eventComboBox.getValue());
     }
     campaignService.save(campaign);
-    getUI().getNavigator().navigateTo(CampaignListView.VIEW_NAME);
+    getUI().getNavigator().navigateTo(CampaignDetailsView.VIEW_NAME + "/" + campaign.getId());
   }
 
-  private void previewCampaign(Button.ClickEvent clickEvent) {
-    getUI().getNavigator().navigateTo(CampaignPreviewView.VIEW_NAME + "/" + binder.getBean().getId());
-  }
-
-  private void deleteCampaign(Button.ClickEvent clickEvent) {
-    Campaign campaign = binder.getBean();
-    campaignService.delete(campaign);
-    getUI().getNavigator().navigateTo(CampaignListView.VIEW_NAME);
-  }
-
-  private void cancelCampaign(Button.ClickEvent clickEvent) {
-    getUI().getNavigator().navigateTo(CampaignListView.VIEW_NAME);
+  private void cancel(Button.ClickEvent clickEvent) {
+    getUI().getNavigator().navigateTo(CampaignDetailsView.VIEW_NAME + "/" + binder.getBean().getId());
   }
 
   @Override
@@ -151,8 +122,6 @@ public class CampaignEditView extends HorizontalLayout implements View {
     if (parentTemplateName.isVisible()) {
       parentTemplateName.setCaption(campaign.getCampaignTemplate().getName());
     }
-
-    deleteButton.setEnabled(isEntityPersisted());
   }
 
   private Campaign getCampaign(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
