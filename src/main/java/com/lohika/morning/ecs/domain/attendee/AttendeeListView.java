@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import com.vaadin.data.HasValue;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
+import com.vaadin.server.FileDownloader;
 import com.vaadin.shared.ui.ValueChangeMode;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.Button;
@@ -22,19 +23,24 @@ import javax.annotation.PostConstruct;
 public class AttendeeListView extends VerticalLayout implements View {
   public static final String VIEW_NAME = "attendees";
 
-  private final Button reloadButton = new Button("Reload emails", VaadinIcons.DOWNLOAD);
+  private final Button reloadButton = new Button("Reload emails", VaadinIcons.REFRESH);
+  private final Button downloadButton = new Button("Download emails", VaadinIcons.DOWNLOAD);
   private final TextField filterTextField = new TextField();
   private final Grid<Attendee> grid = new Grid<>(Attendee.class);
 
   private final AttendeeService attendeeService;
+  private final AttendeeResourceService attendeeResourceService;
 
   @PostConstruct
   void init() {
-    HorizontalLayout header = new HorizontalLayout(reloadButton, filterTextField);
+    HorizontalLayout header = new HorizontalLayout(reloadButton, downloadButton, filterTextField);
     header.setSizeFull();
     addComponents(header, grid);
 
     reloadButton.addClickListener(this::reloadAttendees);
+
+    FileDownloader fileDownloader = new FileDownloader(attendeeResourceService.getResource());
+    fileDownloader.extend(downloadButton);
 
     filterTextField.setPlaceholder("Filter by first name / last name /email");
     filterTextField.setValueChangeMode(ValueChangeMode.LAZY);
