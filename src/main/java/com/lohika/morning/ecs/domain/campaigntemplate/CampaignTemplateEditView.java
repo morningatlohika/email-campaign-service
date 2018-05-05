@@ -3,6 +3,7 @@ package com.lohika.morning.ecs.domain.campaigntemplate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import com.lohika.morning.ecs.utils.PriorityUtil;
 import com.vaadin.data.BeanValidationBinder;
 import com.vaadin.data.Binder;
 import com.vaadin.data.HasValue;
@@ -27,15 +28,13 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 
 import static java.lang.Math.abs;
-import static java.util.Arrays.asList;
 
 @Slf4j
 @RequiredArgsConstructor
 @SpringView(name = CampaignTemplateEditView.VIEW_NAME)
 public class CampaignTemplateEditView extends HorizontalLayout implements View {
   public static final String VIEW_NAME = "addCampaignTemplate";
-  private static final List<Integer> PERIOD_ITEMS = asList(-14, -7 - 5, 0, 1, 7, 14);
-
+  private static final List<Integer> PERIOD_ITEMS = PriorityUtil.getPriorities();
   private final TextField name = new TextField("Name");
   private final TextField subject = new TextField("Subject");
   private final RichTextArea body = new RichTextArea("Body");
