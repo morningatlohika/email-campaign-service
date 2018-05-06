@@ -22,6 +22,9 @@ spring:
     rest:
       base-path: api
 
+flyway:
+  baselineOnMigrate: true
+
 security:
   user:
     password: <change-spring-security-password>
