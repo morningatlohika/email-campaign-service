@@ -31,14 +31,12 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 
-import static java.util.Arrays.asList;
-
 @Slf4j
 @RequiredArgsConstructor
 @SpringView(name = CampaignEditView.VIEW_NAME)
 public class CampaignEditView extends HorizontalLayout implements View {
   public static final String VIEW_NAME = "addCampaign";
-  private static final List<Integer> PERIOD_ITEMS = asList(-14, -7 - 5, 0, 1, 7, 14);
+  private static final List<Integer> PERIOD_ITEMS = PriorityUtil.getPriorities();
 
   private final TextField name = new TextField("Name");
   private final TextField subject = new TextField("Subject");
