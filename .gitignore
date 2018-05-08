@@ -21,5 +21,6 @@ hs_err_pid*
 
 # Derby DB files
 emailCampainData/
+flyway.conf
 
 client_secret.json
