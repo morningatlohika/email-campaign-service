@@ -3,14 +3,13 @@ package com.lohika.morning.ecs.domain.attendee;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import com.lohika.morning.ecs.domain.status.StatusService;
 import com.vaadin.server.Resource;
 import com.vaadin.server.StreamResource;
 
-import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayInputStream;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,6 +18,7 @@ import java.util.stream.Collectors;
 @Service
 public class AttendeeResourceService {
   private final AttendeeService attendeeService;
+  private final StatusService statusService;
 
   public Resource getResource() {
     return new StreamResource((StreamResource.StreamSource) () -> {
@@ -30,6 +30,6 @@ public class AttendeeResourceService {
 
       log.info("Downloaded {} attendee(s)", attendees.size());
       return new ByteArrayInputStream(mail.getBytes());
-    }, "Morning@Lohika " + DateFormatUtils.format(new Date(), "yyyy-MM-dd HH:mm:SS") + ".emails");
+    }, "Morning@Lohika " + statusService.getStatus().getLastUpdateAttendeeAt().toString() + ".emails");
   }
 }

@@ -2,6 +2,8 @@ package com.lohika.morning.ecs.domain.attendee;
 
 import lombok.RequiredArgsConstructor;
 
+import com.lohika.morning.ecs.domain.status.StatusService;
+
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,11 +13,14 @@ import java.util.List;
 public class AttendeeService {
   private final AttendeeRepository attendeeRepository;
   private final AttendeeAggregatorClient attendeeAggregatorClient;
+  private final StatusService statusService;
 
   public void reload() {
     attendeeRepository.deleteAll();
     List<Attendee> collect = attendeeAggregatorClient.load();
     attendeeRepository.save(collect);
+
+    statusService.updateAttendee();
   }
 
   public List<Attendee> findAll() {
