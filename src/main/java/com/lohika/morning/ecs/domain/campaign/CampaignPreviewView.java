@@ -1,9 +1,5 @@
 package com.lohika.morning.ecs.domain.campaign;
 
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-
-import com.lohika.morning.ecs.domain.email.EmailService;
 import com.lohika.morning.ecs.vaadin.EcsLabel;
 import com.vaadin.data.BeanValidationBinder;
 import com.vaadin.data.Binder;
@@ -15,7 +11,8 @@ import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.HorizontalLayout;
-
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.annotation.PostConstruct;
@@ -32,34 +29,38 @@ public class CampaignPreviewView extends HorizontalLayout implements View {
   private final Binder<Campaign> binder = new BeanValidationBinder<>(Campaign.class);
 
   private final Button editButton = new Button("Edit", VaadinIcons.EDIT);
-  private final Button sendButton = new Button("Confirm", VaadinIcons.ANGLE_DOUBLE_RIGHT);
+  private final Button publishButton = new Button("Publish", VaadinIcons.ANGLE_DOUBLE_RIGHT);
   private final Button cancelButton = new Button("Cancel");
 
   private final CampaignPreviewService campaignPreviewService;
 
-  private final EmailService emailService;
+  private final CampaignService campaignService;
+
 
   @PostConstruct
   public void init() {
-    HorizontalLayout actions = new HorizontalLayout(editButton, sendButton, cancelButton);
+    HorizontalLayout actions = new HorizontalLayout(editButton, publishButton, cancelButton);
     FormLayout form = new FormLayout(subject, body, actions);
     addComponents(form);
     body.setContentMode(ContentMode.HTML);
 
     editButton.addClickListener(this::editCampaign);
-    cancelButton.addClickListener(this::cancel);
-    sendButton.addClickListener(this::generateEmails);
+    cancelButton.addClickListener(this::cancelCampaign);
+    publishButton.addClickListener(this::startCampaign);
   }
 
-  private void generateEmails(Button.ClickEvent clickEvent) {
-    emailService.compileEmails(binder.getBean().getId());
+  private void startCampaign(Button.ClickEvent clickEvent) {
+    publishButton.setEnabled(false);
+    Campaign campaign = binder.getBean();
+    campaignService.updateStatus(campaign, Campaign.Status.PENDING);
+    getUI().getNavigator().navigateTo(CampaignDetailsView.VIEW_NAME + "/" + campaign.getId());
   }
 
   private void editCampaign(Button.ClickEvent clickEvent) {
     getUI().getNavigator().navigateTo(CampaignEditView.VIEW_NAME + "/" + binder.getBean().getId());
   }
 
-  private void cancel(Button.ClickEvent clickEvent) {
+  private void cancelCampaign(Button.ClickEvent clickEvent) {
     getUI().getNavigator().navigateTo(CampaignDetailsView.VIEW_NAME + "/" + binder.getBean().getId());
   }
 
@@ -68,6 +69,8 @@ public class CampaignPreviewView extends HorizontalLayout implements View {
     Campaign campaign = getCampaign(viewChangeEvent);
     binder.setBean(campaign);
     binder.bindInstanceFields(this);
+
+    publishButton.setEnabled(campaign.isEditable());
   }
 
   private Campaign getCampaign(ViewChangeListener.ViewChangeEvent viewChangeEvent) {

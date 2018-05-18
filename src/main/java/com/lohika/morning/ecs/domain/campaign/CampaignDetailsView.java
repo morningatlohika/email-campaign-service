@@ -1,5 +1,8 @@
 package com.lohika.morning.ecs.domain.campaign;
 
+import com.vaadin.data.Converter;
+import com.vaadin.data.converter.StringToIntegerConverter;
+import com.vaadin.ui.declarative.converters.DesignEnumConverter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -30,6 +33,7 @@ public class CampaignDetailsView extends HorizontalLayout implements View {
   public static final String VIEW_NAME = "campaigDetails";
 
   private final EcsLabel name = new EcsLabel("Name");
+  private final EcsLabel status = new EcsLabel("Status");
   private final EcsLabel subject = new EcsLabel("Subject");
   private final EcsLabel body = new EcsLabel("Body");
   private final EcsLabel campaignPriority = new EcsLabel("Priority");
@@ -52,13 +56,15 @@ public class CampaignDetailsView extends HorizontalLayout implements View {
 
     HorizontalLayout actions = new HorizontalLayout(editButton, previewButton, deleteButton, cancelButton);
 
-    FormLayout form = new FormLayout(name, subject, body, campaignEmails, promoCode, campaignPriority, actions);
+    FormLayout form = new FormLayout(name, status, subject, body, campaignEmails, promoCode, campaignPriority, actions);
 
     VerticalLayout details = new VerticalLayout(eventName, parentTemplateName);
     addComponents(form, details);
     body.setContentMode(ContentMode.HTML);
 
+    binder.forMemberField(status).withConverter(new DesignEnumConverter<>(Campaign.Status.class));
     binder.bindInstanceFields(this);
+
 
     editButton.setStyleName(ValoTheme.BUTTON_PRIMARY);
     editButton.setClickShortcut(ShortcutAction.KeyCode.ENTER);
@@ -102,7 +108,8 @@ public class CampaignDetailsView extends HorizontalLayout implements View {
     campaignEmails.setValue(campaign.isAttendee() ? "For all attendee" : campaign.getEmails());
 
     binder.setBean(campaign);
-    boolean isEditable = campaign.getStatus() == Campaign.Status.NEW;
+
+    boolean isEditable = campaign.isEditable();
     editButton.setEnabled(isEditable);
     previewButton.setEnabled(isEditable);
     deleteButton.setEnabled(isEditable);

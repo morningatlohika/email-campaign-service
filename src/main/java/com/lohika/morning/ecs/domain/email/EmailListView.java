@@ -36,7 +36,7 @@ public class EmailListView extends VerticalLayout implements View {
     filterTextField.setSizeFull();
 
     grid.setSelectionMode(Grid.SelectionMode.SINGLE);
-    grid.setColumns("campaign.event.name", "campaign.name", "to", "subject", "body", "sent", "generatedAt", "sentAt");
+    grid.setColumns("campaign.event.name", "campaign.name", "to", "subject", "generatedAt", "status", "lastSendingAttempt");
     grid.getColumn("campaign.event.name").setCaption("Event");
 
     grid.setItems(emailService.findAll());

@@ -41,7 +41,7 @@ public class CampaignService {
   }
 
   public void delete(Campaign campaign) {
-    if (!Campaign.Status.NEW.equals(campaign.getStatus())) {
+    if (!campaign.isEditable()) {
       throw new RuntimeException("Cannot delete campaign in status " + campaign.getStatus());
     }
     campaignRepository.delete(campaign);
@@ -52,9 +52,13 @@ public class CampaignService {
         .build();
   }
 
-  public Campaign updateStatus(final Long campaignId, Campaign.Status status) {
-    Campaign campaignToUpdate = campaignRepository.findOne(campaignId);
+  public Campaign updateStatus(final Campaign campaign, Campaign.Status status) {
+    Campaign campaignToUpdate = campaignRepository.findOne(campaign.getId());
     campaignToUpdate.setStatus(status);
     return campaignRepository.save(campaignToUpdate);
+  }
+
+  public List<Campaign> getCampains(Campaign.Status status) {
+    return campaignRepository.findByStatus(status);
   }
 }
