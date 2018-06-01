@@ -36,6 +36,7 @@ exchange:
       enabled: false
 
 google:
+  enabled: false
   creds-store-dir: test-sheets.googleapis.morning-speakers
   application-name: Google Sheets API Java Quickstart
   speaker-application-form:
