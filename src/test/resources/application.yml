@@ -20,7 +20,7 @@ spring:
 
 security:
   user:
-    password: qweasd
+    password: <change-spring-security-password>
 
 welcome-message: Hello Morning
 
@@ -46,3 +46,8 @@ google:
 email-client-service:
   data-dir: test-data
 
+attendee-aggregator:
+  enabled: false
+  url: http://localhost:8080/
+  username: admin
+  password: <change-password>

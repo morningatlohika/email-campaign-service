@@ -9,8 +9,7 @@ import org.junit.After;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ActiveProfiles;
 
-@ActiveProfiles("test")
-public class BaseTest {
+public abstract class BaseTest {
 
   @Autowired
   protected TestDataGenerator given;
