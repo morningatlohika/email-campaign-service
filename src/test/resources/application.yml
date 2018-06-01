@@ -46,6 +46,7 @@ google:
 
 email-client-service:
   data-dir: test-data
+  campaign-processing-period: 300000
 
 attendee-aggregator:
   enabled: false
