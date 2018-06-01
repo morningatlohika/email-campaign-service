@@ -1,5 +1,6 @@
 package com.lohika.morning.ecs.domain.campaign;
 
+import com.lohika.morning.ecs.domain.email.Email;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -45,7 +46,7 @@ public class Campaign {
   private String subject = "";
 
   @NotEmpty
-  @Column(length = 2_000)
+  @Column(length = Email.EMAIL_BODY_MAX_LENGTH)
   @Builder.Default
   private String body = "";
 
@@ -66,6 +67,11 @@ public class Campaign {
   @Builder.Default
   private Status status = Status.NEW;
 
+  @Transient
+  public boolean isEditable() {
+    return Status.NEW.equals(this.status);
+  }
+
   public Campaign(MorningEvent event, CampaignTemplate campaignTemplate) {
     this.event = event;
     this.campaignTemplate = campaignTemplate;
@@ -85,7 +91,11 @@ public class Campaign {
 
   public enum Status {
     NEW,
+    PENDING,
+    PREPROCESSING,
+    READY_TO_SEND,
     SENDING,
-    SENT
+    SENT,
+    FAILED
   }
 }

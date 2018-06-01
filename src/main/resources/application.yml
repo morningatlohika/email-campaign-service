@@ -53,6 +53,12 @@ google:
 
 email-client-service:
   data-dir: data
+  # Possible values:
+  #   none  - just log email info, but don't try to send email. This is the default.
+  #   false - do not override recipient. Should be used in production profile only
+  #   <youremail@example.com> - specify real email to which all emails will be sent. Should be used for testing purposes only.
+  recipient-email-override: none
+  campaign-processing-period: 300000
 
 attendee-aggregator:
   enabled: false

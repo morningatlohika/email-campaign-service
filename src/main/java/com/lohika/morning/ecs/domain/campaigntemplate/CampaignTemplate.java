@@ -1,5 +1,6 @@
 package com.lohika.morning.ecs.domain.campaigntemplate;
 
+import com.lohika.morning.ecs.domain.email.Email;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -35,7 +36,7 @@ public class CampaignTemplate {
   private String subject = "";
 
   @NotEmpty
-  @Column(length = 2_000)
+  @Column(length = Email.EMAIL_BODY_MAX_LENGTH)
   @Builder.Default
   private String body = "";
 

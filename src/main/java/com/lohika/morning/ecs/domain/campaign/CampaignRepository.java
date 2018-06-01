@@ -13,4 +13,6 @@ public interface CampaignRepository extends PagingAndSortingRepository<Campaign,
   List<Campaign> findByNameContainingIgnoringCaseOrSubjectContainingIgnoringCase(String email, String subject);
 
   List<Campaign> findByEvent(MorningEvent event);
+
+  List<Campaign> findByStatus(Campaign.Status status);
 }
