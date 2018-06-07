@@ -3,7 +3,7 @@ package com.lohika.morning.ecs.domain.attendee;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import com.lohika.morning.ecs.domain.status.StatusService;
+import com.lohika.morning.ecs.domain.applicationstatus.ApplicationStateService;
 import com.vaadin.data.HasValue;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
@@ -33,7 +33,7 @@ public class AttendeeListView extends VerticalLayout implements View {
 
   private final AttendeeService attendeeService;
   private final AttendeeResourceService attendeeResourceService;
-  private final StatusService statusService;
+  private final ApplicationStateService applicationStateService;
 
   @PostConstruct
   void init() {
@@ -46,7 +46,7 @@ public class AttendeeListView extends VerticalLayout implements View {
     FileDownloader fileDownloader = new FileDownloader(attendeeResourceService.getResource());
     fileDownloader.extend(downloadButton);
 
-    lastUpdateLabel.setCaption(statusService.getStatus().getLastUpdateAttendeeAt().toString());
+    lastUpdateLabel.setCaption(applicationStateService.getUpdateAttendee());
 
     filterTextField.setPlaceholder("Filter by first name / last name /email");
     filterTextField.setValueChangeMode(ValueChangeMode.LAZY);
@@ -66,6 +66,6 @@ public class AttendeeListView extends VerticalLayout implements View {
   private void reloadAttendees(Button.ClickEvent clickEvent) {
     attendeeService.reload();
     grid.setItems(attendeeService.findAll());
-    lastUpdateLabel.setCaption(statusService.getStatus().getLastUpdateAttendeeAt().toString());
+    lastUpdateLabel.setCaption(applicationStateService.getUpdateAttendee());
   }
 }

@@ -3,7 +3,7 @@ package com.lohika.morning.ecs.domain.attendee;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import com.lohika.morning.ecs.domain.status.StatusService;
+import com.lohika.morning.ecs.domain.applicationstatus.ApplicationStateService;
 import com.vaadin.server.Resource;
 import com.vaadin.server.StreamResource;
 
@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 @Service
 public class AttendeeResourceService {
   private final AttendeeService attendeeService;
-  private final StatusService statusService;
+  private final ApplicationStateService applicationStateService;
 
   public Resource getResource() {
     return new StreamResource((StreamResource.StreamSource) () -> {
@@ -30,6 +30,6 @@ public class AttendeeResourceService {
 
       log.info("Downloaded {} attendee(s)", attendees.size());
       return new ByteArrayInputStream(mail.getBytes());
-    }, "Morning@Lohika " + statusService.getStatus().getLastUpdateAttendeeAt().toString() + ".emails");
+    }, "Morning@Lohika " + applicationStateService.getUpdateAttendee() + ".emails");
   }
 }
