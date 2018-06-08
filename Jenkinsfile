@@ -38,7 +38,7 @@ pipeline() {
             steps {
                 script {
                     if (env.BRANCH_NAME == 'master') {
-                        buildInfo = gradle.run rootDir: "./", buildFile: 'build.gradle', tasks: 'clean build artifactoryPublish '
+                        buildInfo = gradle.run rootDir: "./", buildFile: 'build.gradle', tasks: 'clean build artifactoryPublish'
                     } else {
                         buildInfo = gradle.run rootDir: "./", buildFile: 'build.gradle', tasks: 'clean build'
                     }
