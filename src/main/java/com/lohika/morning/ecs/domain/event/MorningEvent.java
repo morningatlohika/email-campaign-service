@@ -45,6 +45,5 @@ public class MorningEvent {
   @Future
   private LocalDate date;
 
-  @NotEmpty
   private String ticketsUrl;
 }
