@@ -45,7 +45,7 @@ google:
     range: A2:Z
 
 email-client-service:
-  data-dir: test-data
+  data-dir: test-data-${random.uuid}
   # Possible values:
   #   none  - just log email info, but don't try to send email. This is the default.
   #   false - do not override recipient. Should be used in production profile only
