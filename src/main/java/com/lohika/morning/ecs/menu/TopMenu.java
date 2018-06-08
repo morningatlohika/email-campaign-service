@@ -16,7 +16,7 @@ public class TopMenu extends BaseMenu {
   public TopMenu(UI ui) {
     super(ui);
 
-    manager = createNavigationButton("Event manager", EventListView.VIEW_NAME);
+    manager = createNavigationButton("  Event manager", EventListView.VIEW_NAME);
     configurator = createNavigationButton("Configurator", AttendeeListView.VIEW_NAME);
     administrator = createNavigationButton("Administrator", CampaignListView.VIEW_NAME);
 
