@@ -29,7 +29,7 @@ pipeline() {
             steps {
                 script {
                     gradle.useWrapper = true
-                    gradle.deployer.ivyPattern = '[organisation]/[module]/ivy-[revision].xml'
+                    gradle.deployer.ivyPattern = '[organisation]/[module]/[revision]/ivy-[revision].xml'
                     gradle.deployer.artifactPattern = '[organisation]/[module]/[revision]/[artifact]-[revision](-[classifier]).[ext]'
                     gradle.deployer.deployMavenDescriptors = true
                     gradle.deployer.deployIvyDescriptors = true
