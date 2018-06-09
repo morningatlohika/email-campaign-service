@@ -29,6 +29,7 @@ pipeline() {
             steps {
                 script {
                     gradle.useWrapper = true
+                    gradle.deployer.mavenCompatible = true
                     gradle.deployer server: server, repo: 'morning-at-lohika-snapshots'
                 }
             }
@@ -38,7 +39,7 @@ pipeline() {
             steps {
                 script {
                     if (env.BRANCH_NAME == 'master') {
-                        buildInfo = gradle.run rootDir: "./", buildFile: 'build.gradle', tasks: 'clean build artifactoryPublish'
+                        buildInfo = gradle.run rootDir: "./", buildFile: 'build.gradle', tasks: 'clean artifactoryPublish'
                     } else {
                         buildInfo = gradle.run rootDir: "./", buildFile: 'build.gradle', tasks: 'clean build'
                     }
@@ -62,6 +63,7 @@ pipeline() {
                     reportName           : "Test Summary"
                 ])
                 junit testResults: 'build/test-results/test/*.xml', allowEmptyResults: true
+                gradle.deployer.deployArtifacts buildInfo
                 server.publishBuildInfo buildInfo
             }
         }
