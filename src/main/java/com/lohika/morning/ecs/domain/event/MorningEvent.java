@@ -38,7 +38,7 @@ public class MorningEvent {
   private String name;
 
   @NotEmpty
-  @Column(length = 2000)
+  @Column(length = 32_672)
   private String description;
 
   @NotNull
