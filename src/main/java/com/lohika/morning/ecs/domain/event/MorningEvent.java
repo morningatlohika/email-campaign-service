@@ -45,5 +45,6 @@ public class MorningEvent {
   @Future
   private LocalDate date;
 
+  @Column(length = 2_000)
   private String ticketsUrl;
 }
