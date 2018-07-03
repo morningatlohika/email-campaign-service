@@ -20,7 +20,7 @@ import java.time.LocalDateTime;
 @Builder
 @Data
 public class Email {
-  public static final int EMAIL_BODY_MAX_LENGTH = 7_000;
+  public static final int EMAIL_BODY_MAX_LENGTH = 32_672;
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
