@@ -1,7 +1,6 @@
 package com.lohika.morning.ecs.domain.campaign;
 
-import com.vaadin.data.Converter;
-import com.vaadin.data.converter.StringToIntegerConverter;
+import com.lohika.morning.ecs.domain.event.EventDetailsView;
 import com.vaadin.ui.declarative.converters.DesignEnumConverter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -93,7 +92,7 @@ public class CampaignDetailsView extends HorizontalLayout implements View {
   }
 
   private void cancel(Button.ClickEvent clickEvent) {
-    getUI().getNavigator().navigateTo(CampaignListView.VIEW_NAME);
+    getUI().getNavigator().navigateTo(EventDetailsView.VIEW_NAME +"/" + binder.getBean().getEvent().getEventNumber());
   }
 
   @Override

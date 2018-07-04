@@ -7,18 +7,15 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 
-public class TalkPanel extends VerticalLayout {
+public class TalkPanel extends HorizontalLayout {
 
   private Button editBtn = new Button("Edit", VaadinIcons.EDIT);
   private HorizontalLayout actions = new HorizontalLayout(editBtn);
   private Label theses;
 
   public TalkPanel(Talk talk, boolean isEditable) {
-    setWidth(100, Unit.PERCENTAGE);
-    theses = new Label(talk.getTheses());
-    theses.setWidth(100, Unit.PERCENTAGE);
-    theses.setContentMode(ContentMode.HTML);
-    addComponents(actions, theses);
+    theses = new Label(talk.getTitle());
+    addComponents(theses, actions);
 
     editBtn.setEnabled(isEditable);
 
