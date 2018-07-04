@@ -3,7 +3,6 @@ package com.lohika.morning.ecs.domain.event;
 import lombok.extern.slf4j.Slf4j;
 
 import com.lohika.morning.ecs.domain.talk.TalkService;
-import com.lohika.morning.ecs.domain.talk.TalksList;
 import com.vaadin.data.BeanValidationBinder;
 import com.vaadin.data.Binder;
 import com.vaadin.data.converter.StringToIntegerConverter;
@@ -18,7 +17,6 @@ import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.RichTextArea;
 import com.vaadin.ui.TextField;
-import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 
 import org.apache.commons.lang3.StringUtils;
@@ -34,7 +32,6 @@ public class EventEditorView extends HorizontalLayout implements View {
   public static final String VIEW_NAME = "editEvent";
 
   private final EventService eventService;
-  private final TalkService talkService;
 
   /* Fields to edit properties in MorningEvent entity */
   private TextField eventNumber = new TextField("Event number");
@@ -46,29 +43,19 @@ public class EventEditorView extends HorizontalLayout implements View {
   /* Action buttons */
   private Button saveBtn = new Button("Save", VaadinIcons.CHECK);
   private Button cancelBtn = new Button("Cancel");
-  private Button importTalksBtn = new Button("Import Talks and Speakers", VaadinIcons.DOWNLOAD);
   private HorizontalLayout actions = new HorizontalLayout(saveBtn, cancelBtn);
 
-  private TalksList talksList;
   private final FormLayout editForm;
-  private final VerticalLayout talksPanel;
 
   private Binder<MorningEvent> binder = new BeanValidationBinder<>(MorningEvent.class);
 
   @Autowired
   public EventEditorView(EventService eventService, TalkService talkService) {
     this.eventService = eventService;
-    this.talkService = talkService;
-
-    name.setWidth(100, Unit.PERCENTAGE);
-    description.setWidth(100, Unit.PERCENTAGE);
-    ticketsUrl.setWidth(100, Unit.PERCENTAGE);
 
     editForm = new FormLayout(eventNumber, name, description, date, ticketsUrl, actions);
 
-    talksList = new TalksList(talkService);
-    talksPanel = new VerticalLayout(importTalksBtn, talksList);
-    addComponents(editForm, talksPanel);
+    addComponents(editForm);
     setWidth(100, Unit.PERCENTAGE);
 
     binder.forMemberField(eventNumber).withConverter(new StringToIntegerConverter("Please enter a number"));
@@ -85,13 +72,10 @@ public class EventEditorView extends HorizontalLayout implements View {
   public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
     MorningEvent morningEvent = initMorningEvent(viewChangeEvent);
     binder.setBean(morningEvent);
-    talksList.displayTalks(morningEvent);
 
     // set button states
     final boolean isEventEditable = morningEvent.getDate().isAfter(LocalDate.now());
-    final boolean isEventPersisted = morningEvent.getId() != null;
     saveBtn.setEnabled(isEventEditable);
-    importTalksBtn.setEnabled(isEventPersisted && isEventEditable);
 
     // add listeners
     saveBtn.addClickListener(clickEvent -> {
@@ -99,11 +83,6 @@ public class EventEditorView extends HorizontalLayout implements View {
         eventService.save(morningEvent);
         navigateTo(EventDetailsView.VIEW_NAME, morningEvent.getEventNumber());
       }
-    });
-
-    importTalksBtn.addClickListener(clickEvent -> {
-      talkService.importTalks(morningEvent);
-      talksList.displayTalks(morningEvent);
     });
 
     cancelBtn.addClickListener(clickEvent -> navigateTo(EventDetailsView.VIEW_NAME, morningEvent.getEventNumber()));
