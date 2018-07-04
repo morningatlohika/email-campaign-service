@@ -23,3 +23,8 @@ Eventual DB location is logged early during the application startup.
 ### Spring profiles
 Default spring profile is `local`. It should be used for development.
 For production, `prod` profile should be used.
+
+
+
+
+
