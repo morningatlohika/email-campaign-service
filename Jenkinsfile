@@ -25,7 +25,7 @@ pipeline() {
 
     stages {
 
-        stage('Configuration') {
+        stage('Pre configuration') {
             steps {
                 script {
                     gradle.useWrapper = true
@@ -37,14 +37,26 @@ pipeline() {
             }
         }
 
-        stage('Gradle build and publish') {
+        stage('Build') {
             steps {
                 script {
-                    if (env.BRANCH_NAME == 'master') {
-                        buildInfo = gradle.run rootDir: "./", buildFile: 'build.gradle', tasks: 'clean build  artifactoryPublish'
-                    } else {
-                        buildInfo = gradle.run rootDir: "./", buildFile: 'build.gradle', tasks: 'clean build'
-                    }
+                    buildInfo = gradle.run rootDir: "./", buildFile: 'build.gradle', tasks: 'clean build'
+                }
+            }
+        }
+
+        stage('Build and publish SNAPSHOT') {
+            when { branch 'master' }
+            steps {
+                script {
+                    buildInfo = gradle.run rootDir: "./", buildFile: 'build.gradle', tasks: 'clean build  artifactoryPublish'
+                }
+            }
+        }
+
+        stage('Collect build info') {
+            steps {
+                script {
                     buildInfo.env.filter.addExclude("*TOKEN*")
                     buildInfo.env.filter.addExclude("*HOOK*")
                     buildInfo.env.collect()
@@ -53,7 +65,7 @@ pipeline() {
         }
 
         stage('Deploy') {
-            when { tag "ermail-campaign-service-*" }
+            when { buildingTag() }
             steps {
                 echo 'Deploying only because this commit is tagged...'
                 sh 'make deploy'
