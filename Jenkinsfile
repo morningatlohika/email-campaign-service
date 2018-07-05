@@ -45,11 +45,11 @@ pipeline() {
             }
         }
 
-        stage('Build and publish SNAPSHOT') {
+        stage('Publish SNAPSHOT') {
             when { branch 'master' }
             steps {
                 script {
-                    buildInfo = gradle.run rootDir: "./", buildFile: 'build.gradle', tasks: 'clean build  artifactoryPublish'
+                    buildInfo = gradle.run rootDir: "./", buildFile: 'build.gradle', tasks: 'artifactoryPublish'
                 }
             }
         }
