@@ -25,7 +25,7 @@ pipeline() {
 
     stages {
 
-        stage('Configuration') {
+        stage('Pre configuration') {
             steps {
                 script {
                     gradle.useWrapper = true
@@ -33,22 +33,37 @@ pipeline() {
                     gradle.deployer.deployIvyDescriptors = true
                     gradle.deployer.mavenCompatible = true
                     gradle.deployer server: server, repo: 'morning-at-lohika-snapshots'
+
+                    buildInfo.env.filter.addExclude("*TOKEN*")
+                    buildInfo.env.filter.addExclude("*HOOK*")
+                    buildInfo.env.collect()
                 }
             }
         }
 
-        stage('Gradle build and deploy') {
+        stage('Build') {
             steps {
                 script {
-                    if (env.BRANCH_NAME == 'master') {
-                        buildInfo = gradle.run rootDir: "./", buildFile: 'build.gradle', tasks: 'clean build  artifactoryPublish'
-                    } else {
-                        buildInfo = gradle.run rootDir: "./", buildFile: 'build.gradle', tasks: 'clean build'
-                    }
-                  buildInfo.env.filter.addExclude("*TOKEN*")
-                  buildInfo.env.filter.addExclude("*HOOK*")
-                  buildInfo.env.collect()
+                    info = gradle.run rootDir: "./", buildFile: 'build.gradle', tasks: 'clean build'
+                    buildInfo.append(info)
                 }
+            }
+        }
+
+        stage('Publish SNAPSHOT') {
+            when { branch 'master' }
+            steps {
+                script {
+                    info = gradle.run rootDir: "./", buildFile: 'build.gradle', tasks: 'artifactoryPublish'
+                    buildInfo.append(info)
+                }
+            }
+        }
+
+        stage('Deploy') {
+            when { buildingTag() }
+            steps {
+                echo 'Deploying only because this commit is tagged...'
             }
         }
     }
