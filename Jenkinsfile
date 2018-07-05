@@ -37,7 +37,7 @@ pipeline() {
             }
         }
 
-        stage('Gradle build and deploy') {
+        stage('Gradle build and publish') {
             steps {
                 script {
                     if (env.BRANCH_NAME == 'master') {
@@ -45,10 +45,18 @@ pipeline() {
                     } else {
                         buildInfo = gradle.run rootDir: "./", buildFile: 'build.gradle', tasks: 'clean build'
                     }
-                  buildInfo.env.filter.addExclude("*TOKEN*")
-                  buildInfo.env.filter.addExclude("*HOOK*")
-                  buildInfo.env.collect()
+                    buildInfo.env.filter.addExclude("*TOKEN*")
+                    buildInfo.env.filter.addExclude("*HOOK*")
+                    buildInfo.env.collect()
                 }
+            }
+        }
+
+        stage('Deploy') {
+            when { tag "ermail-campaign-service-*" }
+            steps {
+                echo 'Deploying only because this commit is tagged...'
+                sh 'make deploy'
             }
         }
     }
