@@ -111,7 +111,9 @@ public class GoogleSheetsService {
     }
 
     public List<Talk> map(List<List<String>> rows) {
-      return rows.stream().map(this::mapRow).collect(toList());
+      return rows.stream().map(this::mapRow)
+          .filter(t -> t.getEvent() != null)
+          .collect(toList());
     }
 
   }
