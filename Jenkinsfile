@@ -40,7 +40,8 @@ pipeline() {
         stage('Build') {
             steps {
                 script {
-                    buildInfo = gradle.run rootDir: "./", buildFile: 'build.gradle', tasks: 'clean build'
+                    info = gradle.run rootDir: "./", buildFile: 'build.gradle', tasks: 'clean build'
+                    buildInfo.append(info)
                 }
             }
         }
@@ -49,7 +50,8 @@ pipeline() {
             when { branch 'master' }
             steps {
                 script {
-                    buildInfo = gradle.run rootDir: "./", buildFile: 'build.gradle', tasks: 'artifactoryPublish'
+                    info = gradle.run rootDir: "./", buildFile: 'build.gradle', tasks: 'artifactoryPublish'
+                    buildInfo.append(info)
                 }
             }
         }
