@@ -33,6 +33,10 @@ pipeline() {
                     gradle.deployer.deployIvyDescriptors = true
                     gradle.deployer.mavenCompatible = true
                     gradle.deployer server: server, repo: 'morning-at-lohika-snapshots'
+
+                    buildInfo.env.filter.addExclude("*TOKEN*")
+                    buildInfo.env.filter.addExclude("*HOOK*")
+                    buildInfo.env.collect()
                 }
             }
         }
@@ -56,21 +60,10 @@ pipeline() {
             }
         }
 
-        stage('Collect build info') {
-            steps {
-                script {
-                    buildInfo.env.filter.addExclude("*TOKEN*")
-                    buildInfo.env.filter.addExclude("*HOOK*")
-                    buildInfo.env.collect()
-                }
-            }
-        }
-
         stage('Deploy') {
             when { buildingTag() }
             steps {
                 echo 'Deploying only because this commit is tagged...'
-                sh 'make deploy'
             }
         }
     }
