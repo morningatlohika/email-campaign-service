@@ -147,7 +147,7 @@ public class EventDetailsView extends VerticalLayout implements View {
   }
 
   private void createCampaign(Button.ClickEvent clickEvent) {
-    getUI().getNavigator().navigateTo(CampaignEditView.VIEW_NAME);
+    getUI().getNavigator().navigateTo(CampaignEditView.VIEW_NAME_FOR_EVENT + binder.getBean().getEventNumber());
   }
 
   private void reloadTasks() {
