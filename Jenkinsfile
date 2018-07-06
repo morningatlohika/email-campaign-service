@@ -61,7 +61,7 @@ pipeline() {
     stage('Publish SNAPSHOT') {
       when {
         branch 'master'
-        equals expected: true, actual: params.release
+        expression { params.release == false }
       }
       steps {
         script {
@@ -74,7 +74,7 @@ pipeline() {
     stage('Release') {
       when {
         branch 'release'
-        equals expected: false, actual: params.release
+        expression { params.release == true }
       }
       steps {
         script {
