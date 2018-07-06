@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import com.lohika.morning.ecs.domain.event.EventDataProvider;
+import com.lohika.morning.ecs.domain.event.EventService;
 import com.lohika.morning.ecs.domain.event.MorningEvent;
 import com.lohika.morning.ecs.utils.PriorityUtil;
 import com.vaadin.data.BeanValidationBinder;
@@ -36,6 +37,8 @@ import javax.annotation.PostConstruct;
 @SpringView(name = CampaignEditView.VIEW_NAME)
 public class CampaignEditView extends HorizontalLayout implements View {
   public static final String VIEW_NAME = "addCampaign";
+  public static final String EVENT_NUMBER = "?event=";
+  public static final String VIEW_NAME_FOR_EVENT = VIEW_NAME + "/" + EVENT_NUMBER;
   private static final List<Integer> PERIOD_ITEMS = PriorityUtil.getPriorities();
 
   private final TextField name = new TextField("Name");
@@ -56,6 +59,7 @@ public class CampaignEditView extends HorizontalLayout implements View {
   private final Binder<Campaign> binder = new BeanValidationBinder<>(Campaign.class);
 
   private final CampaignService campaignService;
+  private final EventService eventService;
 
   @PostConstruct
   public void init() {
@@ -125,6 +129,12 @@ public class CampaignEditView extends HorizontalLayout implements View {
   private Campaign getCampaign(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
     if (StringUtils.EMPTY.equals(viewChangeEvent.getParameters())) {
       return campaignService.newCampaign();
+    } else if (viewChangeEvent.getParameters().startsWith(EVENT_NUMBER)) {
+      Campaign campaign = campaignService.newCampaign();
+      Integer number = Integer.valueOf(viewChangeEvent.getParameters().substring(EVENT_NUMBER.length()));
+      MorningEvent event = eventService.getEventByNumber(number);
+      campaign.setEvent(event);
+      return campaign;
     }
     Long id = Long.valueOf(viewChangeEvent.getParameters());
     return campaignService.findOne(id);
