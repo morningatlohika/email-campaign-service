@@ -55,7 +55,11 @@ public class EmailService {
       emailAdresses = Arrays.asList(campaign.getEmails().split(","));
     }
 
-    List<String> unsubscribed = unsubscribeService.findAll().stream().map(Unsubscribe::getEmail).collect(toList());
+    List<String> unsubscribed = unsubscribeService.findAll().stream()
+        .map(Unsubscribe::getEmail)
+        .map(String::toLowerCase)
+        .map(String::trim)
+        .collect(toList());
     emailAdresses = emailAdresses.stream().filter(e -> !unsubscribed.contains(e)).collect(toList());
 
     emailAdresses.forEach(e -> save(e, campaignPreviewService.findOne(campaign.getId())));
