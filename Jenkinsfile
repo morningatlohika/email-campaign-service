@@ -40,7 +40,7 @@ pipeline() {
           gradle.deployer.deployMavenDescriptors = true
           gradle.deployer.deployIvyDescriptors = true
           gradle.deployer.mavenCompatible = true
-          gradle.deployer server: server, repo: 'morning-at-lohika-snapshots'
+
 
           buildInfo.env.filter.addExclude("*TOKEN*")
           buildInfo.env.filter.addExclude("*HOOK*")
@@ -65,6 +65,8 @@ pipeline() {
       }
       steps {
         script {
+          gradle.deployer server: server, repo: 'morning-at-lohika-snapshots'
+
           info = gradle.run rootDir: "./", buildFile: 'build.gradle', tasks: 'artifactoryPublish'
           buildInfo.append(info)
         }
@@ -78,6 +80,8 @@ pipeline() {
       }
       steps {
         script {
+          gradle.deployer server: server, repo: 'morning-at-lohika'
+
           info = gradle.run rootDir: "./", buildFile: 'build.gradle', tasks: 'release artifactoryPublish'
           buildInfo.append(info)
         }
