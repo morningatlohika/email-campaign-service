@@ -105,7 +105,7 @@ pipeline() {
       steps {
         script {
           gradle.deployer server: server, repo: 'morning-at-lohika'
-          info = gradle.run rootDir: "./", buildFile: 'build.gradle', tasks: 'artifactoryPublish'
+          info = gradle.run rootDir: "./", buildFile: 'build.gradle', tasks: 'clean build artifactoryPublish'
           buildInfo.append(info)
         }
       }

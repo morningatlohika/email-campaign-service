@@ -21,6 +21,7 @@ import com.vaadin.event.ShortcutAction;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
+import com.vaadin.shared.ui.ContentMode;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
@@ -107,6 +108,8 @@ public class EventDetailsView extends VerticalLayout implements View {
     campaignGrid.setColumns("name", "subject", "emails", "status");
     campaignGrid.asSingleSelect().addValueChangeListener(this::campaignDetails);
     campaignGrid.setSizeFull();
+
+    description.setContentMode(ContentMode.HTML);
   }
 
   @Override
