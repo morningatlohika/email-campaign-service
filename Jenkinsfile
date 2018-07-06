@@ -55,7 +55,7 @@ pipeline() {
           gradle.deployer.deployIvyDescriptors = true
           gradle.deployer.mavenCompatible = true
 
-          gradle.deployer server: server, repo: 'morning-at-lohika-snapshots' + (params.release == false ? "-snapshots" : "")
+          gradle.deployer server: server, repo: 'morning-at-lohika' + (params.release == false ? "-snapshots" : "")
 
           buildInfo.env.filter.addExclude("*TOKEN*")
           buildInfo.env.filter.addExclude("*HOOK*")
