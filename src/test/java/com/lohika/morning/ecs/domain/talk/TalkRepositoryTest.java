@@ -20,7 +20,7 @@ public class TalkRepositoryTest extends BaseTest {
     MorningEvent event1 = given.event("Golang Morning").save();
     MorningEvent event2 = given.event("Design Morning").save();
 
-    Talk expectedTalk = given.talk("Red is not blue").withEvent(event1).save();
+    Talk expectedTalk = given.talk("Red is not blue").withTargetAudience("JSE").withEvent(event1).save();
 
     Talk noiseTalk1 = given.talk("Blue is not green").withEvent(event1).save();
     Talk noiseTalk2 = given.talk("Green is not red").withEvent(event2).save();
@@ -34,6 +34,9 @@ public class TalkRepositoryTest extends BaseTest {
     assertEquals(expectedTalk.getId(), foundTalk.getId());
     assertEquals(expectedTalk.getTitle(), foundTalk.getTitle());
     assertEquals(expectedTalk.getTheses(), foundTalk.getTheses());
+    assertEquals(expectedTalk.getLanguage(), foundTalk.getLanguage());
+    assertEquals(expectedTalk.getLevel(), foundTalk.getLevel());
+    assertEquals(expectedTalk.getTargetAudience(), foundTalk.getTargetAudience());
     assertEquals(expectedTalk.getEvent().getId(), foundTalk.getEvent().getId());
   }
 }
