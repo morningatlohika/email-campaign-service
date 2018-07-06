@@ -73,7 +73,7 @@ pipeline() {
 
     stage('Release') {
       when {
-        branch 'release'
+        branch 'master'
         expression { params.release == true }
       }
       steps {
