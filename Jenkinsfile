@@ -100,7 +100,7 @@ pipeline() {
 
     stage('Publish RELEASE') {
       when {
-        when { buildingTag() }
+        buildingTag()
       }
       steps {
         script {
@@ -112,7 +112,9 @@ pipeline() {
     }
 
     stage('Deploy') {
-      when { buildingTag() }
+      when {
+        buildingTag()
+      }
       steps {
         echo 'Deploying only because this commit is tagged...'
       }
