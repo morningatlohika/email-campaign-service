@@ -31,7 +31,19 @@ pipeline() {
     )
   }
 
+  environment {
+    GIT_TOKEN = credentials("Jenkins-GitHub-Apps-Personal-access-tokens")
+  }
+
   stages {
+
+
+    stage('Pre build') {
+      dir("${env.WORKSPACE}") {
+        sh "git config remote.origin.url 'https://${env.GIT_TOKEN}@github.com:morningatlohika/email-campaign-service.git'"
+        sh 'git clean -fdx'
+      }
+    }
 
     stage('Pre configuration') {
       steps {
@@ -66,7 +78,6 @@ pipeline() {
       steps {
         script {
           gradle.deployer server: server, repo: 'morning-at-lohika-snapshots'
-
           info = gradle.run rootDir: "./", buildFile: 'build.gradle', tasks: 'artifactoryPublish'
           buildInfo.append(info)
         }
@@ -81,7 +92,6 @@ pipeline() {
       steps {
         script {
           gradle.deployer server: server, repo: 'morning-at-lohika'
-
           info = gradle.run rootDir: "./", buildFile: 'build.gradle', tasks: 'release artifactoryPublish'
           buildInfo.append(info)
         }
