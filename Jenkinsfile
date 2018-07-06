@@ -41,7 +41,7 @@ pipeline() {
             sh "git config remote.origin.url 'https://${env.GIT_TOKEN}@github.com/morningatlohika/email-campaign-service.git'"
             sh 'git clean -fdx'
             sh "git checkout ${env.BRANCH_NAME}"
-            sh "git checkout pull"
+            sh "git pull"
           }
         }
       }
