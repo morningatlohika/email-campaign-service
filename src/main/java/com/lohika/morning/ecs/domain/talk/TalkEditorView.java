@@ -1,5 +1,6 @@
 package com.lohika.morning.ecs.domain.talk;
 
+import com.vaadin.ui.*;
 import lombok.extern.slf4j.Slf4j;
 
 import com.lohika.morning.ecs.domain.event.EventDetailsView;
@@ -12,14 +13,9 @@ import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.spring.annotation.SpringView;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.FormLayout;
-import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.RichTextArea;
-import com.vaadin.ui.TextField;
-import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDate;
@@ -36,6 +32,9 @@ public class TalkEditorView extends HorizontalLayout implements View {
   /* Fields to edit properties in MorningEvent entity */
   private TextField title = new TextField("Title");
   private RichTextArea theses = new RichTextArea("Theses");
+  private ComboBox<Talk.Language> language = new ComboBox<>("Talk Language");
+  private ComboBox<Talk.Level> level = new ComboBox<>("Talk Level");
+  private TextField targetAudience = new TextField("Target Audience");
 
   /* Action buttons */
   private Button saveBtn = new Button("Save", VaadinIcons.CHECK);
@@ -52,7 +51,7 @@ public class TalkEditorView extends HorizontalLayout implements View {
   @Autowired
   public TalkEditorView(TalkService talkService, SpeakersList speakersList) {
     this.talkService = talkService;
-    editForm.addComponents(title, theses, actions);
+    editForm.addComponents(title, theses, language, level, targetAudience, actions);
 
     this.speakersList = speakersList;
     speakersPanel = new VerticalLayout(speakersList);
@@ -74,6 +73,12 @@ public class TalkEditorView extends HorizontalLayout implements View {
 
     binder.setBean(talk);
     speakersList.displaySpeakers(talk);
+
+    language.setEmptySelectionAllowed(false);
+    language.setItems(Talk.Language.values());
+
+    level.setEmptySelectionAllowed(false);
+    level.setItems(Talk.Level.values());
 
     // set button states
     final boolean isEventEditable = talk.getEvent().getDate().isAfter(LocalDate.now());

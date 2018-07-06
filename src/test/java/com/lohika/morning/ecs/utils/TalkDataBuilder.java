@@ -28,6 +28,8 @@ public class TalkDataBuilder {
         .googleSheetsTimestamp(new String(RandomUtils.nextBytes(15)))
         .title(title)
         .theses(title + " theses")
+        .language(Talk.Language.ENGLISH)
+        .level(Talk.Level.REGULAR)
         .build();
     return this;
   }
@@ -50,6 +52,11 @@ public class TalkDataBuilder {
 
   public TalkDataBuilder withEvent(MorningEvent event) {
     this.talk.setEvent(event);
+    return this;
+  }
+
+  public TalkDataBuilder withTargetAudience(String targetAudience) {
+    this.talk.setTargetAudience(targetAudience);
     return this;
   }
 
