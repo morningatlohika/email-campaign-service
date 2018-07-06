@@ -61,7 +61,7 @@ pipeline() {
         stage('Publish SNAPSHOT') {
             when {
                 branch 'master'
-                environment name: 'release', value: false
+                environment name: 'release', value: 'false'
             }
             steps {
                 script {
@@ -74,7 +74,7 @@ pipeline() {
         stage('Release') {
             when {
                 branch 'release'
-                environment name: 'release', value: true
+                environment name: 'release', value: 'true'
             }
             steps {
                 script {
