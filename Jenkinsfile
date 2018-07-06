@@ -23,6 +23,14 @@ pipeline() {
         JENKINS_HOOKS = credentials("morning-at-lohika-jenkins-ci-hooks")
     }
 
+    parameters {
+        booleanParam(
+            name: 'release',
+            description: 'release new version',
+            defaultValue: false
+        )
+    }
+
     stages {
 
         stage('Pre configuration') {
@@ -51,7 +59,10 @@ pipeline() {
         }
 
         stage('Publish SNAPSHOT') {
-            when { branch 'master' }
+            when {
+                branch 'master'
+                environment name: 'release', value: false
+            }
             steps {
                 script {
                     info = gradle.run rootDir: "./", buildFile: 'build.gradle', tasks: 'artifactoryPublish'
@@ -61,10 +72,13 @@ pipeline() {
         }
 
         stage('Release') {
-            when { branch 'release' }
+            when {
+                branch 'release'
+                environment name: 'release', value: true
+            }
             steps {
                 script {
-                    info = gradle.run rootDir: "./", buildFile: 'build.gradle', tasks: 'release'
+                    info = gradle.run rootDir: "./", buildFile: 'build.gradle', tasks: 'release artifactoryPublish'
                     buildInfo.append(info)
                 }
             }
