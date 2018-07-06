@@ -60,6 +60,16 @@ pipeline() {
             }
         }
 
+        stage('Release') {
+            when { branch 'release' }
+            steps {
+                script {
+                    info = gradle.run rootDir: "./", buildFile: 'build.gradle', tasks: 'release'
+                    buildInfo.append(info)
+                }
+            }
+        }
+
         stage('Deploy') {
             when { buildingTag() }
             steps {
