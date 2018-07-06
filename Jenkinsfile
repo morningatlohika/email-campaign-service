@@ -41,7 +41,7 @@ pipeline() {
             sh "git config remote.origin.url 'https://${env.GIT_TOKEN}@github.com/morningatlohika/email-campaign-service.git'"
             sh 'git clean -fdx'
             sh "git checkout ${env.BRANCH_NAME}"
-            sh "git pull"
+            sh 'git pull'
           }
         }
       }
@@ -94,7 +94,7 @@ pipeline() {
       steps {
         script {
           gradle.deployer server: server, repo: 'morning-at-lohika'
-          info = gradle.run rootDir: "./", buildFile: 'build.gradle', tasks: 'release assembleRelease artifactoryPublish'
+          info = gradle.run rootDir: "./", buildFile: 'build.gradle', tasks: 'release artifactoryPublish -x jar -x install'
           buildInfo.append(info)
         }
       }
