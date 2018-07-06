@@ -12,16 +12,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity
@@ -56,4 +47,33 @@ public class Talk {
 
   @OneToMany(mappedBy = "talk", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
   private List<Speaker> speakers;
+
+  @Column(nullable = false, columnDefinition = "VARCHAR(255) DEFAULT 'UNDECIDED'")
+  @Enumerated(EnumType.STRING)
+  @NotNull
+  @Builder.Default
+  private Language language = Language.UNDECIDED;
+
+  @Column(nullable = false, columnDefinition = "VARCHAR(255) DEFAULT 'UNKNOWN'")
+  @Enumerated(EnumType.STRING)
+  @NotNull
+  @Builder.Default
+  private Level level = Level.UNKNOWN;
+
+  @Column
+  private String targetAudience;
+
+  public enum Language {
+    UKRAINIAN,
+    ENGLISH,
+    RUSSIAN,
+    UNDECIDED
+  }
+
+  public enum Level {
+    INTRODUCTORY,
+    REGULAR,
+    DEEP_DETAILS,
+    UNKNOWN
+  }
 }
