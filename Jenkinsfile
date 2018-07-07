@@ -34,19 +34,6 @@ pipeline() {
 
   stages {
 
-    stage('Pre build') {
-      steps {
-        script {
-          dir("${env.WORKSPACE}") {
-            sh "git config remote.origin.url 'https://${env.GIT_TOKEN}@github.com/morningatlohika/email-campaign-service.git'"
-            sh 'git clean -fdx'
-            sh "git checkout ${env.BRANCH_NAME}"
-            sh 'git pull'
-          }
-        }
-      }
-    }
-
     stage('Pre configuration') {
       steps {
         script {
@@ -63,6 +50,12 @@ pipeline() {
     }
 
     stage('Build') {
+      when {
+        not {
+          branch 'master'
+          buildingTag()
+        }
+      }
       steps {
         script {
           info = gradle.run rootDir: "./", buildFile: 'build.gradle', tasks: 'clean build'
@@ -85,6 +78,23 @@ pipeline() {
       }
     }
 
+    stage('Pre Release') {
+      when {
+        branch 'master'
+        expression { params.release == true }
+      }
+      steps {
+        script {
+          dir("${env.WORKSPACE}") {
+            sh "git config remote.origin.url 'https://${env.GIT_TOKEN}@github.com/morningatlohika/email-campaign-service.git'"
+            sh 'git clean -fdx'
+            sh "git checkout ${env.BRANCH_NAME}"
+            sh 'git pull'
+          }
+        }
+      }
+    }
+
     stage('Release') {
       when {
         branch 'master'
@@ -100,10 +110,14 @@ pipeline() {
 
     stage('Publish RELEASE') {
       when {
-        buildingTag()
+        branch 'master'
+        expression { params.release == true }
       }
       steps {
         script {
+          dir("${env.WORKSPACE}") {
+            sh 'git log --pretty=format:"%h" -n 2 | sed -n 2p | xargs git checkout'
+          }
           gradle.deployer server: server, repo: 'morning-at-lohika'
           info = gradle.run rootDir: "./", buildFile: 'build.gradle', tasks: 'clean build artifactoryPublish'
           buildInfo.append(info)
