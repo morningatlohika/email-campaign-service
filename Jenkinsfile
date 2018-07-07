@@ -50,14 +50,6 @@ pipeline() {
     }
 
     stage('Build') {
-      when {
-        not {
-          branch 'master'
-        }
-        not {
-          buildingTag()
-        }
-      }
       steps {
         script {
           info = gradle.run rootDir: "./", buildFile: 'build.gradle', tasks: 'clean build'
