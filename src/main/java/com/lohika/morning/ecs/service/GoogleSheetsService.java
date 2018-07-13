@@ -1,15 +1,13 @@
 package com.lohika.morning.ecs.service;
 
-import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
-
 import com.google.api.services.sheets.v4.Sheets;
 import com.google.api.services.sheets.v4.model.ValueRange;
 import com.lohika.morning.ecs.domain.event.MorningEvent;
 import com.lohika.morning.ecs.domain.speaker.Speaker;
 import com.lohika.morning.ecs.domain.talk.Talk;
 import com.lohika.morning.ecs.utils.EcsUtils;
-
+import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.BooleanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -105,8 +103,10 @@ public class GoogleSheetsService {
           .googleSheetsTimestamp(row.get(1))
           .title(row.get(12))
           .theses(row.get(13))
+          .language(Talk.Language.fromString(row.get(14).toUpperCase()))
           .speakers(speakerMapper.mapRow(row))
           .event(events.get(row.get(0)))
+          .level(Talk.Level.fromString(row.get(31)))
           .build();
     }
 
