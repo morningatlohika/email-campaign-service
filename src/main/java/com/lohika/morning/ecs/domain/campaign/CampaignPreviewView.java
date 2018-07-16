@@ -78,9 +78,9 @@ public class CampaignPreviewView extends HorizontalLayout implements View {
     publishButton.setEnabled(campaign.isEditable());
 
     Long id = Long.valueOf(viewChangeEvent.getParameters());
-    Set<String> notSetKey = campaignPreviewService.getNotSetKey(id);
-    warnings.setVisible(!notSetKey.isEmpty());
-    warnings.setValue("Following value is not set: " + String.join(", ", notSetKey));
+    Set<String> unusedPlaceholders = campaignPreviewService.getUnusedPlaceholders(id);
+    warnings.setVisible(!unusedPlaceholders.isEmpty());
+    warnings.setValue("Following value is not set: " + String.join(", ", unusedPlaceholders));
   }
 
   private Campaign getCampaign(ViewChangeListener.ViewChangeEvent viewChangeEvent) {

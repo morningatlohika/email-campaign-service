@@ -39,7 +39,7 @@ public class CampaignPreviewService {
     return campaign;
   }
 
-  public Set<String> getNotSetKey(Long id) {
+  public Set<String> getUnusedPlaceholders(Long id) {
     Campaign campaign = campaignService.findOne(id);
     Map<String, String> variable = getVariable(campaign);
 
