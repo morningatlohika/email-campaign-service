@@ -21,6 +21,7 @@ pipeline() {
     SLACK_AUTOMATION_CHANNEL = "#automation"
     SLACK_AUTOMATION_TOKEN = credentials("jenkins-ci-integration-token")
     JENKINS_HOOKS = credentials("morning-at-lohika-jenkins-ci-hooks")
+    GIT_TOKEN = credentials("Jenkins-GitHub-Apps-Personal-access-tokens")
   }
 
   parameters {
@@ -40,7 +41,6 @@ pipeline() {
           gradle.deployer.deployMavenDescriptors = true
           gradle.deployer.deployIvyDescriptors = true
           gradle.deployer.mavenCompatible = true
-          gradle.deployer server: server, repo: 'morning-at-lohika-snapshots'
 
           buildInfo.env.filter.addExclude("*TOKEN*")
           buildInfo.env.filter.addExclude("*HOOK*")
@@ -65,8 +65,26 @@ pipeline() {
       }
       steps {
         script {
+          gradle.deployer server: server, repo: 'morning-at-lohika-snapshots'
           info = gradle.run rootDir: "./", buildFile: 'build.gradle', tasks: 'artifactoryPublish'
           buildInfo.append(info)
+        }
+      }
+    }
+
+    stage('Pre Release') {
+      when {
+        branch 'master'
+        expression { params.release == true }
+      }
+      steps {
+        script {
+          dir("${env.WORKSPACE}") {
+            sh "git config remote.origin.url 'https://${env.GIT_TOKEN}@github.com/morningatlohika/email-campaign-service.git'"
+            sh 'git clean -fdx'
+            sh "git checkout ${env.BRANCH_NAME}"
+            sh 'git pull'
+          }
         }
       }
     }
@@ -78,14 +96,33 @@ pipeline() {
       }
       steps {
         script {
-          info = gradle.run rootDir: "./", buildFile: 'build.gradle', tasks: 'release artifactoryPublish'
+          info = gradle.run rootDir: "./", buildFile: 'build.gradle', tasks: 'release'
+          buildInfo.append(info)
+        }
+      }
+    }
+
+    stage('Publish RELEASE') {
+      when {
+        branch 'master'
+        expression { params.release == true }
+      }
+      steps {
+        script {
+          dir("${env.WORKSPACE}") {
+            sh 'git log --pretty=format:"%h" -n 2 | sed -n 2p | xargs git checkout'
+          }
+          gradle.deployer server: server, repo: 'morning-at-lohika'
+          info = gradle.run rootDir: "./", buildFile: 'build.gradle', tasks: 'clean build artifactoryPublish'
           buildInfo.append(info)
         }
       }
     }
 
     stage('Deploy') {
-      when { buildingTag() }
+      when {
+        buildingTag()
+      }
       steps {
         echo 'Deploying only because this commit is tagged...'
       }

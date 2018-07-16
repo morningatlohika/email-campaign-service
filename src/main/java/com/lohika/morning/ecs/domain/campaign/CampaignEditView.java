@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import com.lohika.morning.ecs.domain.event.EventDataProvider;
+import com.lohika.morning.ecs.domain.event.EventDetailsView;
 import com.lohika.morning.ecs.domain.event.EventService;
 import com.lohika.morning.ecs.domain.event.MorningEvent;
 import com.lohika.morning.ecs.utils.PriorityUtil;
@@ -103,7 +104,13 @@ public class CampaignEditView extends HorizontalLayout implements View {
   }
 
   private void cancel(Button.ClickEvent clickEvent) {
-    getUI().getNavigator().navigateTo(CampaignDetailsView.VIEW_NAME + "/" + binder.getBean().getId());
+    if (binder.getBean().getId() == null && binder.getBean().getEvent() == null) {
+      getUI().getNavigator().navigateTo(CampaignListView.VIEW_NAME);
+    } else if (binder.getBean().getId() == null && binder.getBean().getEvent() != null) {
+      getUI().getNavigator().navigateTo(EventDetailsView.VIEW_NAME + "/" + binder.getBean().getEvent().getEventNumber());
+    } else {
+      getUI().getNavigator().navigateTo(CampaignDetailsView.VIEW_NAME + "/" + binder.getBean().getId());
+    }
   }
 
   @Override
