@@ -63,7 +63,7 @@ public class EventDetailsView extends VerticalLayout implements View {
   private final HorizontalLayout actions = new HorizontalLayout(editBtn, deleteBtn, closeBtn);
 
   /* Fields form */
-  private final FormLayout eventDetails = new FormLayout(eventNumber, name, description, date, ticketsUrl, actions);
+  private final FormLayout eventDetails = new FormLayout(eventNumber, name, date, ticketsUrl, description, actions);
 
   /* Talks */
   private final Button importTalksBtn = new Button("Import Talks and Speakers", VaadinIcons.DOWNLOAD);
@@ -110,6 +110,7 @@ public class EventDetailsView extends VerticalLayout implements View {
     campaignGrid.setSizeFull();
 
     description.setContentMode(ContentMode.HTML);
+    description.setWidth(500, Unit.PIXELS);
   }
 
   @Override
