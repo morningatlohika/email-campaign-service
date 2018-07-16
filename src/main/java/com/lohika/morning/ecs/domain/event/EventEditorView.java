@@ -32,21 +32,17 @@ public class EventEditorView extends HorizontalLayout implements View {
   public static final String VIEW_NAME = "editEvent";
 
   private final EventService eventService;
-
+  private final FormLayout editForm;
   /* Fields to edit properties in MorningEvent entity */
   private TextField eventNumber = new TextField("Event number");
   private TextField name = new TextField("Name");
   private RichTextArea description = new RichTextArea("Description");
   private DateField date = new DateField("Date");
   private TextField ticketsUrl = new TextField("Tickets URL");
-
   /* Action buttons */
   private Button saveBtn = new Button("Save", VaadinIcons.CHECK);
   private Button cancelBtn = new Button("Cancel");
   private HorizontalLayout actions = new HorizontalLayout(saveBtn, cancelBtn);
-
-  private final FormLayout editForm;
-
   private Binder<MorningEvent> binder = new BeanValidationBinder<>(MorningEvent.class);
 
   @Autowired
@@ -85,7 +81,13 @@ public class EventEditorView extends HorizontalLayout implements View {
       }
     });
 
-    cancelBtn.addClickListener(clickEvent -> navigateTo(EventDetailsView.VIEW_NAME, morningEvent.getEventNumber()));
+    cancelBtn.addClickListener(clickEvent -> {
+      if (binder.getBean().getId() == null) {
+        getUI().getNavigator().navigateTo(EventListView.VIEW_NAME);
+      } else {
+        navigateTo(EventDetailsView.VIEW_NAME, morningEvent.getEventNumber());
+      }
+    });
   }
 
   private void navigateTo(String viewName, int id) {
