@@ -48,7 +48,7 @@ google:
   speaker-application-form:
     spreadsheet-id: 18a-2otq5ND1T-aZTqQp3DoFk90x-OqaZU_TN4QQzK8g
     sheet-title: Form Responses 1
-    range: A2:Z
+    range: A2:AM
   enabled: true
 
 email-client-service:

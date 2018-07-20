@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import com.lohika.morning.ecs.domain.event.MorningEvent;
 import com.lohika.morning.ecs.domain.speaker.Speaker;
 
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import java.util.List;
@@ -67,13 +68,29 @@ public class Talk {
     UKRAINIAN,
     ENGLISH,
     RUSSIAN,
-    UNDECIDED
+    UNDECIDED;
+
+    public static Language fromString(String value) {
+      if (StringUtils.isBlank(value)) {
+        return UNDECIDED;
+      }
+
+      return valueOf(value.toUpperCase());
+    }
   }
 
   public enum Level {
     INTRODUCTORY,
     REGULAR,
     DEEP_DETAILS,
-    UNKNOWN
+    UNKNOWN;
+
+    public static Level fromString(String value) {
+      if (StringUtils.isBlank(value)) {
+        return UNKNOWN;
+      }
+
+      return valueOf(StringUtils.replace(value, " ", "_").toUpperCase());
+    }
   }
 }
