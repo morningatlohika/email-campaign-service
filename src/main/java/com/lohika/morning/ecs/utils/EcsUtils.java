@@ -1,10 +1,13 @@
 package com.lohika.morning.ecs.utils;
 
+import com.lohika.morning.ecs.domain.campaign.Campaign;
 import com.lohika.morning.ecs.domain.event.MorningEvent;
 
 import org.slf4j.helpers.MessageFormatter;
 
-import java.time.LocalDate;
+import java.util.List;
+
+import static com.lohika.morning.ecs.domain.campaign.Campaign.Status.NEW;
 
 public abstract class EcsUtils {
   private EcsUtils() {
@@ -15,7 +18,8 @@ public abstract class EcsUtils {
     return MessageFormatter.arrayFormat(pattern, args).getMessage();
   }
 
-  public static boolean isEditable(MorningEvent event) {
-    return event.getDate().isAfter(LocalDate.now());
+  public static boolean isEditable(MorningEvent event, List<Campaign> campaigns) {
+    return campaigns.isEmpty() || campaigns.stream()
+        .anyMatch(campaign -> NEW == campaign.getStatus());
   }
 }
