@@ -7,7 +7,6 @@ import com.lohika.morning.ecs.domain.campaign.AutoCampaignService;
 import com.lohika.morning.ecs.domain.campaign.Campaign;
 import com.lohika.morning.ecs.domain.campaign.CampaignDetailsView;
 import com.lohika.morning.ecs.domain.campaign.CampaignEditView;
-import com.lohika.morning.ecs.domain.campaign.CampaignListView;
 import com.lohika.morning.ecs.domain.campaign.CampaignService;
 import com.lohika.morning.ecs.domain.talk.Talk;
 import com.lohika.morning.ecs.domain.talk.TalkPanel;
@@ -33,15 +32,11 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 
 import java.util.List;
-import java.util.function.IntFunction;
-import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 
 import static com.lohika.morning.ecs.utils.EcsUtils.formatString;
 import static com.lohika.morning.ecs.utils.EcsUtils.isEditable;
-
-import static java.util.stream.Collectors.toList;
 
 @SpringView(name = EventDetailsView.VIEW_NAME)
 @Slf4j
@@ -120,7 +115,7 @@ public class EventDetailsView extends VerticalLayout implements View {
     //talksList.displayTalks(morningEvent);
 
     // set button states
-    final boolean isEventEditable = isEditable(morningEvent);
+    final boolean isEventEditable = isEditable(morningEvent, campaignService.findByEventId(morningEvent));
     final boolean isEventPersisted = morningEvent.getId() != null;
     editBtn.setEnabled(isEventEditable);
     deleteBtn.setEnabled(isEventPersisted && isEventEditable);
@@ -157,7 +152,7 @@ public class EventDetailsView extends VerticalLayout implements View {
   private void reloadTasks() {
     List<Talk> talks = talkService.getTalks(binder.getBean());
     Component[] taskComponents = talks.stream()
-        .map(talk -> new TalkPanel(talk, isEditable(binder.getBean())))
+        .map(talk -> new TalkPanel(talk, isEditable(binder.getBean(), campaignService.findByEventId(binder.getBean()))))
         .toArray(Component[]::new);
     taskPanel.setContent(new VerticalLayout(taskComponents));
   }

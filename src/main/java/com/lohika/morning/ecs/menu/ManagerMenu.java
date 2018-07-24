@@ -6,6 +6,7 @@ import com.lohika.morning.ecs.domain.event.MorningEvent;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.UI;
 
+import java.util.Comparator;
 import java.util.List;
 
 public class ManagerMenu extends BaseMenu {
@@ -14,10 +15,12 @@ public class ManagerMenu extends BaseMenu {
     super(ui);
     addComponent(createNavigationButton("Events", EventListView.VIEW_NAME));
 
-    events.forEach(morningEvent -> {
-      String viewName = EventDetailsView.VIEW_NAME + "/" + morningEvent.getEventNumber();
-      Button button = createNavigationButton(morningEvent.getName(), viewName);
-      addComponent(button);
-    });
+    events.stream()
+        .sorted(Comparator.comparing(MorningEvent::getEventNumber))
+        .forEach(morningEvent -> {
+          String viewName = EventDetailsView.VIEW_NAME + "/" + morningEvent.getEventNumber();
+          Button button = createNavigationButton(morningEvent.getName(), viewName);
+          addComponent(button);
+        });
   }
 }
