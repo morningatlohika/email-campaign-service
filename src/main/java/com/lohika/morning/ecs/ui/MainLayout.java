@@ -2,6 +2,7 @@ package com.lohika.morning.ecs.ui;
 
 import com.lohika.morning.ecs.domain.event.EventService;
 import com.lohika.morning.ecs.menu.MainMenu;
+import com.vaadin.annotations.StyleSheet;
 import com.vaadin.annotations.Theme;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewDisplay;
@@ -13,6 +14,7 @@ import com.vaadin.ui.Panel;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
+@StyleSheet("styles.css")
 @Theme("valo")
 @SpringUI(path = "/")
 @SpringViewDisplay
