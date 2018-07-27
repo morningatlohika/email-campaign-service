@@ -64,8 +64,8 @@ public class GoogleSheetsService {
       List<Speaker> speakers = new ArrayList<>();
       speakers.add(parseSpeaker(row, 2));
 
-      if (BooleanUtils.toBooleanObject(row.get(15))) {
-        speakers.add(parseSpeaker(row, 16));
+      if (BooleanUtils.toBooleanObject(row.get(17))) {
+        speakers.add(parseSpeaker(row, 18));
       }
 
       return speakers;
@@ -80,6 +80,13 @@ public class GoogleSheetsService {
           .about(row.get(++startColumn))
           .webProfileUrl(row.get(++startColumn))
           .photoUrl(row.get(++startColumn))
+          .email(row.get(++startColumn))
+          .city(row.get(++startColumn))
+          .hotelOption(row.get(++startColumn))
+          .transportTicketOption(row.get(++startColumn))
+          .additionalTravelInfo(row.get(++startColumn))
+          // This is the same for both presenters:
+          .equipmentOption(row.get(32))
           .build();
     }
   }
@@ -101,12 +108,12 @@ public class GoogleSheetsService {
     public Talk mapRow(List<String> row) {
       return Talk.builder()
           .googleSheetsTimestamp(row.get(1))
-          .title(row.get(12))
-          .theses(row.get(13))
-          .language(Talk.Language.fromString(row.get(14).toUpperCase()))
+          .title(row.get(14))
+          .theses(row.get(15))
+          .language(Talk.Language.fromString(row.get(16).toUpperCase()))
           .speakers(speakerMapper.mapRow(row))
           .event(events.get(row.get(0)))
-          .level(Talk.Level.fromString(row.get(31)))
+          .level(Talk.Level.fromString(row.get(33)))
           .build();
     }
 

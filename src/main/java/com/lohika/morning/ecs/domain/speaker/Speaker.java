@@ -39,17 +39,37 @@ public class Speaker {
   @NotEmpty
   private String company;
 
+  @Column
   private String position;
 
+  @Column(length = 500)
   private String webProfileUrl;
 
   @NotEmpty
-  @Column(length = 1000)
+  @Column(length = 32_672)
   private String about;
 
   @NotEmpty
-  @Column
+  @Column(length = 500)
   private String photoUrl;
+
+  @Column
+  private String email;
+
+  @Column
+  private String city;
+
+  @Column
+  private String hotelOption;
+
+  @Column
+  private String transportTicketOption;
+
+  @Column(length = 32_672)
+  private String additionalTravelInfo;
+
+  @Column(length = 32_672)
+  private String equipmentOption;
 
   @ManyToOne
   @JoinColumn(name = "talkId")
