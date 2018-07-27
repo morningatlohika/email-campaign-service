@@ -28,6 +28,7 @@ public class AutoCampaignService {
     List<CampaignTemplate> campaignTemplates = campaignTemplateService.findAll();
 
     List<Campaign> campaigns = campaignTemplates.stream()
+        .filter(CampaignTemplate::isReady)
         .map(template -> new Campaign(event, template))
         .collect(toList());
 

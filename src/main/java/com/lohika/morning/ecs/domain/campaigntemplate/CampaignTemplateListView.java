@@ -47,6 +47,7 @@ public class CampaignTemplateListView extends VerticalLayout implements View {
     grid.setColumns("name", "subject", "emails");
     grid.setItems(campaignTemplateService.findAll());
     grid.asSingleSelect().addValueChangeListener(this::editCampaignTemplate);
+    grid.setStyleGenerator(template -> (template.isReady()) ? "ready" : "");
     grid.addColumn(template -> "X", getButtonRenderer()).setWidth(70);
     grid.setSizeFull();
   }

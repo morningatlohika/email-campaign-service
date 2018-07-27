@@ -48,6 +48,10 @@ public class CampaignTemplate {
   @Builder.Default
   private String emails = "";
 
+  @Column(nullable = false, columnDefinition = "BOOLEAN default FALSE")
+  @Builder.Default
+  private boolean ready = false;
+
   public String getEmails() {
     return attendee ? "All attendees" : emails;
   }
