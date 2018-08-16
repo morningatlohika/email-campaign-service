@@ -25,7 +25,7 @@ public class EventRepositoryTest extends BaseTest {
         .withDescription("Another interesting event from Morning@Lohika will take place this December, 16. ")
         .save();
 
-    MorningEvent noiseEvent = given.event("Robotic Morning")
+    given.event("Robotic Morning")
         .withDescription("After a very short pause, we invite you to our next event dedicated to Robotics. ")
         .save();
 
@@ -56,15 +56,15 @@ public class EventRepositoryTest extends BaseTest {
   @Test
   public void findByDate_empty() {
     // Given
-    MorningEvent event1 = given.event("Golang Morning")
+    given.event("Golang Morning")
         .withDescription("Another interesting event from Morning@Lohika will take place this December, 16. ")
         .save();
 
     // When
-    MorningEvent all = eventRepository.findByDate(LocalDate.now());
+    List<MorningEvent> all = eventRepository.findByDate(LocalDate.now());
 
     // Then
+    assertNotNull(all);
     assertEquals(1, eventRepository.count());
-    assertNull(all);
   }
 }
