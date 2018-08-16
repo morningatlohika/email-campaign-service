@@ -21,6 +21,9 @@ spring:
   data:
     rest:
       base-path: api
+  jackson:
+    serialization:
+      WRITE_DATES_AS_TIMESTAMPS: false
 
 flyway:
   baselineOnMigrate: true
