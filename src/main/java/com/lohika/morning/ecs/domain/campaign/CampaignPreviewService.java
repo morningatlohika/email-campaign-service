@@ -2,14 +2,14 @@ package com.lohika.morning.ecs.domain.campaign;
 
 import lombok.RequiredArgsConstructor;
 
-import com.lohika.morning.ecs.domain.event.MorningEvent;
 import com.lohika.morning.ecs.domain.settings.SettingsService;
+import com.lohika.morning.ecs.domain.talk.Talk;
+import com.lohika.morning.ecs.domain.talk.TalkService;
 
 import org.antlr.stringtemplate.StringTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -24,12 +24,16 @@ import static java.util.stream.Collectors.toSet;
 public class CampaignPreviewService {
 
   private final CampaignService campaignService;
+  private final TalkService talkService;
   private final SettingsService settingsService;
+  private final VariableService variableService;
+
 
   public Campaign findOne(Long id) {
     Campaign campaign = campaignService.findOne(id);
+    List<Talk> talks = talkService.getTalks(campaign.getEvent());
 
-    Map<String, String> variable = getVariable(campaign);
+    Map<String, String> variable = variableService.getVariable(campaign, campaign.getEvent(), talks);
 
     campaign.setSubject(processor(campaign.getSubject(), variable));
 
@@ -41,7 +45,9 @@ public class CampaignPreviewService {
 
   public Set<String> getUnusedPlaceholders(Long id) {
     Campaign campaign = campaignService.findOne(id);
-    Map<String, String> variable = getVariable(campaign);
+    List<Talk> talks = talkService.getTalks(campaign.getEvent());
+
+    Map<String, String> variable = variableService.getVariable(campaign, campaign.getEvent(), talks);
 
     String body = campaign.getBody();
     String[] strings = body.split("\\$");
@@ -52,18 +58,6 @@ public class CampaignPreviewService {
         .filter(p -> index.incrementAndGet() % 2 == 0)
         .filter(key -> variable.get(key) == null)
         .collect(toSet());
-  }
-
-  private HashMap<String, String> getVariable(Campaign campaign) {
-    HashMap<String, String> variable = new HashMap<>();
-    variable.put("promo_code", campaign.getPromoCode());
-
-    MorningEvent event = campaign.getEvent();
-    variable.put("event_name", event.getName());
-    variable.put("event_description", event.getDescription());
-    variable.put("event_tickets_url", event.getTicketsUrl());
-
-    return variable;
   }
 
   private String processor(String template, Map<String, String> variable) {
