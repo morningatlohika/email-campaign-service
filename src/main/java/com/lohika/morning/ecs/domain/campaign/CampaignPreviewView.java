@@ -49,6 +49,8 @@ public class CampaignPreviewView extends HorizontalLayout implements View {
     addComponents(form);
     body.setContentMode(ContentMode.HTML);
 
+    warnings.addStyleName("red");
+
     editButton.addClickListener(this::editCampaign);
     cancelButton.addClickListener(this::cancelCampaign);
     publishButton.addClickListener(this::startCampaign);

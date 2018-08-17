@@ -1,3 +1,7 @@
-.valo .v-grid-row.ready>td.v-grid-cell:first-child {
+.valo .v-grid-row.ready > td.v-grid-cell:first-child {
     font-weight: bold;
+}
+
+.red {
+    color: red;
 }
