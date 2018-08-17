@@ -124,7 +124,18 @@ pipeline() {
         buildingTag()
       }
       steps {
-        echo 'Deploying only because this commit is tagged...'
+        script {
+          echo 'Deploying only because this commit is tagged...'
+          env.TAG_VERSION = env.GIT_BRANCH.substring(23)
+          sh 'printenv'
+          sshagent(credentials: ['prod']) {
+            sh 'ssh -o StrictHostKeyChecking=no morning@morning ./service.sh email-campaign-service status'
+            sh 'ssh -o StrictHostKeyChecking=no morning@morning ./service.sh email-campaign-service stop'
+            sh 'ssh -o StrictHostKeyChecking=no morning@morning ./service.sh email-campaign-service install ' + env.TAG_VERSION
+            sh 'ssh -o StrictHostKeyChecking=no morning@morning ./service.sh email-campaign-service start'
+            sh 'ssh -o StrictHostKeyChecking=no morning@morning ./service.sh email-campaign-service status'
+          }
+        }
       }
     }
   }
