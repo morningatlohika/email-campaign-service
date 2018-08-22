@@ -14,6 +14,7 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.RichTextArea;
+import com.vaadin.ui.TextField;
 import com.vaadin.ui.themes.ValoTheme;
 
 import javax.annotation.PostConstruct;
@@ -24,6 +25,7 @@ import javax.annotation.PostConstruct;
 public class SettingsEditView extends HorizontalLayout implements View {
   public static final String VIEW_NAME = "settingsEdit";
 
+  private final TextField emailPrefix = new TextField("Email prefix");
   private final RichTextArea signature = new RichTextArea("Signature");
 
   private final Button saveButton = new Button("Save", VaadinIcons.CHECK);
@@ -37,7 +39,7 @@ public class SettingsEditView extends HorizontalLayout implements View {
 
     HorizontalLayout actions = new HorizontalLayout(saveButton, cancelButton);
 
-    FormLayout form = new FormLayout(signature, actions);
+    FormLayout form = new FormLayout(emailPrefix, signature, actions);
 
     addComponents(form);
 

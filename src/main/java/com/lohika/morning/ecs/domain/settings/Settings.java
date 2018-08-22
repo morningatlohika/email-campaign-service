@@ -23,6 +23,10 @@ public class Settings {
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
 
+  @Column()
+  @Builder.Default
+  private String emailPrefix = "";
+
   @Column(length = 2_000)
   @Builder.Default
   private String signature = "";
