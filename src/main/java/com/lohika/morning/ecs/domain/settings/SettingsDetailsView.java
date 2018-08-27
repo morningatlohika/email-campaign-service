@@ -23,6 +23,7 @@ import javax.annotation.PostConstruct;
 public class SettingsDetailsView extends HorizontalLayout implements View {
   public static final String VIEW_NAME = "settingsDetails";
 
+  private final EcsLabel emailPrefix = new EcsLabel("Email prefix");
   private final EcsLabel signature = new EcsLabel("Signature");
 
   private final Binder<Settings> binder = new BeanValidationBinder<>(Settings.class);
@@ -34,9 +35,10 @@ public class SettingsDetailsView extends HorizontalLayout implements View {
   @PostConstruct
   public void init() {
     HorizontalLayout actions = new HorizontalLayout(editButton);
-    FormLayout form = new FormLayout(signature, actions);
+    FormLayout form = new FormLayout(emailPrefix, signature, actions);
     addComponents(form);
 
+    emailPrefix.setContentMode(ContentMode.HTML);
     signature.setContentMode(ContentMode.HTML);
 
     editButton.addClickListener(this::editSettings);
