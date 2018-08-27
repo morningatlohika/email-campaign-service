@@ -63,9 +63,8 @@ public class VariableService {
     variable.put("count_of_speaker", String.valueOf(count));
 
     int i = 1;
-    String prefixKey = "speaker_";
     for (Talk talk : talks) {
-      prefixKey = prefixKey + i++;
+      String prefixKey = "speaker_" + i++;
       variable.putAll(getTalkVariable(prefixKey, talk));
     }
 

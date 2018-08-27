@@ -1,5 +1,6 @@
 package com.lohika.morning.ecs.service;
 
+import com.lohika.morning.ecs.domain.applicationstatus.ApplicationStateService;
 import com.lohika.morning.ecs.domain.campaign.Campaign;
 import com.lohika.morning.ecs.domain.campaign.CampaignService;
 import com.lohika.morning.ecs.domain.email.Email;
@@ -24,6 +25,7 @@ import static com.lohika.morning.ecs.utils.EcsUtils.formatString;
 @Slf4j
 public class PublishCampaignService {
 
+  private final ApplicationStateService applicationStateService;
   private final CampaignService campaignService;
   private final EmailService emailService;
   private final ExchangeService exchangeService;
@@ -44,6 +46,7 @@ public class PublishCampaignService {
         campaignService.updateStatus(campaign, Campaign.Status.FAILED);
       }
     });
+    applicationStateService.updateSendEmail();
   }
 
   private void publish(Campaign campaign) {

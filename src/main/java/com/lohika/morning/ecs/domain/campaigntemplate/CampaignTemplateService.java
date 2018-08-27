@@ -20,6 +20,14 @@ public class CampaignTemplateService {
     return templateRepository.findAll(new Sort(new Sort.Order(Sort.Direction.ASC, "priority")));
   }
 
+  public long count() {
+    return templateRepository.count();
+  }
+
+  public long countReady() {
+    return templateRepository.countByReady(true);
+  }
+
   public List<CampaignTemplate> filterBy(String value) {
     return templateRepository.findByNameContainingIgnoringCaseOrSubjectContainingIgnoringCase(value, value);
   }

@@ -24,6 +24,10 @@ public class CampaignService {
         new Sort.Order(Sort.Direction.ASC, "priority")));
   }
 
+  public long count() {
+    return campaignRepository.count();
+  }
+
   public List<Campaign> filterBy(String value) {
     return campaignRepository.findByNameContainingIgnoringCaseOrSubjectContainingIgnoringCase(value, value);
   }
