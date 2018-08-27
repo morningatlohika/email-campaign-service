@@ -3,7 +3,6 @@ package com.lohika.morning.ecs.domain.settings;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import com.lohika.morning.ecs.domain.event.EventListView;
 import com.lohika.morning.ecs.vaadin.EcsLabel;
 import com.vaadin.data.BeanValidationBinder;
 import com.vaadin.data.Binder;
@@ -45,10 +44,6 @@ public class SettingsDetailsView extends HorizontalLayout implements View {
 
   private void editSettings(Button.ClickEvent clickEvent) {
     getUI().getNavigator().navigateTo(SettingsEditView.VIEW_NAME);
-  }
-
-  private void cancelSettings(Button.ClickEvent clickEvent) {
-    getUI().getNavigator().navigateTo(EventListView.VIEW_NAME);
   }
 
   @Override
