@@ -1,5 +1,6 @@
 package com.lohika.morning.ecs.menu;
 
+import com.lohika.morning.ecs.domain.applicationstatus.ApplicationStateDetailsView;
 import com.lohika.morning.ecs.domain.campaign.CampaignListView;
 import com.lohika.morning.ecs.domain.email.EmailListView;
 import com.lohika.morning.ecs.domain.speaker.SpeakerListView;
@@ -13,5 +14,6 @@ public class AdministratorMenu extends BaseMenu {
     addComponent(createNavigationButton("Campaigns", CampaignListView.VIEW_NAME));
     addComponent(createNavigationButton("Speakers", SpeakerListView.VIEW_NAME));
     addComponent(createNavigationButton("Emails", EmailListView.VIEW_NAME));
+    addComponent(createNavigationButton("State", ApplicationStateDetailsView.VIEW_NAME));
   }
 }

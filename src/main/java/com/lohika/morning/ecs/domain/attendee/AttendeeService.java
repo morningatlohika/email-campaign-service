@@ -27,6 +27,10 @@ public class AttendeeService {
     return attendeeRepository.findAll();
   }
 
+  public long count() {
+    return attendeeRepository.count();
+  }
+
   public List<Attendee> filterBy(String value) {
     return attendeeRepository.findByFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCaseOrEmailContainingIgnoreCase(value, value, value);
   }
