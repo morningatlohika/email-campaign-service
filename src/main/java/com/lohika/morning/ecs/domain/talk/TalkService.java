@@ -62,6 +62,14 @@ public class TalkService {
     return talkRepository.findOne(id);
   }
 
+  public List<Talk> findAll() {
+    return talkRepository.findAll();
+  }
+
+  public List<Talk> filterBy(String value) {
+    return talkRepository.findByTitleContainingIgnoreCaseOrThesesContaining(value, value);
+  }
+
   public void save(Talk talk) {
     talkRepository.save(talk);
   }
