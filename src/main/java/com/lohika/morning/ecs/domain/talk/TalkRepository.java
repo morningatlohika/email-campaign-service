@@ -16,5 +16,5 @@ public interface TalkRepository extends CrudRepository<Talk, Long> {
 
   List<Talk> findAll();
 
-  List<Talk> findByTitleContainingIgnoreCaseOrThesesContaining(String title, String theses);
+  List<Talk> findByTitleContainingIgnoreCaseOrThesesContainingIgnoreCase(String title, String theses);
 }

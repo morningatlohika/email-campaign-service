@@ -67,7 +67,7 @@ public class TalkService {
   }
 
   public List<Talk> filterBy(String value) {
-    return talkRepository.findByTitleContainingIgnoreCaseOrThesesContaining(value, value);
+    return talkRepository.findByTitleContainingIgnoreCaseOrThesesContainingIgnoreCase(value, value);
   }
 
   public void save(Talk talk) {
