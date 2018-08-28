@@ -35,7 +35,7 @@ public class CampaignPreviewService {
 
     Map<String, String> variable = variableService.getVariable(campaign, campaign.getEvent(), talks);
 
-    campaign.setSubject(processor(campaign.getSubject(), variable));
+    campaign.setSubject(processor(settingsService.getSettings().getEmailPrefix() + campaign.getSubject(), variable));
 
     String body = processor(campaign.getBody() + settingsService.getSettings().getSignature(), variable);
     campaign.setBody(body);

@@ -19,5 +19,15 @@ public class ApplicationState {
   @Column(nullable = false)
   @NotNull
   @Builder.Default
+  private LocalDateTime lastProcessCampaignAt = LocalDateTime.now();
+
+  @Column(nullable = false)
+  @NotNull
+  @Builder.Default
+  private LocalDateTime lastSendEmailAt = LocalDateTime.now();
+
+  @Column(nullable = false)
+  @NotNull
+  @Builder.Default
   private LocalDateTime lastUpdateAttendeeAt = LocalDateTime.now();
 }

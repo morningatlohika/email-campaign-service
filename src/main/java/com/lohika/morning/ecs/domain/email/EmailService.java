@@ -1,5 +1,6 @@
 package com.lohika.morning.ecs.domain.email;
 
+import com.lohika.morning.ecs.domain.applicationstatus.ApplicationStateService;
 import com.lohika.morning.ecs.domain.attendee.Attendee;
 import com.lohika.morning.ecs.domain.attendee.AttendeeService;
 import com.lohika.morning.ecs.domain.campaign.Campaign;
@@ -24,6 +25,7 @@ import static java.util.stream.Collectors.toList;
 @Slf4j
 public class EmailService {
 
+  private final ApplicationStateService applicationStateService;
   private final CampaignPreviewService campaignPreviewService;
   private final CampaignService campaignService;
   private final AttendeeService attendeeService;
@@ -43,6 +45,7 @@ public class EmailService {
         campaignService.updateStatus(campaign, Campaign.Status.FAILED);
       }
     });
+    applicationStateService.updateProcessCampaign();
   }
 
   private void compileEmails(Campaign campaign) {
@@ -62,7 +65,8 @@ public class EmailService {
         .collect(toList());
     emailAdresses = emailAdresses.stream().filter(e -> !unsubscribed.contains(e)).collect(toList());
 
-    emailAdresses.forEach(e -> save(e, campaignPreviewService.findOne(campaign.getId())));
+    Campaign campaignPreview = campaignPreviewService.findOne(campaign.getId());
+    emailAdresses.forEach(e -> save(e, campaignPreview));
   }
 
   private void save(String to, Campaign campaign) {
@@ -83,6 +87,9 @@ public class EmailService {
     return emailRepository.findAll();
   }
 
+  public long count() {
+    return emailRepository.count();
+  }
 
   public List<Email> get(Campaign campaign) {
     return emailRepository.findByCampaign(campaign);
