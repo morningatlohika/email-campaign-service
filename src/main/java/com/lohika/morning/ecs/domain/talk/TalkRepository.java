@@ -13,4 +13,8 @@ public interface TalkRepository extends CrudRepository<Talk, Long> {
   List<Talk> findByEvent(MorningEvent morningEvent);
 
   Optional<Talk> findByEventAndGoogleSheetsTimestamp(MorningEvent morningEvent, String googleSheetTimestamp);
+
+  List<Talk> findAll();
+
+  List<Talk> findByTitleContainingIgnoreCaseOrThesesContainingIgnoreCase(String title, String theses);
 }
