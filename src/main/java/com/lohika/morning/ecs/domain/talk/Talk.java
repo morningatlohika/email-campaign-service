@@ -1,9 +1,6 @@
 package com.lohika.morning.ecs.domain.talk;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import com.lohika.morning.ecs.domain.event.MorningEvent;
 import com.lohika.morning.ecs.domain.speaker.Speaker;
@@ -11,6 +8,7 @@ import com.lohika.morning.ecs.domain.speaker.Speaker;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.constraints.NotEmpty;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.*;
@@ -47,7 +45,17 @@ public class Talk {
   private String googleSheetsTimestamp;
 
   @OneToMany(mappedBy = "talk", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-  private List<Speaker> speakers;
+  @Builder.Default
+//  @JoinColumn(name = "talk_id")
+  private List<Speaker> speakers = new ArrayList<>();
+
+  public void setSpeakers(List<Speaker> speakers) {
+    this.speakers.clear();
+    speakers.forEach(s -> {
+      this.speakers.add(s);
+      s.setTalk(this);
+    });
+  }
 
   @Column(nullable = false, columnDefinition = "VARCHAR(255) DEFAULT 'UNDECIDED'")
   @Enumerated(EnumType.STRING)
