@@ -9,6 +9,7 @@ import com.lohika.morning.ecs.service.GoogleSheetsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.util.Collections;
 import java.util.List;
@@ -33,10 +34,20 @@ public class TalkService {
     this.googleSheetsService = googleSheetsService;
   }
 
+  public boolean talksExist(MorningEvent event) {
+    return !CollectionUtils.isEmpty(talkRepository.findByEvent(event));
+  }
+
+  public void reimportTalks(MorningEvent event) {
+    talkRepository.delete(talkRepository.findByEvent(event));
+    importTalks(event);
+  }
+
   public void importTalks(MorningEvent event) {
     if (!isGoogleEnabled()) {
       throw new RuntimeException("Google integration is not enabled!");
     }
+
     List<Talk> sheetTalks = googleSheetsService.getTalks(eventRepository.findAll());
 
     List<Talk> sheetTalksForGivenEvent = sheetTalks.stream()

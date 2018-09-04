@@ -44,9 +44,8 @@ public class Talk {
   @NotNull
   private String googleSheetsTimestamp;
 
-  @OneToMany(mappedBy = "talk", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+  @OneToMany(mappedBy = "talk", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
   @Builder.Default
-//  @JoinColumn(name = "talk_id")
   private List<Speaker> speakers = new ArrayList<>();
 
   public void setSpeakers(List<Speaker> speakers) {

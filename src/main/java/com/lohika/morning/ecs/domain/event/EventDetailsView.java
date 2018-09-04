@@ -137,7 +137,12 @@ public class EventDetailsView extends VerticalLayout implements View {
     });
 
     importTalksBtn.addClickListener(clickEvent -> {
-      talkService.importTalks(morningEvent);
+      if (talkService.talksExist(morningEvent)) {
+        // TODO: show confirmation pop-up
+        talkService.reimportTalks(morningEvent);
+      } else {
+        talkService.importTalks(morningEvent);
+      }
       reloadTasks();
     });
 
