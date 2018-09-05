@@ -19,7 +19,7 @@ import javax.validation.constraints.NotNull;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@Builder(builderClassName = "TalkInternalBuilder", builderMethodName = "internalBuilder")
 public class Talk {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
@@ -46,14 +46,20 @@ public class Talk {
 
   @OneToMany(mappedBy = "talk", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
   @Builder.Default
+  @Setter(AccessLevel.NONE)
   private List<Speaker> speakers = new ArrayList<>();
 
-  public void setSpeakers(List<Speaker> speakers) {
-    this.speakers.clear();
-    speakers.forEach(s -> {
-      this.speakers.add(s);
-      s.setTalk(this);
-    });
+  public static TalkBuilder builder() {
+    return new TalkBuilder();
+  }
+
+  public static class TalkBuilder extends TalkInternalBuilder {
+    @Override
+    public Talk build() {
+      Talk t = super.build();
+      t.getSpeakers().forEach(s -> s.setTalk(t));
+      return t;
+    }
   }
 
   @Column(nullable = false, columnDefinition = "VARCHAR(255) DEFAULT 'UNDECIDED'")
