@@ -18,6 +18,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "speakers")
@@ -72,7 +73,7 @@ public class Speaker {
   private String equipmentOption;
 
   @ManyToOne
-  @JoinColumn(name = "talkId")
+  @JoinColumn(name = "talk_id")
   private Talk talk;
 
   public String getFullName() {
