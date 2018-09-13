@@ -108,6 +108,10 @@ public class VariableService {
     variable.put(prefixKey + "_profile", speaker.getWebProfileUrl());
     variable.put(prefixKey + "_photo", speaker.getPhotoUrl());
 
+    variable.put(prefixKey + "_hotel", speaker.getHotelOption());
+    variable.put(prefixKey + "_transport", speaker.getTransportTicketOption());
+    variable.put(prefixKey + "_additional_info", speaker.getAdditionalTravelInfo());
+
     return variable;
   }
 }
