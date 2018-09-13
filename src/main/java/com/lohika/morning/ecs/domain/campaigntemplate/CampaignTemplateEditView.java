@@ -3,7 +3,9 @@ package com.lohika.morning.ecs.domain.campaigntemplate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import com.lohika.morning.ecs.service.HelpService;
 import com.lohika.morning.ecs.utils.PriorityUtil;
+import com.lohika.morning.ecs.vaadin.EcsLabel;
 import com.vaadin.data.BeanValidationBinder;
 import com.vaadin.data.Binder;
 import com.vaadin.data.HasValue;
@@ -11,14 +13,17 @@ import com.vaadin.event.ShortcutAction;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
+import com.vaadin.shared.ui.ContentMode;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.RichTextArea;
 import com.vaadin.ui.TextField;
+import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 
 import org.apache.commons.lang3.StringUtils;
@@ -38,6 +43,7 @@ public class CampaignTemplateEditView extends HorizontalLayout implements View {
   private final TextField name = new TextField("Name");
   private final TextField subject = new TextField("Subject");
   private final RichTextArea body = new RichTextArea("Body");
+  private final Label help = new Label("Help");
   private final ComboBox<Integer> priority = new ComboBox<>("Select priority", PERIOD_ITEMS);
   private final CheckBox attendee = new CheckBox("For all attendee");
   private final TextField emails = new TextField("Emails");
@@ -57,7 +63,12 @@ public class CampaignTemplateEditView extends HorizontalLayout implements View {
     HorizontalLayout actions = new HorizontalLayout(saveButton, deleteButton, cancelButton);
 
     FormLayout form = new FormLayout(name, subject, body, attendee, emails, priority, ready, actions);
-    addComponents(form);
+
+    help.setContentMode(ContentMode.HTML);
+    help.setValue(HelpService.VARIABLE);
+    HorizontalLayout panel = new HorizontalLayout(form, help);
+
+    addComponents(panel);
 
     binder.bindInstanceFields(this);
 

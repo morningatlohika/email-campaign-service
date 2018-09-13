@@ -76,6 +76,8 @@ dependencies {
   compile('com.github.javafaker:javafaker:0.14')
   compile('org.springframework.boot:spring-boot-configuration-processor')
 
+  compile 'org.apache.directory.studio:org.apache.commons.io:2.4'
+
   // test dependencies
   testCompile('org.springframework.boot:spring-boot-starter-test')
   testCompile('org.springframework.restdocs:spring-restdocs-mockmvc')
