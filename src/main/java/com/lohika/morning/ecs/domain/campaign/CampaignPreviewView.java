@@ -27,6 +27,7 @@ import javax.annotation.PostConstruct;
 public class CampaignPreviewView extends HorizontalLayout implements View {
   public static final String VIEW_NAME = "campaignPreview";
 
+  private final EcsLabel emails = new EcsLabel("Emails");
   private final EcsLabel subject = new EcsLabel("Subject");
   private final EcsLabel body = new EcsLabel("Body");
   private final EcsLabel warnings = new EcsLabel("Warnings");
@@ -45,7 +46,7 @@ public class CampaignPreviewView extends HorizontalLayout implements View {
   @PostConstruct
   public void init() {
     HorizontalLayout actions = new HorizontalLayout(editButton, publishButton, cancelButton);
-    FormLayout form = new FormLayout(subject, body, warnings, actions);
+    FormLayout form = new FormLayout(emails, subject, body, warnings, actions);
     addComponents(form);
     body.setContentMode(ContentMode.HTML);
 

@@ -68,6 +68,14 @@ public class VariableService {
       variable.putAll(getTalkVariable(prefixKey, talk));
     }
 
+    String emails = talks.stream()
+        .map(Talk::getSpeakers)
+        .flatMap(Collection::stream)
+        .map(Speaker::getEmail)
+        .collect(Collectors.joining(", "));
+
+    variable.put("email_to_speakers", emails);
+
     return variable;
   }
 
