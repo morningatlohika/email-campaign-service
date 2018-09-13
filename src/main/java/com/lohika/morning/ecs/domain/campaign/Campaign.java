@@ -1,17 +1,27 @@
 package com.lohika.morning.ecs.domain.campaign;
 
-import com.lohika.morning.ecs.domain.email.Email;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import com.lohika.morning.ecs.domain.campaigntemplate.CampaignTemplate;
+import com.lohika.morning.ecs.domain.email.Email;
 import com.lohika.morning.ecs.domain.event.MorningEvent;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 
 @Entity
@@ -60,17 +70,18 @@ public class Campaign {
   private String emails = "";
 
   @Builder.Default
+  private String carbonCopy = "";
+
+  @Builder.Default
+  private String blindCarbonCopy = "";
+
+  @Builder.Default
   private String promoCode = "";
 
   @NotNull
   @Enumerated(EnumType.STRING)
   @Builder.Default
   private Status status = Status.NEW;
-
-  @Transient
-  public boolean isEditable() {
-    return Status.NEW.equals(this.status);
-  }
 
   public Campaign(MorningEvent event, CampaignTemplate campaignTemplate) {
     this.event = event;
@@ -82,7 +93,15 @@ public class Campaign {
     priority = campaignTemplate.getPriority();
     attendee = campaignTemplate.isAttendee();
     emails = campaignTemplate.getEmails();
+    carbonCopy = campaignTemplate.getCarbonCopy();
+    blindCarbonCopy = campaignTemplate.getBlindCarbonCopy();
+
     status = Status.NEW;
+  }
+
+  @Transient
+  public boolean isEditable() {
+    return Status.NEW.equals(this.status);
   }
 
   public String getEmails() {
