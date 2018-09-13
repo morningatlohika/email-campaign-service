@@ -27,6 +27,9 @@ sourceCompatibility = 1.8
 
 repositories {
   mavenCentral()
+  maven {
+    url "http://maven.vaadin.com/vaadin-addons"
+  }
 }
 
 release {
@@ -54,6 +57,7 @@ dependencies {
   // Vaadin
   compile('com.vaadin:vaadin-spring-boot-starter')
   compile('org.yaml:snakeyaml:1.19')
+  compile('org.vaadin.addon:confirmdialog:3.2.0')
 
   // Google sheets integration
   compile 'com.google.api-client:google-api-client:1.23.0'

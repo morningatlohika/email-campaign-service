@@ -13,7 +13,7 @@ public class TalkDataBuilder {
 
   private final TalkRepository talkRepository;
 
-  private Talk talk;
+  private Talk.TalkBuilder talkBuilder;
   private boolean idSet;
 
   public TalkDataBuilder(TalkRepository talkRepository) {
@@ -24,39 +24,38 @@ public class TalkDataBuilder {
    * Create {@link Talk}.
    */
   TalkDataBuilder talk(String title) {
-    this.talk = Talk.builder()
-        .googleSheetsTimestamp(new String(RandomUtils.nextBytes(15)))
+    this.talkBuilder = Talk.builder();
+        talkBuilder.googleSheetsTimestamp(new String(RandomUtils.nextBytes(15)))
         .title(title)
         .theses(title + " theses")
         .language(Talk.Language.ENGLISH)
-        .level(Talk.Level.REGULAR)
-        .build();
+        .level(Talk.Level.REGULAR);
     return this;
   }
 
   public TalkDataBuilder withId(long id) {
-    this.talk.setId(id);
+    this.talkBuilder.id(id);
     this.idSet = true;
     return this;
   }
 
   public TalkDataBuilder withTheses(String theses) {
-    this.talk.setTheses(theses);
+    this.talkBuilder.theses(theses);
     return this;
   }
 
   public TalkDataBuilder withSpeakers(Speaker... speakers) {
-    this.talk.setSpeakers(Arrays.asList(speakers));
+    this.talkBuilder.speakers(Arrays.asList(speakers));
     return this;
   }
 
   public TalkDataBuilder withEvent(MorningEvent event) {
-    this.talk.setEvent(event);
+    this.talkBuilder.event(event);
     return this;
   }
 
   public TalkDataBuilder withTargetAudience(String targetAudience) {
-    this.talk.setTargetAudience(targetAudience);
+    this.talkBuilder.targetAudience(targetAudience);
     return this;
   }
 
@@ -66,7 +65,7 @@ public class TalkDataBuilder {
    * @return Talk
    */
   public Talk build() {
-    return this.talk;
+    return this.talkBuilder.build();
   }
 
   /**
@@ -79,7 +78,7 @@ public class TalkDataBuilder {
       throw new IllegalStateException("Cannot create Talk with predefined id. Did you call withId() accidentally?");
     }
 
-    return talkRepository.save(this.talk);
+    return talkRepository.save(this.talkBuilder.build());
   }
 
 }
