@@ -30,6 +30,7 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
+import org.vaadin.dialogs.ConfirmDialog;
 
 import java.util.List;
 
@@ -137,7 +138,20 @@ public class EventDetailsView extends VerticalLayout implements View {
     });
 
     importTalksBtn.addClickListener(clickEvent -> {
-      talkService.importTalks(morningEvent);
+      if (talkService.talksExist(morningEvent)) {
+        ConfirmDialog.show(getUI(), "Are you sure you want to re-import talks?",
+            "If you re-import, all existing talks and speakers for given event will be overridden.",
+            "Yes, please re-import",
+            "No, please keep existing data",
+              dialog -> {
+                if (dialog.isConfirmed()) {
+                  talkService.reimportTalks(morningEvent);
+                }
+              }
+            );
+      } else {
+        talkService.importTalks(morningEvent);
+      }
       reloadTasks();
     });
 

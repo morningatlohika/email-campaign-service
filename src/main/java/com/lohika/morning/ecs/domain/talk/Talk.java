@@ -1,9 +1,6 @@
 package com.lohika.morning.ecs.domain.talk;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import com.lohika.morning.ecs.domain.event.MorningEvent;
 import com.lohika.morning.ecs.domain.speaker.Speaker;
@@ -11,6 +8,7 @@ import com.lohika.morning.ecs.domain.speaker.Speaker;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.constraints.NotEmpty;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.*;
@@ -21,7 +19,7 @@ import javax.validation.constraints.NotNull;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@Builder(builderClassName = "TalkInternalBuilder", builderMethodName = "internalBuilder")
 public class Talk {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
@@ -46,8 +44,23 @@ public class Talk {
   @NotNull
   private String googleSheetsTimestamp;
 
-  @OneToMany(mappedBy = "talk", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-  private List<Speaker> speakers;
+  @OneToMany(mappedBy = "talk", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+  @Builder.Default
+  @Setter(AccessLevel.NONE)
+  private List<Speaker> speakers = new ArrayList<>();
+
+  public static TalkBuilder builder() {
+    return new TalkBuilder();
+  }
+
+  public static class TalkBuilder extends TalkInternalBuilder {
+    @Override
+    public Talk build() {
+      Talk t = super.build();
+      t.getSpeakers().forEach(s -> s.setTalk(t));
+      return t;
+    }
+  }
 
   @Column(nullable = false, columnDefinition = "VARCHAR(255) DEFAULT 'UNDECIDED'")
   @Enumerated(EnumType.STRING)
