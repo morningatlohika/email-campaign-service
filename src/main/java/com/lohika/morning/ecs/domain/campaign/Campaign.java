@@ -70,10 +70,10 @@ public class Campaign {
   private String emails = "";
 
   @Builder.Default
-  private String carbonCopy = "";
+  private String cc = "";
 
   @Builder.Default
-  private String blindCarbonCopy = "";
+  private String bcc = "";
 
   @Builder.Default
   private String promoCode = "";
@@ -93,8 +93,8 @@ public class Campaign {
     priority = campaignTemplate.getPriority();
     attendee = campaignTemplate.isAttendee();
     emails = campaignTemplate.getEmails();
-    carbonCopy = campaignTemplate.getCarbonCopy();
-    blindCarbonCopy = campaignTemplate.getBlindCarbonCopy();
+    cc = campaignTemplate.getCc();
+    bcc = campaignTemplate.getBcc();
 
     status = Status.NEW;
   }

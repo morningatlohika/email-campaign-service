@@ -38,8 +38,8 @@ public class CampaignDetailsView extends HorizontalLayout implements View {
   private final EcsLabel body = new EcsLabel("Body");
   private final EcsLabel campaignPriority = new EcsLabel("Priority");
   private final EcsLabel campaignEmails = new EcsLabel("Emails");
-  private final EcsLabel carbonCopy = new EcsLabel("Carbon copy");
-  private final EcsLabel blindCarbonCopy = new EcsLabel("Blind carbon copy");
+  private final EcsLabel cc = new EcsLabel("CC");
+  private final EcsLabel bcc = new EcsLabel("BCC");
   private final EcsLabel promoCode = new EcsLabel("Promo code");
 
   private final EcsLabel eventName = new EcsLabel("Event name");
@@ -58,7 +58,7 @@ public class CampaignDetailsView extends HorizontalLayout implements View {
 
     HorizontalLayout actions = new HorizontalLayout(editButton, previewButton, deleteButton, cancelButton);
 
-    FormLayout form = new FormLayout(name, status, subject, body, campaignEmails, carbonCopy, blindCarbonCopy, promoCode, campaignPriority, actions);
+    FormLayout form = new FormLayout(name, status, subject, body, campaignEmails, cc, bcc, promoCode, campaignPriority, actions);
 
     VerticalLayout details = new VerticalLayout(eventName, parentTemplateName);
     addComponents(form, details);

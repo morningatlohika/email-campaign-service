@@ -50,10 +50,10 @@ public class CampaignTemplate {
   private String emails = "";
 
   @Builder.Default
-  private String carbonCopy = "";
+  private String cc = "";
 
   @Builder.Default
-  private String blindCarbonCopy = "";
+  private String bcc = "";
 
   @Column(nullable = false, columnDefinition = "BOOLEAN default FALSE")
   @Builder.Default
