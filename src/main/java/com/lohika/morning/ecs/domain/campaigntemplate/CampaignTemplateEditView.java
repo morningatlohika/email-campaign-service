@@ -41,6 +41,8 @@ public class CampaignTemplateEditView extends HorizontalLayout implements View {
   private final ComboBox<Integer> priority = new ComboBox<>("Select priority", PERIOD_ITEMS);
   private final CheckBox attendee = new CheckBox("For all attendee");
   private final TextField emails = new TextField("Emails");
+  private final TextField cc = new TextField("CC");
+  private final TextField bcc = new TextField("BCC");
 
   private final CheckBox ready = new CheckBox("Template ready for use");
 
@@ -56,7 +58,7 @@ public class CampaignTemplateEditView extends HorizontalLayout implements View {
 
     HorizontalLayout actions = new HorizontalLayout(saveButton, deleteButton, cancelButton);
 
-    FormLayout form = new FormLayout(name, subject, body, attendee, emails, priority, ready, actions);
+    FormLayout form = new FormLayout(name, subject, body, attendee, emails, cc, bcc, priority, ready, actions);
     addComponents(form);
 
     binder.bindInstanceFields(this);
