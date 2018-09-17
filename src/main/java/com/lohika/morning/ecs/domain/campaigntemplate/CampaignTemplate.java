@@ -45,8 +45,15 @@ public class CampaignTemplate {
 
   @Builder.Default
   private boolean attendee = false;
+
   @Builder.Default
   private String emails = "";
+
+  @Builder.Default
+  private String cc = "";
+
+  @Builder.Default
+  private String bcc = "";
 
   @Column(nullable = false, columnDefinition = "BOOLEAN default FALSE")
   @Builder.Default

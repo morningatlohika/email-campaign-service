@@ -1,6 +1,7 @@
 package com.lohika.morning.ecs.domain.campaign;
 
 import com.lohika.morning.ecs.domain.event.EventDetailsView;
+import com.vaadin.ui.TextField;
 import com.vaadin.ui.declarative.converters.DesignEnumConverter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,6 +38,8 @@ public class CampaignDetailsView extends HorizontalLayout implements View {
   private final EcsLabel body = new EcsLabel("Body");
   private final EcsLabel campaignPriority = new EcsLabel("Priority");
   private final EcsLabel campaignEmails = new EcsLabel("Emails");
+  private final EcsLabel cc = new EcsLabel("CC");
+  private final EcsLabel bcc = new EcsLabel("BCC");
   private final EcsLabel promoCode = new EcsLabel("Promo code");
 
   private final EcsLabel eventName = new EcsLabel("Event name");
@@ -55,7 +58,7 @@ public class CampaignDetailsView extends HorizontalLayout implements View {
 
     HorizontalLayout actions = new HorizontalLayout(editButton, previewButton, deleteButton, cancelButton);
 
-    FormLayout form = new FormLayout(name, status, subject, body, campaignEmails, promoCode, campaignPriority, actions);
+    FormLayout form = new FormLayout(name, status, subject, body, campaignEmails, cc, bcc, promoCode, campaignPriority, actions);
 
     VerticalLayout details = new VerticalLayout(eventName, parentTemplateName);
     addComponents(form, details);
