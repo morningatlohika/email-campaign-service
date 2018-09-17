@@ -16,4 +16,14 @@ public class OverrideEmailRecipientProvider implements EmailRecipientProvider {
   public String getRecipientEmail(Email email) {
     return recipientEmailOverride;
   }
+
+  @Override
+  public String getCcEmail(Email email) {
+    return recipientEmailOverride;
+  }
+
+  @Override
+  public String getBccEmail(Email email) {
+    return recipientEmailOverride;
+  }
 }

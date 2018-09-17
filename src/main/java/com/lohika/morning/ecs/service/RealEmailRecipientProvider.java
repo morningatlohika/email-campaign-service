@@ -19,4 +19,14 @@ public class RealEmailRecipientProvider implements EmailRecipientProvider {
   public String getRecipientEmail(Email email) {
     return email.getTo();
   }
+
+  @Override
+  public String getCcEmail(Email email) {
+    return email.getCc();
+  }
+
+  @Override
+  public String getBccEmail(Email email) {
+    return email.getBcc();
+  }
 }

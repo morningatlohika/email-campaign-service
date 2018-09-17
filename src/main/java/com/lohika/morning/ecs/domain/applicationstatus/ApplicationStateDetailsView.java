@@ -36,19 +36,19 @@ import javax.annotation.PostConstruct;
 public class ApplicationStateDetailsView extends VerticalLayout implements View {
   public static final String VIEW_NAME = "applicationState";
 
-  private final EcsLabel attendeeCountLabel = new EcsLabel("Count of attendee");
-  private final EcsLabel lastUpdateAttendeeLabel = new EcsLabel("Time of last update");
+  private final EcsLabel attendeeCountLabel = new EcsLabel("# of attendees");
+  private final EcsLabel lastUpdateAttendeeLabel = new EcsLabel("Last attendees import time");
   private final HorizontalLayout attendees = new HorizontalLayout(attendeeCountLabel, lastUpdateAttendeeLabel);
 
-  private final EcsLabel campaignCountLabel = new EcsLabel("Count of campaign");
-  private final EcsLabel campaignTemplateCountLabel = new EcsLabel("Count of campaign template");
-  private final EcsLabel activeCampaignTemplateCountLabel = new EcsLabel("Count of active campaign template");
-  private final EcsLabel lastProcessCampaignLabel = new EcsLabel("Time process campaign");
+  private final EcsLabel campaignCountLabel = new EcsLabel("# of campaigns");
+  private final EcsLabel campaignTemplateCountLabel = new EcsLabel("# of campaign templates");
+  private final EcsLabel activeCampaignTemplateCountLabel = new EcsLabel("#of active campaign templates");
+  private final EcsLabel lastProcessCampaignLabel = new EcsLabel("Last processing time");
   private final HorizontalLayout campaign = new HorizontalLayout(campaignCountLabel, campaignTemplateCountLabel,
       activeCampaignTemplateCountLabel, lastProcessCampaignLabel);
 
-  private final EcsLabel emailCountLabel = new EcsLabel("Count of emails");
-  private final EcsLabel lastSendEmailUpdateLabel = new EcsLabel("Time send email");
+  private final EcsLabel emailCountLabel = new EcsLabel("# of emails");
+  private final EcsLabel lastSendEmailUpdateLabel = new EcsLabel("Last sent time");
   private final HorizontalLayout emails = new HorizontalLayout(emailCountLabel, lastSendEmailUpdateLabel);
 
   private final ApplicationStateService applicationStateService;
