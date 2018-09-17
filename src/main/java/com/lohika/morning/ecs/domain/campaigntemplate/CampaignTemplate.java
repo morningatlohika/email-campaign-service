@@ -63,6 +63,6 @@ public class CampaignTemplate {
     if (attendee) {
       return "All attendees";
     }
-    return "$email_to_speakers$".equalsIgnoreCase(emails) ? "All speakers" : emails;
+    return "$email_to_speakers$".equalsIgnoreCase(emails) ? "Speakers" : emails;
   }
 }
