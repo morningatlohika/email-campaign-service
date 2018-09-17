@@ -1,6 +1,5 @@
 package com.lohika.morning.ecs.ui;
 
-import com.lohika.morning.ecs.domain.event.EventService;
 import com.lohika.morning.ecs.menu.MainMenu;
 import com.vaadin.annotations.StyleSheet;
 import com.vaadin.annotations.Theme;
@@ -22,8 +21,8 @@ public class MainLayout extends UI implements ViewDisplay {
   private final MainMenu mainMenu;
   private final Panel springViewDisplay = new Panel();
 
-  public MainLayout(EventService eventService) {
-    mainMenu = new MainMenu(getUI(), eventService.findAll());
+  public MainLayout() {
+    mainMenu = new MainMenu(getUI());
   }
 
   @Override

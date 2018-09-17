@@ -45,6 +45,9 @@ public class MorningEvent {
   @Future
   private LocalDate date;
 
+  @Column(nullable = false, columnDefinition = "BOOLEAN default FALSE")
+  private boolean completed;
+
   @Column(length = 2_000)
   private String ticketsUrl;
 }
