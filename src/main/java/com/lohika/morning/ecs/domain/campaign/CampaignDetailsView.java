@@ -107,7 +107,7 @@ public class CampaignDetailsView extends HorizontalLayout implements View {
     parentTemplateName.setVisible(campaign.getCampaignTemplate() != null);
     parentTemplateName.setValue(campaign.getCampaignTemplate() != null ? campaign.getCampaignTemplate().getName() : "");
 
-    campaignEmails.setValue(campaign.isAttendee() ? "For all attendee" : campaign.getEmails());
+    campaignEmails.setValue(campaign.isAttendee() ? "All attendee" : campaign.getEmails());
 
     binder.setBean(campaign);
 

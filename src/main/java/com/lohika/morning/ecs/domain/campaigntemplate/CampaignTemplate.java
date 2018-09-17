@@ -60,6 +60,9 @@ public class CampaignTemplate {
   private boolean ready = false;
 
   public String getEmails() {
-    return attendee ? "All attendees" : emails;
+    if (attendee) {
+      return "All attendees";
+    }
+    return "$email_to_speakers$".equalsIgnoreCase(emails) ? "Speakers" : emails;
   }
 }
