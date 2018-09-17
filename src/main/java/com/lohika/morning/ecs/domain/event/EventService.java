@@ -1,11 +1,17 @@
 package com.lohika.morning.ecs.domain.event;
 
+import com.lohika.morning.ecs.utils.EcsUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalUnit;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import static java.util.stream.Collectors.toList;
 
 @Service
 public class EventService {
@@ -36,7 +42,22 @@ public class EventService {
     repository.delete(morningEvent);
   }
 
-  public List<MorningEvent> findByNameContainsIgnoreCase(String text) {
-    return repository.findByNameContainsIgnoreCase(text);
+  public void wrapUp(MorningEvent morningEvent) {
+    morningEvent.setCompleted(true);
+    repository.save(morningEvent);
   }
+
+  public List<MorningEvent> getEvents(String filterText, boolean hidePast, boolean hideCompleted) {
+    Stream<MorningEvent> eventStream = repository.findByNameContainsIgnoreCase(filterText)
+        .stream();
+
+    if (hidePast) {
+        eventStream = eventStream.filter(e -> e.getDate().isAfter(LocalDate.now().minusDays(1)));
+    }
+    if (hideCompleted) {
+        eventStream = eventStream.filter(e -> !e.isCompleted());
+    }
+    return eventStream.collect(toList());
+  }
+
 }

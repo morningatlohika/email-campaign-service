@@ -1,7 +1,5 @@
 package com.lohika.morning.ecs.domain.event;
 
-import lombok.extern.slf4j.Slf4j;
-
 import com.vaadin.data.provider.GridSortOrderBuilder;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
@@ -9,13 +7,14 @@ import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.shared.ui.ValueChangeMode;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.renderers.HtmlRenderer;
 import com.vaadin.ui.renderers.Renderer;
-
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
@@ -33,7 +32,9 @@ public class EventListView extends VerticalLayout implements View {
 
   private final Grid<MorningEvent> grid = new Grid<>(MorningEvent.class);
   private final Button buttonNew = new Button("New event", VaadinIcons.PLUS);
-  private final TextField filter = new TextField();
+  private final TextField nameFilter = new TextField();
+  private final CheckBox hidePastFilter = new CheckBox("Hide past", false);
+  private final CheckBox hideCompletedFilter = new CheckBox("Hide completed", true);
 
   public EventListView() {
     grid.setSizeFull();
@@ -44,14 +45,14 @@ public class EventListView extends VerticalLayout implements View {
     grid.getColumn("description").setRenderer((Renderer) new HtmlRenderer());
     grid.setSortOrder(new GridSortOrderBuilder<MorningEvent>().thenDesc(grid.getColumn("date")).build());
 
-    filter.setPlaceholder("Filter by name");
-    filter.setValueChangeMode(ValueChangeMode.LAZY);
+    nameFilter.setPlaceholder("Filter by name");
+    nameFilter.setValueChangeMode(ValueChangeMode.LAZY);
   }
 
   @PostConstruct
   void init() {
     addListeners();
-    final HorizontalLayout actions = new HorizontalLayout(buttonNew, filter);
+    final HorizontalLayout actions = new HorizontalLayout(buttonNew, nameFilter, hidePastFilter, hideCompletedFilter);
     addComponents(actions, grid);
     listEvents();
   }
@@ -69,7 +70,9 @@ public class EventListView extends VerticalLayout implements View {
     buttonNew.addClickListener(clickEvent -> navigateTo(EventEditorView.VIEW_NAME));
 
     // Replace listing with filtered content when user changes filter
-    filter.addValueChangeListener(e -> listEvents(e.getValue()));
+    nameFilter.addValueChangeListener(e -> listEvents());
+    hidePastFilter.addValueChangeListener(e -> listEvents());
+    hideCompletedFilter.addValueChangeListener(e -> listEvents());
   }
 
   private void navigateTo(String viewName) {
@@ -81,11 +84,7 @@ public class EventListView extends VerticalLayout implements View {
   }
 
   private void listEvents() {
-    grid.setItems(eventService.findAll());
-  }
-
-  private void listEvents(String filterText) {
-    grid.setItems(eventService.findByNameContainsIgnoreCase(filterText));
+    grid.setItems(eventService.getEvents(nameFilter.getValue(), hidePastFilter.getValue(), hideCompletedFilter.getValue()));
   }
 
 }

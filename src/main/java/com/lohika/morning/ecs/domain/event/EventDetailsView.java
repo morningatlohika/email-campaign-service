@@ -1,13 +1,6 @@
 package com.lohika.morning.ecs.domain.event;
 
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-
-import com.lohika.morning.ecs.domain.campaign.AutoCampaignService;
-import com.lohika.morning.ecs.domain.campaign.Campaign;
-import com.lohika.morning.ecs.domain.campaign.CampaignDetailsView;
-import com.lohika.morning.ecs.domain.campaign.CampaignEditView;
-import com.lohika.morning.ecs.domain.campaign.CampaignService;
+import com.lohika.morning.ecs.domain.campaign.*;
 import com.lohika.morning.ecs.domain.talk.Talk;
 import com.lohika.morning.ecs.domain.talk.TalkPanel;
 import com.lohika.morning.ecs.domain.talk.TalkService;
@@ -30,14 +23,14 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.vaadin.dialogs.ConfirmDialog;
 
+import javax.annotation.PostConstruct;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
-
 import static com.lohika.morning.ecs.utils.EcsUtils.formatString;
-import static com.lohika.morning.ecs.utils.EcsUtils.isEditable;
 
 @SpringView(name = EventDetailsView.VIEW_NAME)
 @Slf4j
@@ -56,10 +49,11 @@ public class EventDetailsView extends VerticalLayout implements View {
   private final Button editBtn = new Button("Edit", VaadinIcons.EDIT);
   private final Button closeBtn = new Button("Close", VaadinIcons.CLOSE);
   private final Button deleteBtn = new Button("Delete", VaadinIcons.TRASH);
+  private final Button wrapUpBtn = new Button("Wrap Up The Event", VaadinIcons.ARCHIVE);
   private final HorizontalLayout actions = new HorizontalLayout(editBtn, deleteBtn, closeBtn);
 
   /* Fields form */
-  private final FormLayout eventDetails = new FormLayout(eventNumber, name, date, ticketsUrl, description, actions);
+  private final FormLayout eventDetails = new FormLayout(eventNumber, name, date, ticketsUrl, description, actions, wrapUpBtn);
 
   /* Talks */
   private final Button importTalksBtn = new Button("Import Talks and Speakers", VaadinIcons.DOWNLOAD);
@@ -67,9 +61,9 @@ public class EventDetailsView extends VerticalLayout implements View {
   private final VerticalLayout talksDetails = new VerticalLayout(importTalksBtn, taskPanel);
 
   /* Campaign */
-  private final Button addCampaign = new Button("Add campaign", VaadinIcons.PLUS);
-  private final Button autoCampaign = new Button("Auto provision campaign", VaadinIcons.MODAL_LIST);
-  private final HorizontalLayout campaignActions = new HorizontalLayout(addCampaign, autoCampaign);
+  private final Button addCampaignBtn = new Button("Add campaign", VaadinIcons.PLUS);
+  private final Button autoCampaignBtn = new Button("Auto provision campaign", VaadinIcons.MODAL_LIST);
+  private final HorizontalLayout campaignActions = new HorizontalLayout(addCampaignBtn, autoCampaignBtn);
 
   private final Grid<Campaign> campaignGrid = new Grid<>(Campaign.class);
   private final VerticalLayout campaignDetails = new VerticalLayout(campaignActions, campaignGrid);
@@ -100,7 +94,7 @@ public class EventDetailsView extends VerticalLayout implements View {
     closeBtn.setClickShortcut(ShortcutAction.KeyCode.ESCAPE);
     closeBtn.addClickListener(clickEvent -> navigateTo(EventListView.VIEW_NAME));
 
-    addCampaign.addClickListener(this::createCampaign);
+    addCampaignBtn.addClickListener(this::createCampaign);
     campaignGrid.setColumns("name", "subject", "emails", "status");
     campaignGrid.asSingleSelect().addValueChangeListener(this::campaignDetails);
     campaignGrid.setSizeFull();
@@ -113,21 +107,23 @@ public class EventDetailsView extends VerticalLayout implements View {
   public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
     MorningEvent morningEvent = initMorningEvent(viewChangeEvent);
     binder.setBean(morningEvent);
-    //talksList.displayTalks(morningEvent);
 
     // set button states
-    final boolean isEventEditable = isEditable(morningEvent, campaignService.findByEventId(morningEvent));
+    final boolean isEventEditable = !morningEvent.isCompleted();
     final boolean isEventPersisted = morningEvent.getId() != null;
     editBtn.setEnabled(isEventEditable);
     deleteBtn.setEnabled(isEventPersisted && isEventEditable);
     importTalksBtn.setEnabled(isEventPersisted && isEventEditable);
+    addCampaignBtn.setEnabled(isEventPersisted && isEventEditable);
+    autoCampaignBtn.setEnabled(isEventPersisted && isEventEditable);
+    wrapUpBtn.setEnabled(isEventPersisted && isEventEditable);
 
     // add listeners
     editBtn.addClickListener(clickEvent -> {
       navigateTo(EventEditorView.VIEW_NAME, morningEvent.getEventNumber());
     });
 
-    autoCampaign.addClickListener(clickEvent -> {
+    autoCampaignBtn.addClickListener(clickEvent -> {
       autoCampaignService.autoProvisionCampaigns(morningEvent);
       reloadCampaigns();
     });
@@ -137,25 +133,41 @@ public class EventDetailsView extends VerticalLayout implements View {
       navigateTo(EventListView.VIEW_NAME);
     });
 
+    wrapUpBtn.addClickListener(
+        clickEvent -> {
+          ConfirmDialog.show(getUI(), "Are you sure you want to wrap-up the event?",
+              "If you wrap-up the event, it will become read only.",
+              "Yes, please wrap-up",
+              "No",
+              dialog -> {
+                if (dialog.isConfirmed()) {
+                  eventService.wrapUp(morningEvent);
+                  navigateTo(EventDetailsView.VIEW_NAME, morningEvent.getEventNumber());
+                }
+              }
+          );
+        }
+    );
+
     importTalksBtn.addClickListener(clickEvent -> {
       if (talkService.talksExist(morningEvent)) {
         ConfirmDialog.show(getUI(), "Are you sure you want to re-import talks?",
             "If you re-import, all existing talks and speakers for given event will be overridden.",
             "Yes, please re-import",
             "No, please keep existing data",
-              dialog -> {
-                if (dialog.isConfirmed()) {
-                  talkService.reimportTalks(morningEvent);
-                }
+            dialog -> {
+              if (dialog.isConfirmed()) {
+                talkService.reimportTalks(morningEvent);
               }
-            );
+            }
+        );
       } else {
         talkService.importTalks(morningEvent);
       }
-      reloadTasks();
+      reloadTalks();
     });
 
-    reloadTasks();
+    reloadTalks();
     reloadCampaigns();
   }
 
@@ -163,10 +175,10 @@ public class EventDetailsView extends VerticalLayout implements View {
     getUI().getNavigator().navigateTo(CampaignEditView.VIEW_NAME_FOR_EVENT + binder.getBean().getEventNumber());
   }
 
-  private void reloadTasks() {
+  private void reloadTalks() {
     List<Talk> talks = talkService.getTalks(binder.getBean());
     Component[] taskComponents = talks.stream()
-        .map(talk -> new TalkPanel(talk, isEditable(binder.getBean(), campaignService.findByEventId(binder.getBean()))))
+        .map(talk -> new TalkPanel(talk, !binder.getBean().isCompleted()))
         .toArray(Component[]::new);
     taskPanel.setContent(new VerticalLayout(taskComponents));
   }
@@ -174,7 +186,7 @@ public class EventDetailsView extends VerticalLayout implements View {
   private void reloadCampaigns() {
     List<Campaign> campaigns = campaignService.findByEventId(binder.getBean());
     campaignGrid.setItems(campaigns);
-    autoCampaign.setEnabled(campaigns.isEmpty());
+    autoCampaignBtn.setEnabled(!binder.getBean().isCompleted() && campaigns.isEmpty());
   }
 
   private void campaignDetails(HasValue.ValueChangeEvent<Campaign> selectRowEvent) {

@@ -25,12 +25,12 @@ public class TopMenu extends BaseMenu {
     addComponent(administrator);
   }
 
-  public void setActive(boolean administratorMenuVisible, boolean configurationMenuVisible, boolean managerMenuVisible) {
+  public void setActive(boolean administratorMenuVisible, boolean configurationMenuVisible) {
     if (administratorMenuVisible) {
       administrator.addStyleName(ValoTheme.BUTTON_PRIMARY);
     } else if (configurationMenuVisible) {
       configurator.addStyleName(ValoTheme.BUTTON_PRIMARY);
-    } else if (managerMenuVisible) {
+    } else {
       manager.addStyleName(ValoTheme.BUTTON_PRIMARY);
     }
   }
