@@ -72,6 +72,8 @@ public class EmailService {
   private void save(String to, Campaign campaign) {
     Email email = Email.builder()
         .to(to)
+        .cc(campaign.getCc())
+        .bcc(campaign.getBcc())
         .campaign(campaign)
         .subject(campaign.getSubject())
         .body(campaign.getBody())

@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import microsoft.exchange.webservices.data.core.ExchangeService;
 import microsoft.exchange.webservices.data.core.service.item.EmailMessage;
 import microsoft.exchange.webservices.data.property.complex.MessageBody;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -72,6 +73,14 @@ public class PublishCampaignService {
 
     String recipientEmail = emailRecipientProvider.getRecipientEmail(email);
     msg.getToRecipients().add(recipientEmail);
+
+    if (StringUtils.isNotBlank(email.getCc())) {
+      msg.getCcRecipients().add(emailRecipientProvider.getCcEmail(email));
+    }
+
+    if (StringUtils.isNotBlank(email.getBcc())) {
+      msg.getBccRecipients().add(emailRecipientProvider.getBccEmail(email));
+    }
 
     log.debug("Sending {} email. Original to: {}, final to: {}", email.getSubject(), email.getTo(), recipientEmail);
     if (!"none".equalsIgnoreCase(recipientEmailOverride)) {

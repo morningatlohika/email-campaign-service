@@ -34,6 +34,12 @@ public class Email {
   @NonNull
   private String to;
 
+  @Builder.Default
+  private String cc = "";
+
+  @Builder.Default
+  private String bcc = "";
+
   @Column(nullable = false)
   @NonNull
   private String subject;
