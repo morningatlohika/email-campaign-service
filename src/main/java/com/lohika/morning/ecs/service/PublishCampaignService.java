@@ -17,6 +17,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 
 import static com.lohika.morning.ecs.utils.EcsUtils.formatString;
@@ -72,7 +73,8 @@ public class PublishCampaignService {
     msg.setBody(MessageBody.getMessageBodyFromText(email.getBody()));
 
     String recipientEmail = emailRecipientProvider.getRecipientEmail(email);
-    msg.getToRecipients().add(recipientEmail);
+
+    msg.getToRecipients().addSmtpAddressRange(Arrays.asList(recipientEmail.split(", ")).iterator());
 
     if (StringUtils.isNotBlank(email.getCc())) {
       msg.getCcRecipients().add(emailRecipientProvider.getCcEmail(email));
