@@ -1,16 +1,18 @@
 package com.lohika.morning.ecs.service;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import microsoft.exchange.webservices.data.core.ExchangeService;
+import microsoft.exchange.webservices.data.core.service.item.EmailMessage;
+import microsoft.exchange.webservices.data.property.complex.MessageBody;
+
 import com.lohika.morning.ecs.domain.applicationstatus.ApplicationStateService;
 import com.lohika.morning.ecs.domain.campaign.Campaign;
 import com.lohika.morning.ecs.domain.campaign.CampaignService;
 import com.lohika.morning.ecs.domain.email.Email;
 import com.lohika.morning.ecs.domain.email.Email.Status;
 import com.lohika.morning.ecs.domain.email.EmailService;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import microsoft.exchange.webservices.data.core.ExchangeService;
-import microsoft.exchange.webservices.data.core.service.item.EmailMessage;
-import microsoft.exchange.webservices.data.property.complex.MessageBody;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -18,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.lohika.morning.ecs.utils.EcsUtils.formatString;
 
@@ -51,7 +54,9 @@ public class PublishCampaignService {
   }
 
   private void publish(Campaign campaign) {
-    List<Email> emails = emailService.get(campaign);
+    List<Email> emails = emailService.get(campaign).stream()
+        .filter(email -> Status.NEW != email.getStatus())
+        .collect(Collectors.toList());
 
     for (Email email : emails) {
       try {
@@ -64,6 +69,12 @@ public class PublishCampaignService {
       email.setLastSendingAttempt(LocalDateTime.now());
       emailService.save(email);
     }
+  }
+
+  public void reSend(Email email) {
+    email.setStatus(Email.Status.NEW);
+    emailService.save(email);
+    campaignService.updateStatus(email.getCampaign(), Campaign.Status.READY_TO_SEND);
   }
 
   private void send(Email email) throws Exception {
