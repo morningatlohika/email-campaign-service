@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static com.lohika.morning.ecs.utils.EcsUtils.formatString;
@@ -55,7 +56,7 @@ public class EmailService {
       emailAdresses = attendeeService.findAll().stream().map(Attendee::getEmail).collect(toList());
     } else {
       // publish to
-      emailAdresses = Arrays.asList(campaign.getEmails().split(","));
+      emailAdresses = Collections.singletonList(campaign.getEmails());// Arrays.asList(campaign.getEmails().split(","));
     }
 
     List<String> unsubscribed = unsubscribeService.findAll().stream()
