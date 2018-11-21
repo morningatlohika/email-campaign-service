@@ -56,7 +56,7 @@ public class PublishCampaignService {
 
   private void publish(Campaign campaign) {
     List<Email> emails = emailService.get(campaign).stream()
-        .filter(email -> Status.NEW != email.getStatus())
+        .filter(email -> Status.NEW == email.getStatus())
         .collect(Collectors.toList());
 
     for (Email email : emails) {

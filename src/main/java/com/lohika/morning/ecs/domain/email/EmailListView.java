@@ -63,7 +63,7 @@ public class EmailListView extends VerticalLayout implements View {
       e.getButton().setVisible(false);
       grid.setItems(emailService.findAll());
     });
-    button.setVisible(Email.Status.FAILED == email.getStatus());
+    button.setVisible(Email.Status.SENT != email.getStatus());
 
     return button;
   }
