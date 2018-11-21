@@ -85,7 +85,7 @@ public class PublishCampaignService {
 
     String recipientEmail = emailRecipientProvider.getRecipientEmail(email);
 
-    msg.getToRecipients().addSmtpAddressRange(Arrays.asList(recipientEmail.split(", ")).iterator());
+    msg.getToRecipients().addSmtpAddressRange(Arrays.asList(recipientEmail.split("[, ]+")).iterator());
 
     if (StringUtils.isNotBlank(email.getCc())) {
       msg.getCcRecipients().add(emailRecipientProvider.getCcEmail(email));
