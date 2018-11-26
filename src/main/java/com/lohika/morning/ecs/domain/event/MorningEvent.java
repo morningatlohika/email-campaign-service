@@ -42,7 +42,6 @@ public class MorningEvent {
   private String description;
 
   @NotNull
-  @Future
   private LocalDate date;
 
   @Column(nullable = false, columnDefinition = "BOOLEAN default FALSE")

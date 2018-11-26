@@ -70,7 +70,7 @@ public class EventEditorView extends HorizontalLayout implements View {
     binder.setBean(morningEvent);
 
     // set button states
-    final boolean isEventEditable = morningEvent.getDate().isAfter(LocalDate.now());
+    final boolean isEventEditable = !morningEvent.isCompleted();
     saveBtn.setEnabled(isEventEditable);
 
     // add listeners
