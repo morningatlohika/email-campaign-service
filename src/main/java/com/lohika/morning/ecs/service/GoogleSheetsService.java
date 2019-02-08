@@ -109,7 +109,7 @@ public class GoogleSheetsService {
       return Talk.builder()
           .googleSheetsTimestamp(row.get(1))
           .title(row.get(14))
-          .theses(row.get(15))
+          .theses(textToHtml(row.get(15)))
           .language(Talk.Language.fromString(row.get(16).toUpperCase()))
           .speakers(speakerMapper.mapRow(row))
           .event(events.get(row.get(0)))
@@ -123,5 +123,8 @@ public class GoogleSheetsService {
           .collect(toList());
     }
 
+    private String textToHtml(String text) {
+      return text.replaceAll("\n", "<br/>");
+    }
   }
 }

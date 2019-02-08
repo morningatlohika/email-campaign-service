@@ -78,10 +78,20 @@ public class Talk {
   private String targetAudience;
 
   public enum Language {
-    UKRAINIAN,
-    ENGLISH,
-    RUSSIAN,
-    UNDECIDED;
+    UKRAINIAN("Ukrainian"),
+    ENGLISH("English"),
+    RUSSIAN("Russian"),
+    UNDECIDED("Undecided");
+
+    private String name;
+
+    Language(String name) {
+      this.name = name;
+    }
+
+    public String getName() {
+      return name;
+    }
 
     public static Language fromString(String value) {
       if (StringUtils.isBlank(value)) {
@@ -93,10 +103,20 @@ public class Talk {
   }
 
   public enum Level {
-    INTRODUCTORY,
-    REGULAR,
-    DEEP_DETAILS,
-    UNKNOWN;
+    INTRODUCTORY("Introductory"),
+    REGULAR("Regular"),
+    DEEP_DETAILS("Deep details"),
+    UNKNOWN("Unknown");
+
+    private String name;
+
+    Level(String name) {
+      this.name = name;
+    }
+
+    public String getName() {
+      return name;
+    }
 
     public static Level fromString(String value) {
       if (StringUtils.isBlank(value)) {

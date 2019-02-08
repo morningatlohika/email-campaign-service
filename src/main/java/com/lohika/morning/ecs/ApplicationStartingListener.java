@@ -27,5 +27,6 @@ public class ApplicationStartingListener implements ApplicationListener<Applicat
           Paths.get(SystemUtils.USER_HOME, ".morning", "ecs").toString() + File.separator);
     }
     log.info("{} = {}", CONFIG_LOCATION_PROPERTY, System.getProperty(CONFIG_LOCATION_PROPERTY));
+    System.out.println(CONFIG_LOCATION_PROPERTY + " = " + System.getProperty(CONFIG_LOCATION_PROPERTY));
   }
 }

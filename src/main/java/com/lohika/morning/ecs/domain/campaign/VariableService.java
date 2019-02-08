@@ -83,9 +83,9 @@ public class VariableService {
     Map<String, String> variable = new HashMap<>();
 
     variable.put(prefixKey + "_talk_title", talk.getTitle());
-    variable.put(prefixKey + "_talk_language", talk.getLanguage().toString());
+    variable.put(prefixKey + "_talk_language", talk.getLanguage().getName());
     variable.put(prefixKey + "_talk_description", talk.getTheses());
-    variable.put(prefixKey + "_level", talk.getLevel().toString());
+    variable.put(prefixKey + "_level", talk.getLevel().getName());
 
     variable.putAll(getSpeakersVariable(prefixKey, talk));
 
