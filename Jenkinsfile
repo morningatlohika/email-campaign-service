@@ -62,7 +62,7 @@ pipeline() {
       }
     }
 
-    stage('Build') {
+    stage('Sonarqube') {
       steps {
         script {
           sh "gradle sonarqube -x test -Dsonar.projectKey=${env.SONAR_PROJECT_KEY} -Dsonar.host.url=${env.SONAR_HOST_URL} -Dsonar.login=${env.SONAR_LOGIN}"
