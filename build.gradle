@@ -27,10 +27,8 @@ apply plugin: "org.sonarqube"
 
 group = 'com.lohika.morning'
 
-compileJava {
-    sourceCompatibility = '1.8'
-    targetCompatibility = '1.8'
-}
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
 repositories {
   mavenCentral()
@@ -48,6 +46,16 @@ ext {
 }
 
 dependencies {
+  compileOnly 'org.projectlombok:lombok:1.18.10'
+  annotationProcessor 'org.projectlombok:lombok:1.18.10'
+
+  testAnnotationProcessor 'org.projectlombok:lombok:1.18.10'
+  testCompileOnly 'org.projectlombok:lombok:1.18.10'
+
+  // JAX-B dependencies for JDK 9+
+  implementation "jakarta.xml.bind:jakarta.xml.bind-api:2.3.2"
+  implementation "org.glassfish.jaxb:jaxb-runtime:2.3.2"
+
   // persistence dependencies
   compile('org.springframework.boot:spring-boot-starter-data-jpa')
   runtime('org.apache.derby:derby:10.14.2.0')
