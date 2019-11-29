@@ -65,7 +65,7 @@ pipeline() {
     stage('Sonarqube') {
       steps {
         script {
-          sh "gradle sonarqube -x test -Dsonar.projectKey=${env.SONAR_PROJECT_KEY} -Dsonar.host.url=${env.SONAR_HOST_URL} -Dsonar.login=${env.SONAR_LOGIN}"
+          sh "gradle sonarqube -Dsonar.projectKey=${env.SONAR_PROJECT_KEY} -Dsonar.host.url=${env.SONAR_HOST_URL} -Dsonar.login=${env.SONAR_LOGIN}"
         }
       }
     }
@@ -114,7 +114,7 @@ pipeline() {
       }
     }
 
-    stage('Publish RELEASE') {
+    stage('Package and publish release') {
       when {
         branch 'master'
         expression { params.release == true }
