@@ -12,6 +12,7 @@ buildscript {
     classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
     classpath 'gradle.plugin.com.boxfuse.client:flyway-release:4.0.3'
     classpath 'net.researchgate:gradle-release:2.6.0'
+    classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.8"
   }
 }
 
@@ -21,6 +22,8 @@ apply plugin: 'maven'
 apply plugin: 'org.springframework.boot'
 apply plugin: "org.flywaydb.flyway"
 apply plugin: 'net.researchgate.release'
+
+apply plugin: "org.sonarqube"
 
 group = 'com.lohika.morning'
 sourceCompatibility = 1.8
