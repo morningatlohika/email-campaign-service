@@ -27,6 +27,7 @@ apply plugin: "org.sonarqube"
 
 group = 'com.lohika.morning'
 sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
 repositories {
   mavenCentral()
