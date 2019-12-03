@@ -63,7 +63,9 @@ codeCoverageReport.dependsOn {
     subprojects*.test
 }
 
-test.finalizedBy(project.tasks.jacocoTestReport)
+test {
+  finalizedBy jacocoTestReport
+}
 
 dependencies {
   compileOnly 'org.projectlombok:lombok:1.18.10'
