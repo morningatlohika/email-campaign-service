@@ -17,6 +17,7 @@ buildscript {
 }
 
 apply plugin: 'java'
+apply plugin: 'jacoco'
 apply plugin: 'idea'
 apply plugin: 'maven'
 apply plugin: 'org.springframework.boot'
@@ -44,6 +45,25 @@ release {
 ext {
   vaadinVersion = '8.3.1'
 }
+
+task codeCoverageReport(type: JacocoReport) {
+    executionData fileTree(project.rootDir.absolutePath).include("**/build/jacoco/*.exec")
+
+    subprojects.each {
+        sourceSets it.sourceSets.main
+    }
+
+    reports {
+        xml.enabled true
+        html.enabled true
+    }
+}
+
+codeCoverageReport.dependsOn {
+    subprojects*.test
+}
+
+test.finalizedBy(project.tasks.jacocoTestReport)
 
 dependencies {
   compileOnly 'org.projectlombok:lombok:1.18.10'
