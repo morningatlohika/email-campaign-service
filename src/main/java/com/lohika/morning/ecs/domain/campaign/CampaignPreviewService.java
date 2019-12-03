@@ -54,7 +54,7 @@ public class CampaignPreviewService {
     String[] strings = body.split("\\$");
 
     AtomicInteger index = new AtomicInteger(0);
-    List<String> list = new ArrayList<String>(asList(strings));
+    List<String> list = new ArrayList(asList(strings));
     return list.stream()
         .filter(p -> index.incrementAndGet() % 2 == 0)
         .filter(key -> variable.get(key) == null)
