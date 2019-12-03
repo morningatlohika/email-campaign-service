@@ -1,13 +1,15 @@
 package com.lohika.morning.ecs.service;
 
+import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
+
 import com.google.api.services.sheets.v4.Sheets;
 import com.google.api.services.sheets.v4.model.ValueRange;
 import com.lohika.morning.ecs.domain.event.MorningEvent;
 import com.lohika.morning.ecs.domain.speaker.Speaker;
 import com.lohika.morning.ecs.domain.talk.Talk;
 import com.lohika.morning.ecs.utils.EcsUtils;
-import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
+
 import org.apache.commons.lang3.BooleanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

@@ -1,5 +1,7 @@
 package com.lohika.morning.ecs.domain.event;
 
+import lombok.extern.slf4j.Slf4j;
+
 import com.vaadin.data.provider.GridSortOrderBuilder;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
@@ -14,7 +16,7 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.renderers.HtmlRenderer;
 import com.vaadin.ui.renderers.Renderer;
-import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;

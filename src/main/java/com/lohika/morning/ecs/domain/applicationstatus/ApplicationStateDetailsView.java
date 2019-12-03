@@ -5,28 +5,13 @@ import lombok.extern.slf4j.Slf4j;
 
 import com.lohika.morning.ecs.domain.attendee.AttendeeService;
 import com.lohika.morning.ecs.domain.campaign.CampaignService;
-import com.lohika.morning.ecs.domain.campaigntemplate.CampaignTemplate;
 import com.lohika.morning.ecs.domain.campaigntemplate.CampaignTemplateService;
 import com.lohika.morning.ecs.domain.email.EmailService;
-import com.lohika.morning.ecs.domain.event.EventListView;
-import com.lohika.morning.ecs.domain.settings.Settings;
-import com.lohika.morning.ecs.domain.settings.SettingsEditView;
-import com.lohika.morning.ecs.domain.settings.SettingsService;
 import com.lohika.morning.ecs.vaadin.EcsLabel;
-import com.vaadin.data.BeanValidationBinder;
-import com.vaadin.data.Binder;
-import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
-import com.vaadin.navigator.ViewChangeListener;
-import com.vaadin.shared.ui.ContentMode;
 import com.vaadin.spring.annotation.SpringView;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
-
-import java.util.List;
 
 import javax.annotation.PostConstruct;
 

@@ -22,8 +22,6 @@ import com.vaadin.ui.themes.ValoTheme;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.time.LocalDate;
-
 import static com.lohika.morning.ecs.utils.EcsUtils.formatString;
 
 @SpringView(name = EventEditorView.VIEW_NAME)

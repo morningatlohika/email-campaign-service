@@ -1,10 +1,11 @@
 package com.lohika.morning.ecs.domain.campaigntemplate;
 
-import com.lohika.morning.ecs.domain.email.Email;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import com.lohika.morning.ecs.domain.email.Email;
 
 import org.hibernate.validator.constraints.NotEmpty;
 

@@ -1,11 +1,9 @@
 package com.lohika.morning.ecs.domain.campaign;
 
-import com.lohika.morning.ecs.domain.event.EventDetailsView;
-import com.vaadin.ui.TextField;
-import com.vaadin.ui.declarative.converters.DesignEnumConverter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import com.lohika.morning.ecs.domain.event.EventDetailsView;
 import com.lohika.morning.ecs.utils.PriorityUtil;
 import com.lohika.morning.ecs.vaadin.EcsLabel;
 import com.vaadin.data.BeanValidationBinder;
@@ -20,6 +18,7 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.declarative.converters.DesignEnumConverter;
 import com.vaadin.ui.themes.ValoTheme;
 
 import org.apache.commons.lang3.StringUtils;

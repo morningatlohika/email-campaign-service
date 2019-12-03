@@ -1,11 +1,9 @@
 package com.lohika.morning.ecs.domain.talk;
 
 import com.vaadin.icons.VaadinIcons;
-import com.vaadin.shared.ui.ContentMode;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
-import com.vaadin.ui.VerticalLayout;
 
 public class TalkPanel extends HorizontalLayout {
 

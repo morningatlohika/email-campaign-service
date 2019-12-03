@@ -1,5 +1,8 @@
 package com.lohika.morning.ecs.domain.email;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
 import com.lohika.morning.ecs.domain.applicationstatus.ApplicationStateService;
 import com.lohika.morning.ecs.domain.attendee.Attendee;
 import com.lohika.morning.ecs.domain.attendee.AttendeeService;
@@ -8,17 +11,16 @@ import com.lohika.morning.ecs.domain.campaign.CampaignPreviewService;
 import com.lohika.morning.ecs.domain.campaign.CampaignService;
 import com.lohika.morning.ecs.domain.unsubscribe.Unsubscribe;
 import com.lohika.morning.ecs.domain.unsubscribe.UnsubscribeService;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 import static com.lohika.morning.ecs.utils.EcsUtils.formatString;
+
 import static java.util.stream.Collectors.toList;
 
 @Service

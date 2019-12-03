@@ -2,6 +2,7 @@ package com.lohika.morning.ecs.domain.email;
 
 
 import com.lohika.morning.ecs.domain.campaign.Campaign;
+
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 import java.util.List;

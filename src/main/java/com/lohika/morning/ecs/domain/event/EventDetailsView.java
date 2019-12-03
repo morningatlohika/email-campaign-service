@@ -1,6 +1,13 @@
 package com.lohika.morning.ecs.domain.event;
 
-import com.lohika.morning.ecs.domain.campaign.*;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
+import com.lohika.morning.ecs.domain.campaign.AutoCampaignService;
+import com.lohika.morning.ecs.domain.campaign.Campaign;
+import com.lohika.morning.ecs.domain.campaign.CampaignDetailsView;
+import com.lohika.morning.ecs.domain.campaign.CampaignEditView;
+import com.lohika.morning.ecs.domain.campaign.CampaignService;
 import com.lohika.morning.ecs.domain.talk.Talk;
 import com.lohika.morning.ecs.domain.talk.TalkPanel;
 import com.lohika.morning.ecs.domain.talk.TalkService;
@@ -23,12 +30,12 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+
 import org.vaadin.dialogs.ConfirmDialog;
 
-import javax.annotation.PostConstruct;
 import java.util.List;
+
+import javax.annotation.PostConstruct;
 
 import static com.lohika.morning.ecs.utils.EcsUtils.formatString;
 
