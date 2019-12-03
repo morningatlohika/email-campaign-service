@@ -163,6 +163,14 @@ pipeline() {
             reportFiles          : 'index.html',
             reportName           : "Test Summary"
         ])
+        publishHTML(target: [
+            allowMissing         : true,
+            alwaysLinkToLastBuild: false,
+            keepAll              : true,
+            reportDir            : 'build/reports/jacoco/test/html',
+            reportFiles          : 'index.html',
+            reportName           : "Jacoco Test Summary"
+        ])
         junit testResults: 'build/test-results/test/*.xml', allowEmptyResults: true
         server.publishBuildInfo buildInfo
       }
